@@ -82,3 +82,5 @@ docs/_build/
 
 # PyBuilder
 target/
+
+**/.ipynb_checkpoints
