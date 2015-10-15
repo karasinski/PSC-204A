@@ -59,7 +59,7 @@
 %\maketitle
 
 \problem{}
-What is the formula for SE? What is the relation of SE with SD?  How are these two measures similar, how are they different?.
+What is the formula for SE? What is the relation of SE with SD?  How are these two measures similar, how are they different?
 
 \solution
 The standard error of the mean is the standard deviation of the sample-mean's estimate of a population mean:
@@ -71,7 +71,7 @@ This estimate may be compared with the formula for the true standard deviation o
 $$\text{SD} = \frac{\sigma}{\sqrt{n}}$$
 where $\sigma$ is the standard deviation of the population.
 
-These two values both measure the same thing--how spread out the distribution is. The only difference between the quantities is that SD is a parameter of the population distribution (a true value), while the SE is a statistic which measures the textent to which a sample departs from an expectation value.
+These two values both measure the same thing--how spread out the distribution is. The only difference between the quantities is that SD is a parameter of the population distribution (a true value), while the SE is a statistic which measures the extent to which a sample departs from an expectation value.
 
 \problem{}
 All things being equal, what factors influence power? Why does it make sense that these factors influence power? Use the t-test formula to help explain why these factors logically influence power.
@@ -81,20 +81,20 @@ As sample size increases, population variances decrease, and the true mean diffe
 
 The t-test formula,
 $$t = \frac{\overline{x} - \mu_0}{s/\sqrt{n}},$$
-has each of these factors, where $\mu_0$ is the population mean, $s$ is the sample standard deviation, and $n$ is the sample size. The value of t can be maximized by minimizing $\mu_0$, minimizing $s$, and maximizing $n$. While $s \neq  \sigma$, the population variance, we do assume that it approximates the population variance as $n$ increases. As such, we can see how each of these factors logically increases the power of the t-test.
+has each of these factors, where $\overline{x} - \mu_0$ is the true mean difference, $s$ is the sample standard deviation, and $n$ is the sample size. The value of t can be maximized by maximizing $\overline{x} - \mu_0$, minimizing $s$, and maximizing $n$. While $s \neq  \sigma$, the population variance, we do assume that it approximates the population variance as $n$ increases. It makes sense that the further your sample mean is to the true mean, and that the less variance there is in the population, our tests should report a larger statistic. As such, we can see how each of these factors logically increases the power of the t-test.
 
 \problem{}
 Describe in your own words how z- and t-distributions are used to test null hypotheses. That is, what does the distribution represent, and how do qualities of the distribution help us evaluate differences between means?
 
 \solution
-The z- and t-distributions are both used to test null hypothesis. The z distribution is simply the normal/guassian distribution, while the t distribution is similar to the normal, and approaches it as $\lim_{df\to\infty}$. The area under the curve of the distribution can tell us the probability that the difference between means is statistically significant. The qualities of the distributions are well known, and a rejection region can be chosen to reject or accept a null hypothesis. The probability of finding a difference between the means can be calculated using the distribution, and is then compared with the chosen rejection region. If this value is found outside the acceptance region, the result is deemed to be unlikely, and the null hypothesis is rejected.
+The z- and t-distributions are both used to test null hypothesis. The z distribution is simply the normal/Gaussian distribution, while the t distribution is similar to the normal, and approaches it as $\lim_{df\to\infty}$. The area under the curve of the distribution can tell us the probability that the difference between means is statistically significant. The qualities of the distributions are well known, and a rejection region can be chosen to reject or accept a null hypothesis. The probability of finding a difference between the means can be calculated using the distribution, and is then compared with the chosen rejection region. If this value is found outside the acceptance region, the result is deemed to be unlikely, and the null hypothesis is rejected.
 
 \problem{}
 A researcher collected three large samples (N = 3,000 each) of undergraduate students from UC Davis, UC Merced, and UC Los Angeles; davis, merced, and la, respectively. The collective wisdom is that anxiety levels between campuses follow a normal distribution, but that some schools may elicit more or less anxiety in their undergraduate population. Your task is to compare these samples using independent samples t-tests. Specifically:
 
 \begin{enumerate}
 \item Gather mean, median, and SD summary statistics about these samples. Table your results. Using these summary statistics, does there appear to be a difference between campuses with respect to undergraduate anxiety?
-\item Conduct independent samples t-tests comparing each campus to the other. In a paragraph, summarize the results of the t-tests using APA format. You should report the statistical tests, interpret their meaning, and report your conclusions with respect to the research question. *In addition to APA formatted reporting of the t-test results, please include the 95\% CI for each test. **Note: For those of you with more statistical experience do not worry about inflated type I error rates due to multiple t-tests; we’ll address this later in the quarter.
+\item Conduct independent samples t-tests comparing each campus to the other. In a paragraph, summarize the results of the t-tests using APA format. You should report the statistical tests, interpret their meaning, and report your conclusions with respect to the research question. *In addition to APA formatted reporting of the t-test results, please include the 95\% CI for each test. **Note: For those of you with more statistical experience do not worry about inflated type I error rates due to multiple t-tests; we'll address this later in the quarter.
 \end{enumerate}
 
 % \newpage
@@ -169,10 +169,10 @@ as anxious than the students from UC Merced (M = 0.00, SD = 1.60, N = 3000), t(5
 -0.13, p < 0.898, two-tailed. The 95% confidence interval around the difference between
 group means was (-0.09 to 0.08).
 \end{lstlisting}
-According to multiple t-tests, the mean anxiety for all three campuses is statistically the same. Despite this, the distributions for the three campuses is quite different, and all three are non-guassian.
+According to multiple t-tests, the mean anxiety for all three campuses is statistically the same. Despite this, the distributions for the three campuses is quite different, and all three are non-Gaussian.
 
 \problem{}
-It’s useful to include a figure that depicts variable differences between groups. In this situation, there were two expectations: 1. that the average amount of anxiety differed between groups, and 2. that the distribution of student anxiety for each campus is normally distributed. To depict this create a single figure with 3 panels (3 rows and 1 column). Each panel should be a plot of the density of student anxiety. Make sure you generate a main heading, and x- and y-axis labels. Also, each of your final figures should have the same x-axis range and a dotted vertical line at the mean of each sample; this will help visualize comparisons between the campuses. Describe these distributions with respect to the two expectations in this study and your t-test results.
+It's useful to include a figure that depicts variable differences between groups. In this situation, there were two expectations: 1. that the average amount of anxiety differed between groups, and 2. that the distribution of student anxiety for each campus is normally distributed. To depict this create a single figure with 3 panels (3 rows and 1 column). Each panel should be a plot of the density of student anxiety. Make sure you generate a main heading, and x- and y-axis labels. Also, each of your final figures should have the same x-axis range and a dotted vertical line at the mean of each sample; this will help visualize comparisons between the campuses. Describe these distributions with respect to the two expectations in this study and your t-test results.
 \solution{}
 
 \begin{lstlisting}
@@ -204,7 +204,7 @@ plt.show()
   % \caption{Birds}
 \end{wrapfigure}
 
-Despite their means being very close to zero, the distributions for each of the three campuses are very different and very non-gausssian. Davis students, for instance, belong to an extremely positively skewed distribution. The median for Davis students is relatively far to the left, unlike Merced and LA students. Merced and LA students feature bimodal distributions. Merced students are extremely bimodal, such that the distribution appears to be a combination of two guassian distributions. Half the students appear to be extremely anxious, while other half appear to not be anxious at all. LA students also feature a bimodal distribution, though it appears to be much more flat than the distribution of the Merced students. Of the three campuses, LA appears to be the most gaussian, though that term only barely applies.
+The mean amount of anxiety did not differ among groups. Despite their means being very close to zero, the distributions for each of the three campuses are very different and very non-Gaussian. Davis students, for instance, belong to an extremely positively skewed distribution. The median for Davis students is relatively far to the left, unlike Merced and LA students. Merced and LA students feature bimodal distributions. Merced students are extremely bimodal, such that the distribution appears to be a combination of two Gaussian distributions. Half the students appear to be extremely anxious, while other half appear to not be anxious at all. LA students also feature a bimodal distribution, though it appears to be much more flat than the distribution of the Merced students. Of the three campuses, LA appears to be the most Gaussian, though that term only barely applies.
 
 As such, the collective wisdom about anxiety levels appears to be false, despite the fact that none of our t-tests failed their null hypotheses.
 
