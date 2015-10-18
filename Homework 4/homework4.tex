@@ -1,0 +1,285 @@
+\documentclass[onecolumn,10pt]{jhwhw}
+
+\usepackage{epsfig} %% for loading postscript figures
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{grffile}
+\usepackage{pdfpages}
+\usepackage{algpseudocode}
+\usepackage{wrapfig}
+\usepackage{pgfplots}
+\usepackage{amsfonts}
+\usepackage{booktabs}
+\usepackage{siunitx}
+\usepackage{commath}
+
+% Default fixed font does not support bold face
+\DeclareFixedFont{\ttb}{T1}{txtt}{bx}{n}{12} % for bold
+\DeclareFixedFont{\ttm}{T1}{txtt}{m}{n}{12}  % for normal
+
+% Custom colors
+\usepackage{color}
+\usepackage{listings}
+\usepackage{framed}
+\usepackage{caption}
+\usepackage{bm}
+\captionsetup[lstlisting]{font={small,tt}}
+
+\definecolor{mygreen}{rgb}{0,0.6,0}
+\definecolor{mygray}{rgb}{0.5,0.5,0.5}
+\definecolor{mymauve}{rgb}{0.58,0,0.82}
+
+\lstset{ %
+  backgroundcolor=\color{white},   % choose the background color; you must add \usepackage{color} or \usepackage{xcolor}
+  basicstyle=\ttfamily\footnotesize, % the size of the fonts that are used for the code
+  breakatwhitespace=false,         % sets if automatic breaks should only happen at whitespace
+  % breaklines=true,                 % sets automatic line breaking
+  captionpos=b,                    % sets the caption-position to bottom
+  commentstyle=\color{mygreen},    % comment style
+  deletekeywords={...},            % if you want to delete keywords from the given language
+  escapeinside={\%*}{*)},          % if you want to add LaTeX within your code
+  extendedchars=true,              % lets you use non-ASCII characters; for 8-bits encodings only, does not work with UTF-8
+  frame=single,                    % adds a frame around the code
+  keepspaces=true,                 % keeps spaces in text, useful for keeping indentation of code (possibly needs columns=flexible)
+  columns=flexible,
+  keywordstyle=\color{blue},       % keyword style
+  language=Python,                 % the language of the code
+  morekeywords={*,...},            % if you want to add more keywords to the set
+  numbers=left,                    % where to put the line-numbers; possible values are (none, left, right)
+  numbersep=5pt,                   % how far the line-numbers are from the code
+  numberstyle=\tiny\color{mygray}, % the style that is used for the line-numbers
+  rulecolor=\color{black},         % if not set, the frame-color may be changed on line-breaks within not-black text (e.g. comments (green here))
+  showspaces=false,                % show spaces everywhere adding particular underscores; it overrides 'showstringspaces'
+  showstringspaces=false,          % underline spaces within strings only
+  showtabs=false,                  % show tabs within strings adding particular underscores
+  stepnumber=1,                    % the step between two line-numbers. If it's 1, each line will be numbered
+  stringstyle=\color{mymauve},     % string literal style
+  tabsize=4,                       % sets default tabsize to 2 spaces
+}
+
+\pgfmathdeclarefunction{gauss}{2}{%
+  \pgfmathparse{1/(#2*sqrt(2*pi))*exp(-((x-#1)^2)/(2*#2^2))}%
+}
+
+\author{John Karasinski}
+\title{Homework \# 3}
+
+\begin{document}
+%\maketitle
+
+\problem{}
+\part What is the probability of having a z-value less than -0.95?
+
+\begin{equation*}
+\begin{split}
+p(z <-0.95) = 0.1711
+\end{split}
+\end{equation*}
+
+\begin{center}
+\begin{tikzpicture}
+\begin{axis}[
+  no markers, domain=0:10, samples=100,
+  axis lines*=left, xlabel=$x$, ylabel=$y$,
+  every axis y label/.style={at=(current axis.above origin),anchor=south},
+  every axis x label/.style={at=(current axis.right of origin),anchor=west},
+  height=5cm, width=10cm,
+  xtick=\empty, ytick=\empty,
+  enlargelimits=false, clip=false, axis on top,
+  grid = major
+  ]
+  \addplot [fill=cyan!20, draw=none, domain=0:4.05] {gauss(5,1)} \closedcycle;
+  \addplot [very thick,cyan!50!black] {gauss(5,1)};
+\end{axis}
+\end{tikzpicture}
+\end{center}
+
+\part What is the probability of having a z-value greater than -0.06?
+
+\begin{equation*}
+\begin{split}
+p(z > -0.06) & = 1 - p(z < -0.06) \\
+             & = 1 - 0.4761 = 0.5239
+\end{split}
+\end{equation*}
+
+\begin{center}
+\begin{tikzpicture}
+\begin{axis}[
+  no markers, domain=0:10, samples=100,
+  axis lines*=left, xlabel=$x$, ylabel=$y$,
+  every axis y label/.style={at=(current axis.above origin),anchor=south},
+  every axis x label/.style={at=(current axis.right of origin),anchor=west},
+  height=5cm, width=10cm,
+  xtick=\empty, ytick=\empty,
+  enlargelimits=false, clip=false, axis on top,
+  grid = major
+  ]
+  \addplot [fill=cyan!20, draw=none, domain=4.94:10] {gauss(5,1)} \closedcycle;
+  \addplot [very thick,cyan!50!black] {gauss(5,1)};
+\end{axis}
+\end{tikzpicture}
+\end{center}
+
+\part What is the probability of having a z-value less than -3.02 or greater than 1.49?
+
+\begin{equation*}
+\begin{split}
+p(z < -3.02) + p(z > 1.49) & = p(z < -3.02) + [1 - p(z < 1.49)] \\
+                           & = 0.0013 + [1 - 0.9319]\\
+                           & = 0.0694
+\end{split}
+\end{equation*}
+
+\begin{center}
+\begin{tikzpicture}
+\begin{axis}[
+  no markers, domain=0:10, samples=100,
+  axis lines*=left, xlabel=$x$, ylabel=$y$,
+  every axis y label/.style={at=(current axis.above origin),anchor=south},
+  every axis x label/.style={at=(current axis.right of origin),anchor=west},
+  height=5cm, width=10cm,
+  xtick=\empty, ytick=\empty,
+  enlargelimits=false, clip=false, axis on top,
+  grid = major
+  ]
+  \addplot [fill=cyan!20, draw=none, domain=0:2.98] {gauss(5,1)} \closedcycle;
+  \addplot [fill=cyan!20, draw=none, domain=6.49:10] {gauss(5,1)} \closedcycle;
+  \addplot [very thick,cyan!50!black] {gauss(5,1)};
+\end{axis}
+\end{tikzpicture}
+\end{center}
+
+\part What is the probability of having a z-value between -0.25 and 0.45?
+
+\begin{equation*}
+\begin{split}
+p(-0.25 < z < 0.45) & = p(z > -0.25) - p(z > 0.45) \\
+                    & = [1 - p(z < -0.25)] - [1 - p(z < 0.45)] \\
+                    & = [1 - 0.4013] - [1 - 0.6736] \\
+                    & = 0.2723
+\end{split}
+\end{equation*}
+
+\begin{center}
+\begin{tikzpicture}
+\begin{axis}[
+  no markers, domain=0:10, samples=100,
+  axis lines*=left, xlabel=$x$, ylabel=$y$,
+  every axis y label/.style={at=(current axis.above origin),anchor=south},
+  every axis x label/.style={at=(current axis.right of origin),anchor=west},
+  height=5cm, width=10cm,
+  xtick=\empty, ytick=\empty,
+  enlargelimits=false, clip=false, axis on top,
+  grid = major
+  ]
+  \addplot [fill=cyan!20, draw=none, domain=4.75:5.45] {gauss(5,1)} \closedcycle;
+  \addplot [very thick,cyan!50!black] {gauss(5,1)};
+\end{axis}
+\end{tikzpicture}
+\end{center}
+
+\problem{}
+\part What are the critical t-values for a two-tailed t-test given an alpha of .05 and df of 1?
+
+$$12.71$$
+
+\part What is the critical t-value for a right-tailed t-test given an alpha of .05 and df of 10?
+
+$$1.812$$
+
+\part What is the critical t-value for a left-tailed t-test given an alpha of .01 and df of 100?
+
+$$2.626 - 2.364 = 0.262$$
+
+\part What are the critical t-values for a two-tailed t-test given an alpha of .05 and df of 4, 9, 14, 29, 99, and 1000? What is the absolute difference between each of these values and the critical z-values for a corresponding two-tailed z-test given an alpha of .05?
+
+
+
+\begin{center}
+\begin{tabular}{r | c c}
+\toprule
+     df &      t-value & diff \\
+% \hline
+\midrule
+   4 &  2.776 &  0.816 \\
+   9 &  2.262 &  0.302 \\
+  14 &  2.145 &  0.185 \\
+  29 &  2.045 &  0.085 \\
+  99 &  1.984 &  0.024 \\
+1000 &  1.962 &  0.002 \\
+\hline
+   z &  1.960 &  - \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\problem{}
+\part Given an alpha of .05 what is the minimum sample size required to reject the null hypothesis using a two-tailed t-test given a t-value of 1.995?
+
+$$80$$
+
+\part Given an alpha of .05 what is the minimum sample size required to reject the null hypothesis using a one-tailed t-test given a t-value of -1.70?
+
+$$29$$
+
+\part Given an alpha of .01, what is the minimum sample size required to reject the null hypothesis using a two-tailed t-test given a t-value of -2.98?
+
+$$ 13 $$
+
+\newpage
+For intermediary calculations (e.g., mean and sd) round to four decimal places. Round your final answer to two decimal places.
+
+\problem{}
+
+Imagine that the common house fly lives for an average (mu) of 21 days. After some selective breeding, you have a small sample (N = 10) of specially bred flies that you think had longer than average lives compared to the common fly. Use the data below to test this. Report your conclusion and explain what this means.
+
+Lifespan of Mutant flies (days) = {27, 25, 20, 25, 23, 21, 27, 25, 25, 22}
+
+To solve this problem, we define two hypotheses: $H_0: \mu = 21$, $H_1: \mu \neq 21$. Alpha level is chosen as $\alpha = .05$. Results will be significant if the sample mean falls in either extreme $.025$ of all possible results. $\nu = N - 1 = 9$; $Q = .025$; $t = 2.262$. If obtained $t > \abs{2.365}$, reject $H_0$.
+
+\begin{equation*}
+\begin{split}
+\overline{x} & = \frac{27 + 25 + 20 + 25 + 23 + 21 + 27 + 25 + 25 + 22}{10} \\
+             & = 24.0000 \\
+s^2 & = \frac{1}{N-1} \sum_{i=1}^N (x_i - \overline{x})^2 \\
+    & = \frac{1}{9} [(27-24)^2 + (25-24)^2 + (20-24)^2 + (25-24)^2 + (23-24)^2 \\
+    & + (21-24)^2 + (27-24)^2 + (25-24)^2 + (25-24)^2 + (22-24)^2] \\
+    & = 5.7778 \\
+s & = \sqrt{5.7778} = 2.4037
+\end{split}
+\end{equation*}
+\begin{equation*}
+\begin{split}
+t & = \frac{\left[ \overline{x} - \mu \right]}{s/\sqrt{N}} \\
+  & = \frac{24 - 21}{2.4037/\sqrt{10}} \\
+  & = 12.4808
+\end{split}
+\end{equation*}
+\begin{equation*}
+\begin{split}
+SE & = \frac{s}{\sqrt{N}} = \frac{2.4037}{\sqrt{10}} = 0.7601 \\
+\text{Upper 95\%} & = \bar{x} + (SE \times 1.96) = 24.7601 \\
+\text{Lower 95\%} & = \bar{x} - (SE \times 1.96) = 23.2399
+\end{split}
+\end{equation*}
+
+Since $t = 12.4808 > 2.365$, we reject the null hypothesis $H_0$. We conclude that the specially bred flies have longer than average lives compared to the common fly.
+
+\problem{}
+Now imagine that, in addition to your immortal fly project, you have another selective breeding program where you are trying to breed flies that have much shorter life spans. You want to see if they are dying faster than your flies bred to have a longer life span. Use the data below to test this. Report your conclusion and explain what this means.
+
+Lifespan of Mutant flies (days) = {27, 25, 20, 25, 23, 21, 27, 25, 25, 22}
+
+Lifespan of Short-lived flies (days) = {24, 23, 19, 21, 22, 20, 25, 27, 21, 22}
+
+\problem{}
+It just so happens that you recall an important detail about these fly experiments. It turns out that, to control for environment, the flies were assigned to live in the same cages for the duration of their lives. That is Fly 1 of the Mutant Flies and Short-lived flies lived in the same enclosure, as did Fly 2 of the Mutant Flies and Short-lived Flies, and so on. This suggests that each pair of flies had some common factors and that the samples are not actually independent. Given this information, conduct a second test of differences between the two samples. Report your conclusion and explain what this means.
+
+Lifespan of Mutant flies (days) = {27, 25, 20, 25, 23, 21, 27, 25, 25, 22}
+
+Lifespan of Short-lived flies (days) = {24, 23, 19, 21, 22, 20, 25, 27, 21, 22}
+
+
+
+\end{document}
