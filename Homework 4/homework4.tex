@@ -190,7 +190,7 @@ $$1.812$$
 
 \part What is the critical t-value for a left-tailed t-test given an alpha of .01 and df of 100?
 
-$$2.626 - 2.364 = 0.262$$
+$$-2.364$$
 
 \part What are the critical t-values for a two-tailed t-test given an alpha of .05 and df of 4, 9, 14, 29, 99, and 1000? What is the absolute difference between each of these values and the critical z-values for a corresponding two-tailed z-test given an alpha of .05?
 
@@ -215,15 +215,15 @@ $$2.626 - 2.364 = 0.262$$
 \problem{}
 \part Given an alpha of .05 what is the minimum sample size required to reject the null hypothesis using a two-tailed t-test given a t-value of 1.995?
 
-$$80$$
+$$n = df + 1 = 80 + 1 = 81$$
 
 \part Given an alpha of .05 what is the minimum sample size required to reject the null hypothesis using a one-tailed t-test given a t-value of -1.70?
 
-$$29$$
+$$n = df + 1 = 29 + 1 = 30$$
 
 \part Given an alpha of .01, what is the minimum sample size required to reject the null hypothesis using a two-tailed t-test given a t-value of -2.98?
 
-$$ 13 $$
+$$n = df + 1 = 13 + 1 = 14$$
 
 \newpage
 For intermediary calculations (e.g., mean and sd) round to four decimal places. Round your final answer to two decimal places.
@@ -248,7 +248,7 @@ s & = \sqrt{5.7778} = 2.4037\\
 %
 t & = \frac{\left[ \overline{x} - \mu \right]}{s/\sqrt{N}} \\
   & = \frac{24 - 21}{2.4037/\sqrt{10}} \\
-  & = 12.4808\\
+  & = 3.9468\\
 %
 SE & = \frac{s}{\sqrt{N}} = \frac{2.4037}{\sqrt{10}} = 0.7601 \\
 \text{Upper 95\%} & = \bar{x} + (SE \times 1.96) = 25.4898 \\
@@ -256,7 +256,7 @@ SE & = \frac{s}{\sqrt{N}} = \frac{2.4037}{\sqrt{10}} = 0.7601 \\
 \end{split}
 \end{equation*}
 
-The flies in our sample live an average of $24.0000 \pm 0.7601$ days. Since $t = 12.4808 > 2.365$, we reject the null hypothesis $H_0$. We conclude that the specially bred flies have longer than average lives compared to the common fly.
+The flies in our sample live an average of $24.0000 \pm 0.7601$ days. Since $t = 3.9468 > 2.365$, we reject the null hypothesis $H_0$. We conclude that the specially bred flies have longer than average lives compared to the common fly.
 
 \problem{}
 Now imagine that, in addition to your immortal fly project, you have another selective breeding program where you are trying to breed flies that have much shorter life spans. You want to see if they are dying faster than your flies bred to have a longer life span. Use the data below to test this. Report your conclusion and explain what this means.
@@ -317,7 +317,7 @@ $n$ & $x_m$ & $x_{sl}$ & $x_d$ & $(x_d - \overline{x}_d)^2$ \\
 9 & 25 & 21 & 4  &  5.7600 \\
 10 & 22 & 22 & 0 &  2.5600 \\
 \hline
-\rule{0pt}{4ex} & $\overline{x}_m = 24.0000$ & $\overline{x}_{sl} = 22.4000$ & $\sum_{}^{} x_d = 16.0000 $ & $\sum_{}^{} (x_d - \overline{x}_d)^2 = 3.0400$ \\
+\rule{0pt}{4ex} & $\overline{x}_m = 24.0000$ & $\overline{x}_{sl} = 22.4000$ & $\sum_{}^{} x_d = 16.0000 $ & $\sum_{}^{} (x_d - \overline{x}_d)^2 = 30.4000$ \\
 \rule{0pt}{4ex}  & $(s_m = 2.4037)$ & $(s_{sl} = 2.4129)$ & $\overline{x}_d = 1.6000$ & \\
 \bottomrule
 \end{tabular}
@@ -327,16 +327,16 @@ To solve this problem, we define two hypotheses: $H_0: \mu_{m} - \mu_{sl} = \mu_
 
 \begin{equation*}
 \begin{split}
-s^2_d & = \frac{\sum_{}^{} (x_d - \overline{x}_d)^2}{n-1} = \frac{3.0400}{9} = 0.3378 \\
-s_d & = 0.5812 \\
-s_{\overline{d}} & = \frac{s_d}{\sqrt{n}} = \frac{0.5812}{\sqrt{10}} = 0.1838 \\
-t & = \frac{\overline{x}_d - \mu_{d}}{s_{\overline{d}}} = \frac{\overline{x}_d}{s_{\overline{d}}} = \frac{1.6000}{0.1838} = 8.7051\\
+s^2_d & = \frac{\sum_{}^{} (x_d - \overline{x}_d)^2}{n-1} = \frac{30.4000}{9} = 3.3778 \\
+s_d & = 1.8379 \\
+s_{\overline{d}} & = \frac{s_d}{\sqrt{n}} = \frac{1.8379}{\sqrt{10}} = 0.5812 \\
+t & = \frac{\overline{x}_d - \mu_{d}}{s_{\overline{d}}} = \frac{\overline{x}_d}{s_{\overline{d}}} = \frac{1.6000}{0.5812} = 2.7529\\
 %
 \mbox{95\% CI} & = (\overline{x}_m - \overline{x}_{sl}) \pm t_{(\alpha/2;\nu)} s_{\overline{d}} \\
-& = 1.6000 \pm (2.262) (0.1838) = (1.1842,2.0158)
+& = 1.6000 \pm (2.262) (0.5812) = (0.2853,2.9147)
 \end{split}
 \end{equation*}
 
-Since $t = 8.7051 > 2.365$, we reject the null hypothesis $H_0$. We conclude that, $\mu_{sl} < \mu_{m}$, the short-lived flies have shorter than average lives compared to the mutant flies.
+Since $t = 2.7529 > 2.365$, we reject the null hypothesis $H_0$. We conclude that, $\mu_{sl} < \mu_{m}$, the short-lived flies have shorter than average lives compared to the mutant flies.
 
 \end{document}
