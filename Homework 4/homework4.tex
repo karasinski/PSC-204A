@@ -194,8 +194,6 @@ $$2.626 - 2.364 = 0.262$$
 
 \part What are the critical t-values for a two-tailed t-test given an alpha of .05 and df of 4, 9, 14, 29, 99, and 1000? What is the absolute difference between each of these values and the critical z-values for a corresponding two-tailed z-test given an alpha of .05?
 
-
-
 \begin{center}
 \begin{tabular}{r | c c}
 \toprule
@@ -267,7 +265,7 @@ Lifespan of Mutant flies (days) = \{27, 25, 20, 25, 23, 21, 27, 25, 25, 22\}
 
 Lifespan of Short-lived flies (days) = \{24, 23, 19, 21, 22, 20, 25, 27, 21, 22\} \\
 
-To solve this problem, we define two hypotheses: $H_0: \mu_{m} - \mu_{sl} = 0$, $H_1: \mu_{m} - \mu_{sl} \neq 0$. Alpha level is chosen as $\alpha = .05$. Results will be significant if the sample mean falls in either extreme $.025$ of all possible results. $\nu = N_1 + N_2 - 2 = 18$; $Q = .025$; $t = 2.101$. If obtained $t > \abs{2.101}$, reject $H_0$.
+To solve this problem, we define two hypotheses: $H_0: \mu_{m} - \mu_{sl} = 0$, $H_1: \mu_{m} - \mu_{sl} > 0$. Alpha level is chosen as $\alpha = .05$. Results will be significant if the sample mean falls in positive extreme $.025$ of all possible results. $\nu = N_1 + N_2 - 2 = 18$; $Q = .025$; $t = 2.101$. If obtained $t > \abs{2.101}$, reject $H_0$.
 
 From above, we know that $\overline{x}_m = 24.0000$ and $s_m = 2.4037$.
 
@@ -280,30 +278,21 @@ s^2_{sl} & = \frac{1}{N-1} \sum_{i=1}^N (x_i - \overline{x})^2 \\
     & + (20-22.4)^2 + (25-22.4)^2 + (27-22.4)^2 + (21-22.4)^2 + (22-22.4)^2] \\
     & = 5.8222 \\
 s_{sl} & = \sqrt{5.8222} = 2.4129\\
-% \end{split}
-% \end{equation*}
-% \begin{equation*}
-% \begin{split}
+%
 \mbox{est.} \sigma_{diff} & = \sqrt{\frac{(n_m-1)s^2_m + (n_{sl}-1)s^2_{sl}}{n_m + n_{sl} - 2} \left( \frac{n_m + n_{sl}}{n_m n_{sl}} \right)} \\
 & = \sqrt{\frac{(10-1)5.7778 + (10-1)5.8222}{10 + 10 - 2} \left( \frac{10 + 10}{10*10} \right)} \\
 & = 1.0770\\
-% \end{split}
-% \end{equation*}
-% \begin{equation*}
-% \begin{split}
+%
 t & = \frac{\left( \overline{x}_m - \overline{x}_{sl} \right)}{\mbox{est.} \sigma_{diff}} \\
   & = \frac{24 - 22.4}{1.0770} \\
   & = 1.4856\\
-% \end{split}
-% \end{equation*}
-% \begin{equation*}
-% \begin{split}
+%
 \mbox{95\% CI} & = (\overline{x}_m - \overline{x}_{sl}) \pm t_{(\alpha/2;\nu)} (\mbox{est.} \sigma_{diff}) \\
 & = 1.6 \pm (2.101) (1.0770) = (-0.6628,3.8628)
 \end{split}
 \end{equation*}
 
-Since $t = 1.4856 < 2.101$, given $\alpha = .05$, $H_0$ cannot be rejected. The $p$ is .95 that the true difference between $\mu_m – \mu_{sl}$ is contained in this $\mbox{95\% CI}$ interval.
+While $\overline{x}_{sl} < \overline{x}_m$, this is not significant as $t = 1.4856 < 2.101$, given $\alpha = .05$, $H_0$ cannot be rejected. The $p$ is .95 that the true difference between $\mu_m - \mu_{sl}$ is contained in this $\mbox{95\% CI}$ interval.
 
 \problem{}
 It just so happens that you recall an important detail about these fly experiments. It turns out that, to control for environment, the flies were assigned to live in the same cages for the duration of their lives. That is Fly 1 of the Mutant Flies and Short-lived flies lived in the same enclosure, as did Fly 2 of the Mutant Flies and Short-lived Flies, and so on. This suggests that each pair of flies had some common factors and that the samples are not actually independent. Given this information, conduct a second test of differences between the two samples. Report your conclusion and explain what this means.
@@ -312,6 +301,42 @@ Lifespan of Mutant flies (days) = {27, 25, 20, 25, 23, 21, 27, 25, 25, 22}
 
 Lifespan of Short-lived flies (days) = {24, 23, 19, 21, 22, 20, 25, 27, 21, 22}
 
+\begin{center}
+\begin{tabular}{r r r r r}
+\toprule
+$n$ & $x_m$ & $x_{sl}$ & $x_d$ & $(x_d - \overline{x}_d)^2$ \\
+\midrule
+1 & 27 & 24 & 3  &  1.9600 \\
+2 & 25 & 23 & 2  &  0.1600 \\
+3 & 20 & 19 & 1  &  0.3600 \\
+4 & 25 & 21 & 4  &  5.7600 \\
+5 & 23 & 22 & 1  &  0.3600 \\
+6 & 21 & 20 & 1  &  0.3600 \\
+7 & 27 & 25 & 2  &  0.1600 \\
+8 & 25 & 27 & -2 & 12.9600 \\
+9 & 25 & 21 & 4  &  5.7600 \\
+10 & 22 & 22 & 0 &  2.5600 \\
+\hline
+\rule{0pt}{4ex} & $\overline{x}_m = 24.0000$ & $\overline{x}_{sl} = 22.4000$ & $\sum_{}^{} x_d = 16.0000 $ & $\sum_{}^{} (x_d - \overline{x}_d)^2 = 3.0400$ \\
+\rule{0pt}{4ex}  & $(s_m = 2.4037)$ & $(s_{sl} = 2.4129)$ & $\overline{x}_d = 1.6000$ & \\
+\bottomrule
+\end{tabular}
+\end{center}
 
+To solve this problem, we define two hypotheses: $H_0: \mu_{m} - \mu_{sl} = \mu_d = 0$, $H_1: \mu_{m} - \mu_{sl} > 0$. Alpha level is chosen as $\alpha = .05$. $\nu = N - 1 = 9$; $Q = .025$; $t = 2.262$. If obtained $t > \abs{2.262}$, reject $H_0$.
+
+\begin{equation*}
+\begin{split}
+s^2_d & = \frac{\sum_{}^{} (x_d - \overline{x}_d)^2}{n-1} = \frac{3.0400}{9} = 0.3378 \\
+s_d & = 0.5812 \\
+s_{\overline{d}} & = \frac{s_d}{\sqrt{n}} = \frac{0.5812}{\sqrt{10}} = 0.1838 \\
+t & = \frac{\overline{x}_d - \mu_{d}}{s_{\overline{d}}} = \frac{\overline{x}_d}{s_{\overline{d}}} = \frac{1.6000}{0.1838} = 8.7051\\
+%
+\mbox{95\% CI} & = (\overline{x}_m - \overline{x}_{sl}) \pm t_{(\alpha/2;\nu)} s_{\overline{d}} \\
+& = 1.6000 \pm (2.262) (0.1838) = (1.1842,2.0158)
+\end{split}
+\end{equation*}
+
+Since $t = 8.7051 > 2.365$, we reject the null hypothesis $H_0$. We conclude that, $\mu_{sl} < \mu_{m}$, the short-lived flies have shorter than average lives compared to the mutant flies.
 
 \end{document}
