@@ -1,0 +1,196 @@
+\documentclass[onecolumn,10pt]{jhwhw}
+
+\usepackage{epsfig} %% for loading postscript figures
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{grffile}
+\usepackage{pdfpages}
+\usepackage{algpseudocode}
+\usepackage{wrapfig}
+\usepackage{pgfplots}
+\usepackage{amsfonts}
+\usepackage{booktabs}
+\usepackage{siunitx}
+\usepackage{commath}
+
+% Default fixed font does not support bold face
+\DeclareFixedFont{\ttb}{T1}{txtt}{bx}{n}{12} % for bold
+\DeclareFixedFont{\ttm}{T1}{txtt}{m}{n}{12}  % for normal
+
+% Custom colors
+\usepackage{color}
+\usepackage{listings}
+\usepackage{framed}
+\usepackage{caption}
+\usepackage{bm}
+\captionsetup[lstlisting]{font={small,tt}}
+
+\definecolor{mygreen}{rgb}{0,0.6,0}
+\definecolor{mygray}{rgb}{0.5,0.5,0.5}
+\definecolor{mymauve}{rgb}{0.58,0,0.82}
+
+\lstset{ %
+  backgroundcolor=\color{white},   % choose the background color; you must add \usepackage{color} or \usepackage{xcolor}
+  basicstyle=\ttfamily\footnotesize, % the size of the fonts that are used for the code
+  breakatwhitespace=false,         % sets if automatic breaks should only happen at whitespace
+  % breaklines=true,                 % sets automatic line breaking
+  captionpos=b,                    % sets the caption-position to bottom
+  commentstyle=\color{mygreen},    % comment style
+  deletekeywords={...},            % if you want to delete keywords from the given language
+  escapeinside={\%*}{*)},          % if you want to add LaTeX within your code
+  extendedchars=true,              % lets you use non-ASCII characters; for 8-bits encodings only, does not work with UTF-8
+  frame=single,                    % adds a frame around the code
+  keepspaces=true,                 % keeps spaces in text, useful for keeping indentation of code (possibly needs columns=flexible)
+  columns=flexible,
+  keywordstyle=\color{blue},       % keyword style
+  language=Python,                 % the language of the code
+  morekeywords={*,...},            % if you want to add more keywords to the set
+  numbers=left,                    % where to put the line-numbers; possible values are (none, left, right)
+  numbersep=5pt,                   % how far the line-numbers are from the code
+  numberstyle=\tiny\color{mygray}, % the style that is used for the line-numbers
+  rulecolor=\color{black},         % if not set, the frame-color may be changed on line-breaks within not-black text (e.g. comments (green here))
+  showspaces=false,                % show spaces everywhere adding particular underscores; it overrides 'showstringspaces'
+  showstringspaces=false,          % underline spaces within strings only
+  showtabs=false,                  % show tabs within strings adding particular underscores
+  stepnumber=1,                    % the step between two line-numbers. If it's 1, each line will be numbered
+  stringstyle=\color{mymauve},     % string literal style
+  tabsize=4,                       % sets default tabsize to 2 spaces
+}
+
+\pgfmathdeclarefunction{gauss}{2}{%
+  \pgfmathparse{1/(#2*sqrt(2*pi))*exp(-((x-#1)^2)/(2*#2^2))}%
+}
+
+\author{John Karasinski}
+\title{Homework \# 5}
+
+\begin{document}
+%\maketitle
+
+\problem{}
+Calculate the between and within df for the following conditions.
+
+\part Five conditions (e.g., placebo, dose 1, dose 2, dose 3, and dose 4) with N = 100?
+\begin{equation*}
+\begin{split}
+df_{\mbox{between}}&=5\\
+df_{\mbox{within}}&=N-df_{\mbox{between}}-1\\
+                  &=100-5-1=94
+\end{split}
+\end{equation*}
+
+\part Three conditions with N = 45?
+\begin{equation*}
+\begin{split}
+df_{\mbox{between}}&=3\\
+df_{\mbox{within}}&=N-df_{\mbox{between}}-1\\
+                  &=45-3-1=41
+\end{split}
+\end{equation*}
+
+\part Eight conditions with N = 200?
+\begin{equation*}
+\begin{split}
+df_{\mbox{between}}&=8\\
+df_{\mbox{within}}&=N-df_{\mbox{between}}-1\\
+                  &=200-8-1=191
+\end{split}
+\end{equation*}
+
+\part Four conditions with N = 36?
+\begin{equation*}
+\begin{split}
+df_{\mbox{between}}&=4\\
+df_{\mbox{within}}&=N-df_{\mbox{between}}-1\\
+                  &=36-4-1=31
+\end{split}
+\end{equation*}
+\problem{}
+Use the F-table provided in the hw05 folder on smartsite.
+
+\part What is the critical F-value given an alpha of .05 and df between of 2 and df within of 20?
+$$3.49$$
+
+\part What is the critical F-value given an alpha of .05 and df between of 4 and df within of 30?
+$$2.69$$
+
+\part What is the critical F-value given an alpha of .05 and df between of 3 and df within of 100?
+$$2.70$$
+
+\part What is the critical F-value given an alpha of .01 and df between of 5 and df within of 50?
+$$3.41$$
+
+\problem{}
+In your own words, explain what the between and within SS from an ANOVA table represents? Why do you think these values are divided by their respective df in order to estimate MS and then the F value? Why does the one-way ANOVA not help researchers understand where differences between conditions are, but can be used to determine if there are significant differences between conditions?
+
+\problem{}
+Complete by hand, you may use a calculator, show all work. For intermediary calculations (e.g., mean and sd) round to four decimal places. Round your final answer to two decimal places.
+
+\begin{center}
+\begin{tabular}{l r r r r r}
+\toprule
+Source & df & SS & MS & F & P \\
+\midrule
+Between &    & 2510.5 & & & \\
+Within  & 12 &        & & & \\
+Total   & 14 & 2671.7 & & & \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\begin{align*}
+df_{total} &= df_{between} + df_{within} && \implies df_{between} = 14-12 = 2\\
+SS_{total} &= SS_{between} + SS_{within} && \implies SS_{within} = 2671.7-2510.5=161.2\\
+MS_{between} &= \frac{SS_{between}}{df_{between}} && \implies MS_{between} = \frac{2510.5}{2} = 1255.25 \\
+MS_{within}  &= \frac{SS_{within}}{df_{within}}   && \implies MS_{within}  = \frac{161.2}{12} = 13.4333 \\
+F &= \frac{\mbox{MS}_{between}}{\mbox{MS}_{within}} && \implies F = \frac{1255.25}{13.4333} = 93.4432
+\end{align*}
+Using the F-table provided for this assignment, with $df_{numerator} = 2$ and $df_{denominator} = 12$, we see that $F = 93.4432 > 12.97$, suggesting a $p < .001$. The table can then be completed as:
+
+\begin{center}
+\begin{tabular}{l r r r r r}
+\toprule
+Source & df & SS & MS & F & P \\
+\midrule
+Between &  2 & 2510.50 & 1255.25 & 93.44 & $<.001$ \\
+Within  & 12 &  161.20 & 13.43 & & \\
+Total   & 14 & 2671.70 & & & \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\problem{}
+\begin{center}
+\begin{tabular}{l r r r r r}
+\toprule
+Source & df & SS & MS & F & P \\
+\midrule
+Between &    & 16 &     & & \\
+Within  & 95 &    & 1.2 & & \\
+Total   & 99 &    &     & & \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\begin{align*}
+df_{total} &= df_{between} + df_{within} && \implies df_{between} = 99-95 = 4\\
+SS_{within} &= MS_{within} * df_{within} && \implies SS_{within} = 1.2 * 95 = 114\\
+SS_{total} &= SS_{between} + SS_{within} && \implies SS_{total} = 16 + 114 = 130\\
+MS_{between} &= \frac{SS_{between}}{df_{between}} && \implies MS_{between} = \frac{16}{4} = 4 \\
+F &= \frac{\mbox{MS}_{between}}{\mbox{MS}_{within}} && \implies F = \frac{4}{1.2} = 3.3333
+\end{align*}
+Using the F-table provided for this assignment, with $df_{numerator} = 4$ and $df_{denominator} = 100 (\approx 95)$, we see that $F = 3.3333 > 2.92$, suggesting $.010 < p < .025$. The table can then be completed as:
+
+\begin{center}
+\begin{tabular}{l r r r r r}
+\toprule
+Source & df & SS & MS & F & P \\
+\midrule
+Between &  4 &  16 & 4.0 & 3.33 & .025 \\
+Within  & 95 & 114 & 1.2 & & \\
+Total   & 99 & 130 &     & & \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\end{document}
