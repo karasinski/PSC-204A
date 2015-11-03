@@ -123,6 +123,8 @@ $$3.41$$
 \problem{}
 In your own words, explain what the between and within SS from an ANOVA table represents? Why do you think these values are divided by their respective df in order to estimate MS and then the F value? Why does the one-way ANOVA not help researchers understand where differences between conditions are, but can be used to determine if there are significant differences between conditions?
 
+The $SS_{between}$ and $SS_{within}$ from the ANOVA tables represent the amount of variation between groups and the amount of variation between all subjects. These values are divided by their respective df in order to normalize the values against one another. If we did not do this renormalization it would give undo weight to one or the other $SS$ values. The F value from the ANOVA table (and ultimately the $p$ value), tell the researcher that there is a significant devation away from $H_0$ for the groups and the subjects. As $H_0$ is the assumption that all the groups have the same variation, the opposite is then true---that all the groups do not have the variation. This statement does not indicate which groups are different, and nothing about one-way ANOVA selects any particular group for comparison. Due to this, post-hoc tests are used to look at the differences between selected groups.
+
 \problem{}
 Complete by hand, you may use a calculator, show all work. For intermediary calculations (e.g., mean and sd) round to four decimal places. Round your final answer to two decimal places.
 
@@ -186,7 +188,7 @@ Using the F-table provided for this assignment, with $df_{numerator} = 4$ and $d
 \toprule
 Source & df & SS & MS & F & P \\
 \midrule
-Between &  4 &  16 & 4.0 & 3.33 & .025 \\
+Between &  4 &  16 & 4.0 & 3.33 & $.010 < p < .025$ \\
 Within  & 95 & 114 & 1.2 & & \\
 Total   & 99 & 130 &     & & \\
 \bottomrule
