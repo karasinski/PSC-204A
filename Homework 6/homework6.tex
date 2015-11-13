@@ -1,0 +1,125 @@
+\documentclass[onecolumn,10pt]{jhwhw}
+
+\usepackage{epsfig} %% for loading postscript figures
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{grffile}
+\usepackage{pdfpages}
+\usepackage{algpseudocode}
+\usepackage{wrapfig}
+\usepackage{pgfplots}
+\usepackage{amsfonts}
+\usepackage{booktabs}
+\usepackage{siunitx}
+\usepackage{commath}
+
+% Default fixed font does not support bold face
+\DeclareFixedFont{\ttb}{T1}{txtt}{bx}{n}{12} % for bold
+\DeclareFixedFont{\ttm}{T1}{txtt}{m}{n}{12}  % for normal
+
+% Custom colors
+\usepackage{color}
+\usepackage{listings}
+\usepackage{framed}
+\usepackage{caption}
+\usepackage{bm}
+\captionsetup[lstlisting]{font={small,tt}}
+
+\definecolor{mygreen}{rgb}{0,0.6,0}
+\definecolor{mygray}{rgb}{0.5,0.5,0.5}
+\definecolor{mymauve}{rgb}{0.58,0,0.82}
+
+\lstset{ %
+  backgroundcolor=\color{white},   % choose the background color; you must add \usepackage{color} or \usepackage{xcolor}
+  basicstyle=\ttfamily\footnotesize, % the size of the fonts that are used for the code
+  breakatwhitespace=false,         % sets if automatic breaks should only happen at whitespace
+  % breaklines=true,                 % sets automatic line breaking
+  captionpos=b,                    % sets the caption-position to bottom
+  commentstyle=\color{mygreen},    % comment style
+  deletekeywords={...},            % if you want to delete keywords from the given language
+  escapeinside={\%*}{*)},          % if you want to add LaTeX within your code
+  extendedchars=true,              % lets you use non-ASCII characters; for 8-bits encodings only, does not work with UTF-8
+  frame=single,                    % adds a frame around the code
+  keepspaces=true,                 % keeps spaces in text, useful for keeping indentation of code (possibly needs columns=flexible)
+  columns=flexible,
+  keywordstyle=\color{blue},       % keyword style
+  language=Python,                 % the language of the code
+  morekeywords={*,...},            % if you want to add more keywords to the set
+  numbers=left,                    % where to put the line-numbers; possible values are (none, left, right)
+  numbersep=5pt,                   % how far the line-numbers are from the code
+  numberstyle=\tiny\color{mygray}, % the style that is used for the line-numbers
+  rulecolor=\color{black},         % if not set, the frame-color may be changed on line-breaks within not-black text (e.g. comments (green here))
+  showspaces=false,                % show spaces everywhere adding particular underscores; it overrides 'showstringspaces'
+  showstringspaces=false,          % underline spaces within strings only
+  showtabs=false,                  % show tabs within strings adding particular underscores
+  stepnumber=1,                    % the step between two line-numbers. If it's 1, each line will be numbered
+  stringstyle=\color{mymauve},     % string literal style
+  tabsize=4,                       % sets default tabsize to 2 spaces
+}
+
+\author{John Karasinski}
+\title{Homework \# 6}
+
+\begin{document}
+%\maketitle
+
+\problem{}
+Imagine you had a factorial design in which you were testing if work schedule (none vs. part-time vs. full-time) and course load (part-time vs. full-time) were related to student GPA during an academic quarter. If I told you that this was a balanced design, where each unique combination of conditions (e.g., no work and part-time student status) had 15 participants. What are the df between for each condition, the df for the interaction, the df within (error) and the df total?
+
+\begin{align*}
+N &= 15 (a \times b) = 15 (2 \times 2) = 60\\
+df_A &= (a - 1) = 1\\
+df_B &= (b - 1) = 1\\
+df_{AB} &= (a-1)(b-1) = 1\\
+df_{error} &= N - (a \times b) = 60 - 4 = 56\\
+df_{total} &= (N - 1) = 59
+\end{align*}
+
+
+\problem{}
+What are the potential advantages of a factorial ANOVA design? Four are mentioned in your lecture notes. Explain, in your own words, why factorial ANOVA can result in these potential advantages.
+
+\begin{description}
+\item[Generalizability] --- In one-way ANOVA, conclusions can be applied only to the groups (levels) of one factor (e.g., teaching method). With factorial ANOVA we can make finer distinctions (e.g., for teaching method and previous experience)
+\item[Efficiency] --- We can address several questions with one study (e.g., examining the effects of teaching method and previous experience simultaneously)
+\item[It is more powerful] --- $MS_W$ is derived from all the cell variances, not just the ones related to only one factor (as it would be the case in a simple ANOVA)...the error variance is
+reduced
+\item[Interactions] --- Factorial designs allow examination of interaction effects (e.g., does the effect of one IV on the DV depend on the level of the other IV?)
+\end{description}
+
+\problem{}
+Give a short example of a hypothetical one-way ANOVA design and demonstrate how a factorial ANOVA design could result in the advantages discussed in question 2.\\
+
+A one-way ANOVA design could be based around the effectiveness of teaching ANOVA based on the method used to teach. The differences between three example teaching strategies such as, lecture, discussion, and study, could be investigated. To make this a factorial ANOVA design, we could instead investigate the differences between teaching strategies and the effects of prior experience (yes or no). Using the factorial design, finer distinctions could be made, more questions could be asked with a single study, the error variance would be reduced, and interaction effects could be examined.
+
+\problem{}
+In your own words, describe what simple-effects analyses do and when you would use them?
+
+A simple-effects analysis investigates the existence of an effect for all levels of a factor (e.g., `row effects' or `column effects'). These are often used when an interaction is detected, as blanket statements cannot be made (e.g., scores increase with time) if there is an interaction (e.g., scores drop for subjects in Group A at the final time). Simple effects analyses determine if these effects are statistically significant.
+
+\problem{}
+A significant interaction effect suggests that there is a dependency of effect between two conditions. Given this definition, if there is a significant interaction effect does it make sense to interpret main effects of the conditions with the significant interaction? Defend your position (i.e., why or why not).
+
+\problem{}
+Imagine that you are asked to help analyze some data. A fitness magazine wants to show that women should participate in more intense weight training programs, and that light vs. heavy lifting programs will not cause women to ``bulk up.'' To test this they recruited 60 volunteers to engage in a 60 day transformation program. Half the participants were male, the other half were female. Male and female participants were randomly assigned to participate in either a light or heavy lifting program. The light lifting program focused on endurance---being able to perform more repetitions of the same weight volunteers could lift when they started. The heavy lifting program focused on increasing the maximum amount of weight volunteers could lift---the goal was to increase their starting max by 300\% by the end of the 60 days.
+
+1. Descriptive statistics
+A. Sample Size
+How many volunteers were assigned to each lifting condition overall?
+How many female volunteers were assigned to each lifting condition?
+How many male volunteers were assigned to each lifting condition?
+
+B. Percent Gain Descriptives by Conditions
+What are the mean and standard deviation of percent gain overall, for each condition, and for all condition interactions? I recommend making a table of these descriptives.
+
+2. State the null and alternative hypothesis for tests of the main effects of biological sex, lifting condition, and their interaction.
+
+3.
+a. Conduct a factorial ANOVA testing the main effect of biological sex, lifting condition, and their interaction.
+b. What conclusions do you reach? Explain these in terms of the study. Make sure you incorporate reporting of your statistical analyses into your conclusion.
+
+4. Conduct appropriate follow-up analyses. If you had a significant interaction, use simple effects to determine what the effects are of lifting condition based on biological sex. If there was no significant interaction, evaluate any significant main effects of the predictor and IV.
+a. Conduct the appropriate follow-up analyses.
+b. Report your conclusions as you would if you were writing them for a peer reviewed journal. You may use tables to help report your statistical findings if you think it is appropriate. Please make sure your conclusions are in the context of the experimental scenario presented.
+
+\end{document}
