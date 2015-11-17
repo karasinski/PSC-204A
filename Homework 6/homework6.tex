@@ -66,7 +66,7 @@
 \problem{}
 Imagine you had a factorial design in which you were testing if work schedule (none vs. part-time vs. full-time) and course load (part-time vs. full-time) were related to student GPA during an academic quarter. If I told you that this was a balanced design, where each unique combination of conditions (e.g., no work and part-time student status) had 15 participants. What are the df between for each condition, the df for the interaction, the df within (error) and the df total?\\
 \\
-Taking work as condition A and course load as condition B, we would have:
+Taking work schedule as condition A and course load as condition B, we would have:
 \begin{align*}
 N &= 15 (a \times b) = 15 (3 \times 2) = 90\\
 df_A &= (a - 1) = 3 - 1 = 2\\
@@ -81,27 +81,37 @@ df_{total} &= (N - 1) = 89
 What are the potential advantages of a factorial ANOVA design? Four are mentioned in your lecture notes. Explain, in your own words, why factorial ANOVA can result in these potential advantages.
 
 \begin{description}
-\item[Generalizability] --- In one-way ANOVA, conclusions can be applied only to the groups (levels) of one factor (e.g., teaching method). With factorial ANOVA we can make finer distinctions (e.g., for teaching method and previous experience)
-\item[Efficiency] --- We can address several questions with one study (e.g., examining the effects of teaching method and previous experience simultaneously)
-\item[It is more powerful] --- $MS_W$ is derived from all the cell variances, not just the ones related to only one factor (as it would be the case in a simple ANOVA)...the error variance is
-reduced
-\item[Interactions] --- Factorial designs allow examination of interaction effects (e.g., does the effect of one IV on the DV depend on the level of the other IV?)
+\item[Generalizability] --- In one-way ANOVA, conclusions can be applied only to the groups (levels) of one factor. With factorial ANOVA we can make finer distinctions.
+\item[Efficiency] --- We can address several questions with one study.
+\item[It is more powerful] --- $MS_W$ is derived from all the cell variances, not just the ones related to only one factor...the error variance is reduced.
+\item[Interactions] --- Factorial designs allow examination of interaction effects.
 \end{description}
+
+Factorial designs allow us to test multiple factors simultaneously. This is advantageous as it reduces the number of subjects we need to achieve the same power in our tests, as the error variance is reduced. A factorial design approach also reduces the number of experiments we need to run. Instead of conducting a series of independent studies, we are effectively able to combine these studies into one---factorial designs are efficient. The results we find then have a greater generizability, and can give us a broader interpretation of the results. At the same time, factorial designs allow us to look at the interaction of variables. Two variables may interact with each other in ways that were (or were not) anticipated, and factorial ANOVAs give us this information for free.
 
 \problem{}
 Give a short example of a hypothetical one-way ANOVA design and demonstrate how a factorial ANOVA design could result in the advantages discussed in question 2.\\
 
-A one-way ANOVA design could be based around the effectiveness of teaching ANOVA based on the method used to teach. The differences between three example teaching strategies such as, lecture, discussion, and study, could be investigated. To make this a factorial ANOVA design, we could instead investigate the differences between teaching strategies and the effects of prior experience (yes or no). Using the factorial design, finer distinctions could be made, more questions could be asked with a single study, the error variance would be reduced, and interaction effects could be examined.
+In the lecture notes, we used a one-way ANOVA design around the effectiveness of teaching ANOVA based on the method used to teach. The factor explored was the difference between three example teaching strategies (lecture, discussion, and study). Each subject was rated with a scoring system, and the differences between groups was investigated. To make this a factorial ANOVA design, we could instead investigate both the differences between teaching strategies and the effects of another variable, such as prior experience (yes or no). Using the factorial design, finer distinctions could be made, more questions could be asked with a single study, the error variance would be reduced, and interaction effects could be examined. If, for instance, we had one the one-way ANOVA design described above, the only change in procedure to switch to the factorial design would be asking subjects if they had previous experience. This is a very minor change in experimental procedure (and doesn't really effect the core of the experiment at all). This small change in procedure would lead to us being able to better generalize our results, address multiple questions with a single study, reduce the error variance, and investigate potential interaction effects. Without the factorial design, we would have to run an entire different experiment to investigate the effects of prior experience.
 
 \problem{}
 In your own words, describe what simple-effects analyses do and when you would use them?
 
-A simple-effects analysis investigates the existence of an effect for all levels of a factor (e.g., `row effects' or `column effects'). These are often used when an interaction is detected, as blanket statements cannot be made (e.g., scores increase with time) if there is an interaction (e.g., scores drop for subjects in Group A at the final time). Simple effects analyses determine if these effects are statistically significant.
+A simple-effects analysis investigates the existence of an effect for all levels of a factor (e.g., `row effects' or `column effects'). In a two factor ANOVA design based on the previous example, for instance, a simple effect could be the investigation of the best learning strategy for students with or without previous experience. Simple effects use a one-way ANOVA to investigate whether a single factor has an effect when other factors are held constant. Simple effects are often used when an interaction is detected, as blanket statements cannot be made if there is an interaction. In the previous example, suppose that study was very effective for students with previous experience, but not effective for students without previous experience. Using a simple-effects analysis, we could hold the method used to teach factor the same (studying), and investigate whether the difference in effectiveness between students with and without simple effects was statistically significant.
 
 \problem{}
 A significant interaction effect suggests that there is a dependency of effect between two conditions. Given this definition, if there is a significant interaction effect does it make sense to interpret main effects of the conditions with the significant interaction? Defend your position (i.e., why or why not).
 
-\clearpage
+Main effects should still be (carefully) interpreted despite the presence of a significant interaction. If the main effects are clearly meaningful, then it makes sense to interpret them, whether or not an interaction is present. If, however, the main effect does not really have any meaning, then it should be ignored. Consider Figure 1. Figure 1 represents the result of a factorial ANOVA study testing the main effects of biological sex, lifting condition, and their interaction on percentage of body mass gained. In this analysis, gender, lifting condition, and their interaction were all found to be significant. After a simple-effects follow-up analysis, the workout effect was shown to be significant for males (m), but not for females (f). Despite this, there is a still a main effect of gender. Female's mean percentage of body mass gained is \textit{always} lower than that of males, regardless of workout condition. This is a meaningful effect, and it's important to mention this main effect, regardless of the presence of the significant interaction.
+
+\begin{figure}[h!]
+\begin{center}
+\includegraphics[width=.35\textheight]{p5.pdf}
+\label{fig:on}
+\end{center}
+\caption{Example results with a meaningful main effect and a significant interaction}
+\end{figure}
+
 \problem{}
 Imagine that you are asked to help analyze some data. A fitness magazine wants to show that women should participate in more intense weight training programs, and that light vs. heavy lifting programs will not cause women to ``bulk up.'' To test this they recruited 60 volunteers to engage in a 60 day transformation program. Half the participants were male, the other half were female. Male and female participants were randomly assigned to participate in either a light or heavy lifting program. The light lifting program focused on endurance---being able to perform more repetitions of the same weight volunteers could lift when they started. The heavy lifting program focused on increasing the maximum amount of weight volunteers could lift---the goal was to increase their starting max by 300\% by the end of the 60 days.
 \vspace{1em}\\
@@ -183,9 +193,9 @@ H_1: \hspace{0.2em} &\alpha_{female} \neq \alpha_{male}\\
 H_0: \hspace{0.2em} &\beta_{heavy} = \beta_{light} \\
 H_1: \hspace{0.2em} &\beta_{heavy} \neq \beta_{light}\\
 \hspace{0.2em} &\\
-H_0: \hspace{0.2em} &\mbox{all } \alpha \beta_{jk} = 0, \left(\alpha \beta_{female/heavy} = \alpha \beta_{female/light} = \alpha \beta_{male/heavy} = \alpha \beta_{male/heavy} =0\right)\\
+H_0: \hspace{0.2em} &\mbox{all } \alpha \beta_{jk} = 0 \left(\alpha \beta_{female/heavy} = \alpha \beta_{female/light} = \alpha \beta_{male/heavy} = \alpha \beta_{male/heavy} =0\right)\\
 H_0: \hspace{0.2em} &\mbox{at least one } \alpha \beta_{jk} \neq 0
-\end{align*}
+\end{align*}\\
 3.\\
 a. Conduct a factorial ANOVA testing the main effect of biological sex, lifting condition, and their interaction.
 \begin{lstlisting}
@@ -205,7 +215,7 @@ Residual              0.037968  56         NaN           NaN
 Percentage of body mass gain was subjected to a two-way analysis of variance having two levels of biological sex (female, male) and two levels of workout program (light, heavy). All effects were statistically significant
 at the .001 significance level.
 
-The main effect of biological sex yielded an F ratio of $F(1, 56) = 404.2, p < .001,$ indicating that the mean percenteage of body mass gain was significantly greater for males $(M = 0.20, SD = 0.03)$ than for females $(M = 0.07, SD = 0.03)$. The main effect of workout yielded an F ratio of $F(1, 56) = 13.1, p < .001,$ indicating that the mean percenteage of body mass gain was significantly higher for heavy workouts $(M = 0.14, SD = 0.08)$ than for light workouts $(M = 0.12, SD = 0.07)$. However, the interaction effect was also significant, $F(1, 56) = 7.5, p < .001$, indicating that the workout effect was greater in male subjects than in female subjects. The descriptive statistics for these analyses are presented in Table 1.
+The main effect of biological sex yielded an F ratio of $F(1, 56) = 404.2, p < .001,$ indicating that the mean percenteage of body mass gain was significantly greater for males $(M = 0.20, SD = 0.03)$ than for females $(M = 0.07, SD = 0.03)$. The main effect of workout yielded an F ratio of $F(1, 56) = 13.1, p < .001,$ indicating that the mean percenteage of body mass gain was significantly higher for heavy workouts $(M = 0.14, SD = 0.08)$ than for light workouts $(M = 0.12, SD = 0.07)$. However, the interaction effect was also significant, $F(1, 56) = 7.5, p < .001$, indicating that the workout effect was greater in male subjects than in female subjects. The descriptive statistics for these analyses are presented in Table 1. \\
 
 \begin{table}[htdp]
 \begin{center}
@@ -287,34 +297,5 @@ Source & SS & df & F & $PR(>F)$ \\
 \end{center}
 \caption{Simple Effects Analysis for Fitness Magazine Study}
 \end{table}
-
-% \begin{lstlisting}
-% # Create the density plots
-% axs = df.plot(kind='kde',
-%               subplots=True, layout=(3, 1),
-%               figsize=(5, 9),
-%               xlim=(-5, 5),
-%               legend=False)[:, 0]
-
-% for i, col in enumerate(df):
-%     # Draw a verticle line at the means
-%     axs[i].axvline(df[col].mean(), color='k', linestyle='dotted')
-
-%     # Create some ylabels
-%     axs[i].set_ylabel('Density of {} Students'.format(col.title()))
-
-% # Set a title, add a label
-% axs[0].set_title('Anxiety Distributions of UC Students')
-% plt.xlabel('Anxiety')
-% plt.tight_layout()
-% plt.show()
-% \end{lstlisting}
-
-% \begin{wrapfigure}{r}{0.5\textwidth}
-%   \begin{center}
-%     \includegraphics[width=0.5\textwidth]{figures/problem5.pdf}
-%   \end{center}
-%   % \caption{Birds}
-% \end{wrapfigure}
 
 \end{document}
