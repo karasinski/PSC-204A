@@ -64,15 +64,16 @@
 %\maketitle
 
 \problem{}
-Imagine you had a factorial design in which you were testing if work schedule (none vs. part-time vs. full-time) and course load (part-time vs. full-time) were related to student GPA during an academic quarter. If I told you that this was a balanced design, where each unique combination of conditions (e.g., no work and part-time student status) had 15 participants. What are the df between for each condition, the df for the interaction, the df within (error) and the df total?
-
+Imagine you had a factorial design in which you were testing if work schedule (none vs. part-time vs. full-time) and course load (part-time vs. full-time) were related to student GPA during an academic quarter. If I told you that this was a balanced design, where each unique combination of conditions (e.g., no work and part-time student status) had 15 participants. What are the df between for each condition, the df for the interaction, the df within (error) and the df total?\\
+\\
+Taking work as condition A and course load as condition B, we would have:
 \begin{align*}
-N &= 15 (a \times b) = 15 (2 \times 2) = 60\\
-df_A &= (a - 1) = 1\\
-df_B &= (b - 1) = 1\\
-df_{AB} &= (a-1)(b-1) = 1\\
-df_{error} &= N - (a \times b) = 60 - 4 = 56\\
-df_{total} &= (N - 1) = 59
+N &= 15 (a \times b) = 15 (3 \times 2) = 90\\
+df_A &= (a - 1) = 3 - 1 = 2\\
+df_B &= (b - 1) = 2 - 1 = 1\\
+df_{AB} &= (a-1)(b-1) = (3-1)(2-1) = (2)(1) = 2\\
+df_{error} &= N - (a \times b) = 90 - 6 = 84\\
+df_{total} &= (N - 1) = 89
 \end{align*}
 
 
@@ -100,26 +101,220 @@ A simple-effects analysis investigates the existence of an effect for all levels
 \problem{}
 A significant interaction effect suggests that there is a dependency of effect between two conditions. Given this definition, if there is a significant interaction effect does it make sense to interpret main effects of the conditions with the significant interaction? Defend your position (i.e., why or why not).
 
+\clearpage
 \problem{}
 Imagine that you are asked to help analyze some data. A fitness magazine wants to show that women should participate in more intense weight training programs, and that light vs. heavy lifting programs will not cause women to ``bulk up.'' To test this they recruited 60 volunteers to engage in a 60 day transformation program. Half the participants were male, the other half were female. Male and female participants were randomly assigned to participate in either a light or heavy lifting program. The light lifting program focused on endurance---being able to perform more repetitions of the same weight volunteers could lift when they started. The heavy lifting program focused on increasing the maximum amount of weight volunteers could lift---the goal was to increase their starting max by 300\% by the end of the 60 days.
-
-1. Descriptive statistics
+\vspace{1em}\\
+1. Descriptive statistics\\
 A. Sample Size
-How many volunteers were assigned to each lifting condition overall?
-How many female volunteers were assigned to each lifting condition?
-How many male volunteers were assigned to each lifting condition?
+\begin{lstlisting}
+import pandas as pd
+df = pd.read_csv('hw06data.csv')
+\end{lstlisting}
 
-B. Percent Gain Descriptives by Conditions
-What are the mean and standard deviation of percent gain overall, for each condition, and for all condition interactions? I recommend making a table of these descriptives.
+\noindent How many volunteers were assigned to each lifting condition overall?
+\begin{lstlisting}
+res = df.groupby('workout').apply(len)
+print("There are {res.heavy} volunteers in the heavy condition and {res.light} volunteers
+       in the light condition.".format(res=res))
+\end{lstlisting}
+\noindent OUTPUT
+\begin{lstlisting}[language={}]
+There are 31 volunteers in the heavy condition and 29 volunteers in the light condition.
+\end{lstlisting}
 
-2. State the null and alternative hypothesis for tests of the main effects of biological sex, lifting condition, and their interaction.
+\noindent How many female volunteers were assigned to each lifting condition?
+\begin{lstlisting}
+res = df.query('biosex == "f"').groupby('workout').apply(len)
+print("There are {res.heavy} female volunteers in the heavy condition and {res.light}
+       female volunteers in the light condition.".format(res=res))
+\end{lstlisting}
+\noindent OUTPUT
+\begin{lstlisting}[language={}]
+There are 16 female volunteers in the heavy condition and 14 female volunteers in the
+light condition.
+\end{lstlisting}
 
-3.
+\noindent How many male volunteers were assigned to each lifting condition?
+\begin{lstlisting}
+res = df.query('biosex == "m"').groupby('workout').apply(len)
+print("There are {res.heavy} male volunteers in the heavy condition and {res.light} male
+       volunteers in the light condition.".format(res=res))
+\end{lstlisting}
+\noindent OUTPUT
+\begin{lstlisting}[language={}]
+There are 15 male volunteers in the heavy condition and 15 male volunteers in the light
+condition.
+\end{lstlisting}
+\vspace{1em}
+B. Percent Gain Descriptives by Conditions\\
+\noindent What are the mean and standard deviation of percent gain overall, for each condition, and for all condition interactions? I recommend making a table of these descriptives.
+
+\begin{lstlisting}
+overall = pd.DataFrame({'mean': df.mean(), 'std': df.std()})
+overall.index = ['overall']
+biosex = df.groupby('biosex').pctgain.agg(['mean', 'std'])
+workout = df.groupby('workout').pctgain.agg(['mean', 'std'])
+print(pd.concat((overall, biosex, workout)))
+print(df.groupby(('biosex', 'workout')).pctgain.agg(['mean', 'std']))
+\end{lstlisting}
+\noindent OUTPUT
+\begin{lstlisting}[language={}]
+             mean       std
+overall  0.132883  0.073992
+f        0.065667  0.026914
+m        0.200100  0.032653
+heavy    0.142484  0.080641
+light    0.122621  0.066012
+
+                    mean       std
+biosex workout
+f      heavy    0.068438  0.019906
+       light    0.062500  0.033741
+m      heavy    0.221467  0.023673
+       light    0.178733  0.025883
+\end{lstlisting}
+\vspace{1em}
+\noindent 2. State the null and alternative hypothesis for tests of the main effects of biological sex, lifting condition, and their interaction.
+\begin{align*}
+H_0: \hspace{0.2em} &\alpha_{female} = \alpha_{male} \\
+H_1: \hspace{0.2em} &\alpha_{female} \neq \alpha_{male}\\
+\hspace{0.2em} &\\
+H_0: \hspace{0.2em} &\beta_{heavy} = \beta_{light} \\
+H_1: \hspace{0.2em} &\beta_{heavy} \neq \beta_{light}\\
+\hspace{0.2em} &\\
+H_0: \hspace{0.2em} &\mbox{all } \alpha \beta_{jk} = 0, \left(\alpha \beta_{female/heavy} = \alpha \beta_{female/light} = \alpha \beta_{male/heavy} = \alpha \beta_{male/heavy} =0\right)\\
+H_0: \hspace{0.2em} &\mbox{at least one } \alpha \beta_{jk} \neq 0
+\end{align*}
+3.\\
 a. Conduct a factorial ANOVA testing the main effect of biological sex, lifting condition, and their interaction.
-b. What conclusions do you reach? Explain these in terms of the study. Make sure you incorporate reporting of your statistical analyses into your conclusion.
+\begin{lstlisting}
+print(anova_lm(ols("pctgain ~ C(biosex)*C(workout)", df).fit(), typ=2))
+\end{lstlisting}
+\noindent OUTPUT
+\begin{lstlisting}[language={}]
+                        sum_sq  df           F        PR(>F)
+C(biosex)             0.274067   1  404.226801  2.748531e-27
+C(workout)            0.008893   1   13.116956  6.310076e-04
+C(biosex):C(workout)  0.005066   1    7.471871  8.372369e-03
+Residual              0.037968  56         NaN           NaN
+\end{lstlisting}
 
-4. Conduct appropriate follow-up analyses. If you had a significant interaction, use simple effects to determine what the effects are of lifting condition based on biological sex. If there was no significant interaction, evaluate any significant main effects of the predictor and IV.
-a. Conduct the appropriate follow-up analyses.
+\noindent b. What conclusions do you reach? Explain these in terms of the study. Make sure you incorporate reporting of your statistical analyses into your conclusion.\\
+
+Percentage of body mass gain was subjected to a two-way analysis of variance having two levels of biological sex (female, male) and two levels of workout program (light, heavy). All effects were statistically significant
+at the .001 significance level.
+
+The main effect of biological sex yielded an F ratio of $F(1, 56) = 404.2, p < .001,$ indicating that the mean percenteage of body mass gain was significantly greater for males $(M = 0.20, SD = 0.03)$ than for females $(M = 0.07, SD = 0.03)$. The main effect of workout yielded an F ratio of $F(1, 56) = 13.1, p < .001,$ indicating that the mean percenteage of body mass gain was significantly higher for heavy workouts $(M = 0.14, SD = 0.08)$ than for light workouts $(M = 0.12, SD = 0.07)$. However, the interaction effect was also significant, $F(1, 56) = 7.5, p < .001$, indicating that the workout effect was greater in male subjects than in female subjects. The descriptive statistics for these analyses are presented in Table 1.
+
+\begin{table}[htdp]
+\begin{center}
+\begin{tabular}{l r r r r r}
+\toprule
+Source & SS & df & F & $PR(>F)$ \\
+\midrule
+Biosex       & 0.27 &  1  & 404.2 & $<.001$ \\
+Workout      & 0.01 &  1  & 13.1  & $<.001$\\
+Interaction  & 0.01 &  1  & 7.5   & $<.001$\\
+Residual     & 0.04 & 56  & & \\
+\bottomrule
+\end{tabular}
+\end{center}
+\caption{Factorial ANOVA Results for Fitness Magazine Study}
+\end{table}
+
+\noindent 4. Conduct appropriate follow-up analyses. If you had a significant interaction, use simple effects to determine what the effects are of lifting condition based on biological sex. If there was no significant interaction, evaluate any significant main effects of the predictor and IV.
+\\
+\noindent a. Conduct the appropriate follow-up analyses.
+\begin{lstlisting}
+print(anova_lm(ols("pctgain ~ C(workout)", df.query('biosex == "f"')).fit(), typ=2))
+\end{lstlisting}
+\noindent OUTPUT
+\begin{lstlisting}[language={}]
+              sum_sq  df         F    PR(>F)
+C(workout)  0.000263   1  0.355313  0.555909
+Residual    0.020743  28       NaN       NaN
+\end{lstlisting}
+
+\begin{lstlisting}
+print(anova_lm(ols("pctgain ~ C(workout)", df.query('biosex == "m"')).fit(), typ=2))
+\end{lstlisting}
+\noindent OUTPUT
+\begin{lstlisting}[language={}]
+              sum_sq  df          F   PR(>F)
+C(workout)  0.013696   1  22.263939  0.00006
+Residual    0.017225  28        NaN      NaN
+\end{lstlisting}
+
+\begin{lstlisting}
+print(anova_lm(ols("pctgain ~ C(biosex)", df.query('workout == "light"')).fit(), typ=2))
+\end{lstlisting}
+\noindent OUTPUT
+\begin{lstlisting}[language={}]
+             sum_sq  df           F        PR(>F)
+C(biosex)  0.097832   1  109.249206  5.450883e-11
+Residual   0.024178  27         NaN           NaN
+\end{lstlisting}
+
+\begin{lstlisting}
+print(anova_lm(ols("pctgain ~ C(biosex)", df.query('workout == "heavy"')).fit(), typ=2))
+\end{lstlisting}
+\noindent OUTPUT
+\begin{lstlisting}[language={}]
+            sum_sq  df           F        PR(>F)
+C(biosex)  0.18130   1  381.278286  3.140428e-18
+Residual   0.01379  29         NaN           NaN
+\end{lstlisting}
+
 b. Report your conclusions as you would if you were writing them for a peer reviewed journal. You may use tables to help report your statistical findings if you think it is appropriate. Please make sure your conclusions are in the context of the experimental scenario presented.
+
+An analysis of simple effects showed that workout effect was significant for males, $F(1, 28) = 22.3, p < 0.001$, but not for females, $F(1, 28) = 0.4, p = 0.56$. Therefore, there is no evidence that light workouts differ from heavy workouts for females. An analysis of simple effects showed that the advantage of men over women was significant for both the light workout, $F(1, 27) = 109.2, p < 0.001$, and for the heavy workout, $F(1, 29) = 381.3, p < 0.001$. The descriptive statistics for this analysis are presented in Table 2. From these findings, we can support the fitness magazine's claim that light vs. heavy lifting programs will not cause women to ``bulk up.''
+
+\begin{table}[htdp]
+\begin{center}
+\begin{tabular}{l r r r r r}
+\toprule
+Source & SS & df & F & $PR(>F)$ \\
+\midrule
+\it{Biosex} & & & & \\
+\hspace{1em} Female     & 0.00 &  1  & 0.36 & $0.56$ \\
+\hspace{1em} Male       & 0.01 &  1  & 22.3 & $<.001$\\
+\it{Workout} & & & & \\
+\hspace{1em} Light      & 0.10 &  1  & 109.2 & $<.001$\\
+\hspace{1em} Heavy      & 0.18 &  1  & 381.3 & $<.001$\\
+\bottomrule
+\end{tabular}
+\end{center}
+\caption{Simple Effects Analysis for Fitness Magazine Study}
+\end{table}
+
+% \begin{lstlisting}
+% # Create the density plots
+% axs = df.plot(kind='kde',
+%               subplots=True, layout=(3, 1),
+%               figsize=(5, 9),
+%               xlim=(-5, 5),
+%               legend=False)[:, 0]
+
+% for i, col in enumerate(df):
+%     # Draw a verticle line at the means
+%     axs[i].axvline(df[col].mean(), color='k', linestyle='dotted')
+
+%     # Create some ylabels
+%     axs[i].set_ylabel('Density of {} Students'.format(col.title()))
+
+% # Set a title, add a label
+% axs[0].set_title('Anxiety Distributions of UC Students')
+% plt.xlabel('Anxiety')
+% plt.tight_layout()
+% plt.show()
+% \end{lstlisting}
+
+% \begin{wrapfigure}{r}{0.5\textwidth}
+%   \begin{center}
+%     \includegraphics[width=0.5\textwidth]{figures/problem5.pdf}
+%   \end{center}
+%   % \caption{Birds}
+% \end{wrapfigure}
 
 \end{document}
