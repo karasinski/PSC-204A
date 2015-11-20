@@ -1,0 +1,25 @@
+#Syntax to read in the LSY *.tsv files
+
+#read.delim(file, header = TRUE, sep = "\t", quote="\"", dec=".",
+#           fill = TRUE, comment.char="", ...)
+
+
+#These files are VERY large, it will take a little while
+#for them to load so run these one at a time if you
+#are loading more than one.
+
+#YOU DO NOT HAVE TO LOAD ALL OF THEM UNLESS YOU ARE
+#GOING TO USE DATA FROM ALL OF THEM
+
+wave1 <- read.delim('data_wave01.tsv', head = TRUE, sep="\t",
+		dec='.')
+
+wave2 <- read.delim('data_wave02.tsv', head = TRUE, sep="\t",
+		dec='.')
+
+wave3 <- read.delim('data_wave03.tsv', head = TRUE, sep="\t",
+		dec='.')
+
+wave4 <- read.delim('data_wave04.tsv', head = TRUE, sep="\t",
+		dec='.')
+
