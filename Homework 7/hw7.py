@@ -30,7 +30,7 @@ from patsy import dmatrix
 p = dmatrix("C(df.Time, Poly())", df)
 poly = pd.DataFrame(p, columns=['Intercept', 'Linear', 'Quadratic'])
 df = pd.concat((df, poly), axis=1)
-print(anova_lm(ols("Observation ~ Time", data=df).fit()))
+print(anova_lm(ols("Observation ~ C(Time)", data=df).fit()))
 #print(MultiComparison(df.Observation, df.Time).allpairtest(ttest_ind, method='b')[0])
 print(anova_lm(ols("Observation ~ Linear + Quadratic", data=df).fit(), typ=2))
 
