@@ -25,6 +25,7 @@ df['Time'] = df.Time.apply(lambda x: int(x.split('t')[1]))
 # Test for effects between public/private
 print(anova_lm(ols("Observation ~ C(public)", df).fit(), typ=2))
 
+
 from patsy import dmatrix
 # This is equivalent to R’s contr.poly
 p = dmatrix("C(df.Time, Poly())", df)
@@ -96,8 +97,33 @@ print(anova_lm(ols("Observation ~ Linear + Quadratic", data=df).fit(), typ=2))
 #res = mod.fit()
 #print(anova_lm(res))
 
+import pandas as pd
+import seaborn as sns
+sns.set_style('ticks')
 
+df = pd.read_csv('glong.csv', index_col=0)
+p = sns.lmplot(x='time', y='observation',
+               hue='public', #col='public',
+               data=df, order=2, ci=95,
+               x_jitter=.3, y_jitter=.3,
+               legend=False)
+p.axes[0][0].set_xticks([1, 2, 3])
+p.axes[0][0].set_xticklabels(['Sophomore', 'Junior', 'Senior'])
+plt.xlabel('Observation')
+plt.ylabel('End-of-Year Student Confidence Rating')
+#plt.show()
+plt.savefig('prob5-quad.pdf')
+plt.close('all')
 
-
-
-
+p = sns.lmplot(x='time', y='observation',
+               hue='public', #col='public',
+               data=df, order=1, ci=95,
+               x_jitter=.3, y_jitter=.3,
+               legend=False)
+p.axes[0][0].set_xticks([1, 2, 3])
+p.axes[0][0].set_xticklabels(['Sophomore', 'Junior', 'Senior'])
+plt.xlabel('Observation')
+plt.ylabel('End-of-Year Student Confidence Rating')
+#plt.show()
+plt.savefig('prob5-lin.pdf')
+plt.close('all')
