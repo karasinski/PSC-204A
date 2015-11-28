@@ -1,17 +1,17 @@
-\documentclass[onecolumn,10pt]{jhwhw}
+% IEEEAerospace2012.cls requires the following packages: times, rawfonts, oldfont, geometry
+\documentclass[twocolumn,letterpaper]{article}  % only supports two-column, letterpaper format
 
-\usepackage{epsfig} %% for loading postscript figures
-\usepackage{amsmath}
-\usepackage{graphicx}
-\usepackage{grffile}
-\usepackage{pdfpages}
-\usepackage{algpseudocode}
-\usepackage{wrapfig}
-\usepackage{pgfplots}
-\usepackage{amsfonts}
 \usepackage{booktabs}
-\usepackage{siunitx}
-\usepackage{commath}
+\usepackage[]{graphicx,latexsym,amssymb,amsfonts,amsmath,amstext,times}
+% NOTE: The .cls file is now compatible with amsmath!!!
+
+\usepackage{floatrow}
+\usepackage{hyperref}
+
+\newcommand{\ignore}[1]{}  % {} empty inside = %% comment
+\usepackage{enumitem}
+\setlist[itemize]{leftmargin=*}
+\setlist[enumerate]{leftmargin=*}
 
 % Default fixed font does not support bold face
 \DeclareFixedFont{\ttb}{T1}{txtt}{bx}{n}{12} % for bold
@@ -56,42 +56,212 @@
   stringstyle=\color{mymauve},     % string literal style
   tabsize=4,                       % sets default tabsize to 2 spaces
 }
+\usepackage{epigraph}
+\renewcommand{\textflush}{flushepinormal}
 
-\author{John Karasinski}
-\title{Extra Credit}
+\begin{document}
 
-\begin{document}%
-%\maketitle
-%
-% \begin{lstlisting}
-% \end{lstlisting}
-\noindent Choose one of the following:\\
-\\
-1. The Monty Hall Problem: If you're unfamiliar with this problem, please see the following video (http://www.youtube.com/watch?v=9vRUxbzJZ9Y).
-I want you to write R syntax that will simulate this scenario, such that a person selects a choice of 1 in 3 doors (behind one of which is a prize), and is given the opportunity to switch their selection when given information about one of the remaining doors that does not contain the prize. Your syntax should show how often the person would win if they stayed with their original selection, and how often they will win if they switch their selection after seeing that one of the remaining doors is not a winner. As we're always interested in large number statistics, you should compare the winning frequency for either strategy (staying vs. switching) when a person is confronted with this situation once, 10 times, 100 times, 500 times, and 1,000 times in a row. Further, we should probably see what these outcomes look like at each number of trials 500 times (i.e., one trial outcomes 500 times, 10 trial outcomes 500 times, etc.). Once this is complete graph the average outcome for each trial size (one, 10, 100, etc.) with error bars; you should graph the outcomes for staying and switching for comparison.\\
-\\
-2. RPG Dice Simulator: As a nerd I like to get my RPG on, but I hate fussing over a dice pool. Simplify my life by creating a function that will allow me to specify the number of dice I want to use per roll, the number of faces on each die (assume all dice used in a role have the same number of faces), whether I will sum the scores of each die or will have a minimum value needed to count as a success per die (i.e., I need to role 6s using 6 10-sided die, each die with a score 6 or greater counts as a success and each die with a score of 5 or less counts as nothing), and whether I will include botches or not as an outcome for roles (i.e., when rolling for successes such as scores of 6 or greater per die, rolls of 1 count as a botch and deduct from the number of successes; if there are more botches than successes then the roll is botched). This way it doesn't matter if I'm rolling for damage in D\&D or for actions in White Wolf, I will always have a handy dice simulator.\\
-Example scenarios the simulator should be able to handle: (1) I want to role 1d20 and I just want to know the score; (2) I want to roll 2d6 and I want to know my summed scores (e.g., 1d6 = 3 \& 1d6 = 5 for a score of 8); (3) I want to roll 4d10 where I need to roll 5s or greater such that each roll of 5 or greater counts as a success (e.g., 2d10 $<$ 5 and 2d10 $>=$ 5 for a score of 2 successes); (4) the same scenario as (3) but now each 1 rolled detracts from the number of successes (e.g., 1d10 = 1, 1 $<$ 1d10 $<$ 5, and 2d10 $>=$ 5 for a score of 1 success and 2d10 = 1, 1 $<$ 1d10 $<$ 5, and 1 d10 $>=$ 5 for a score of -1 successes; a botch). Once you have your function working, simulate the following dice roll scenarios and create figures depicting each.\\
-\\
-a. Roll 1d6 1,000 times, frequency of each outcome?\\
-b. Roll 2d6 1,000 times, frequency of each outcome? Use the summed scores of each die as your outcome.\\
-c. Roll 6d10 1,000 times, frequency of each outcome? Treat a score of 6 or better as a success and scores less than 6 as nothing, the outcome is total number of successes (include the frequency of no successes).\\
-d. Same as (c) above except now scores of 1 count as a botch. Each botch is subtracted from each success. If there are more botches than success (i.e., -1 successes) then the overall outcome is a botch. Now depict the frequency of botching, and total number of successes (as before, include the frequency of no successes).\\
-\\
-Instructions:\\
-Pick one project to complete.\\
+\title{Extra Credit - RPG Dice Simulator}
+\author{%
+John Karasinski\\
+karasinski@gmail.com
+}
+\date{}
+
+\maketitle
+
+\thispagestyle{plain}
+\pagestyle{plain}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Introduction}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\epigraph{\small\itshape God's dice always have a lucky roll.}{Sophocles (497/6 --- 406/5 BC)}%
+\vspace{-2em}
+\epigraph{\small\itshape God does not play dice.}{Albert Einstein (1879 --- 1955)}%
+\vspace{-2em}
+\epigraph{\small\itshape God not only plays dice, but also sometimes throws them where they cannot be seen.}{Stephen Hawking (1942 --- \hspace{1.5em})}%
+
+While God's use of dice may be disputed, humans have been using dice in games of chance for many thousands of years~\cite{history}. Dice insert a certain amount of randomness into games, and can lead to wonderfully unpredictable situations. Perhaps more importantly, and in spite of the randomness associated with them, dice are also excellent for bringing everyone to the same level. A king and a peasant have the same odds of rolling a six, and the die does not care who is more wealthy, talented, or desperate. Despite their use for thousands of years, humans are very bad at predicting the outcomes of dice throws. Luckily, while the result of any individual roll of the die may be random and unknown, a basic application of statistics can lead us to make more informed decisions about the likelihood of events.
+
+The only assumption going forward is that we are considering perfect dice. These perfect dice have the property of having an equal probability of landing on any particular face. According to standard die notation, die rolls are given in the form AdX. A and X are variables, separated by the letter ``d'', which stands for die or dice~\cite{dice_notation}. A six-sided die (1d6), for example, would then have a $1/6$ probability of resulting in a 1, 2, 3, 4, 5 or 6. Cheap dice purchased for gaming will not have this property, and will instead slightly favor different outcomes. For the purposes of the simulations here, you can assume that we have purchased \textit{very, very expensive} dice which behave perfectly.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Instructions}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 The project should consist of a brief write-up introducing relevant theory behind each simulation problem, your simulation method, your results, and a summary of your conclusions. I'm looking for short papers ranging 5-8 pages in length. These papers should focus on the simulation methodology and results, with these sections making up the bulk of the paper.\\
-**** Include all R code in Appendices so I can review it.\\
-**** Hard copies due to me by the end of lecture on Thursday Dec. 3, 2015.\\
-**** Grading will be based on completeness of answers, quality of reports, and both efficacy and efficiency of your code.\\
-**** These projects should represent your own work (not online resources or other students). To clarify, online resources for functions, etc. is fine (and should be cited), but online searches for solutions to these specific problems (and the use of functions specific to these problems) is not.
 
-% \begin{figure}[h!]
-% \begin{center}
-% \includegraphics[width=1\textwidth]{prob5-quad.pdf}
+Create a function that will allow me to specify the number of dice I want to use per roll, the number of faces on each die (assume all dice used in a roll have the same number of faces), whether I will sum the scores of each die or will have a minimum value needed to count as a success per die, and whether I will include botches or not as an outcome for rolls.\\
+
+Example requirements:%
+\begin{enumerate}
+\itemsep-.25em
+\item Roll 1d20 and I just want to know the score.
+\item Roll 2d6 and I want to know my summed scores.
+\item Roll 4d10 where I need to roll 5s or greater such that each roll of 5 or greater counts as a success.
+\item The same scenario as above, but now each 1 rolled detracts from the number of successes.
+\end{enumerate}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Simulation Method}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+This simulation will make use of Python 3.5.0. The core idea behind the simulation is to generate pseudo-random numbers to simulate the throwing of many dice. From there, the rules given in the problem prompt can be applied to deduce the result of the throw.
+
+The basic functionality behind the simulation is the \texttt{dice()} function. This function accepts three arguments, \texttt{A}, \texttt{X}, and an optional \texttt{n}, where \texttt{A} and \texttt{X} take on the same meaning as in standard dice notation, and n is the number of times to simulate the throw. Calling \texttt{dice(3, 6, n=2)}, for example, would return \texttt{array([[2, 2, 6], [5, 3, 4]])}. This array has 2 rows of 3 simulated 6-sided dice.
+
+The \texttt{dice()} function is essentially a helper function, which calls Numpy's random integer function. Numpy uses the Mersenne twister sequence to generate random numbers. As these are psuedo-random numbers and not true random numbers, knowing the seed of the algorithm allows you to reproduce the results, and predict future events with 100\% accuracy.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Results}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+a. Roll 1d6 1,000 times, frequency of each outcome?
+\begin{figure}%[h!]
+\centering
+\includegraphics[width=3.25in]{1d6.pdf}
+\caption{Results from 1,000 1d6 rolls.}
 % \label{fig:on}
-% \end{center}
-% \caption{Quadratic trajectories for end-of-year confidence ratings for students in public schools (green) and private schools (blue). Shaded regions represent 95\% confidence regions. (Some jitter introduced for visibility.)}
-% \end{figure}
+\end{figure}
+
+\begin{table}%[h!]
+\begin{center}
+\begin{tabular}{*{3}{r}}
+\toprule
+Value & Count & Frequency \\
+\midrule
+ 1   & 173      & 17.3 \\
+ 2   & 182      & 18.2 \\
+ 3   & 163      & 16.3 \\
+ 4   & 147      & 14.7 \\
+ 5   & 156      & 15.6 \\
+ 6   & 179      & 17.9 \\
+\bottomrule
+\end{tabular}
+\end{center}
+\caption{Results of 1,000 1d6 rolls}
+\end{table}
+
+b. Roll 2d6 1,000 times, frequency of each outcome? Use the summed scores of each die as your outcome.
+\begin{figure}%[h!]
+\centering
+\includegraphics[width=3.25in]{2d6.pdf}
+\caption{Results of summed values from 1,000 2d6 rolls.}
+% \label{fig:on}
+\end{figure}
+
+\begin{table}%[h!]
+\begin{center}
+\begin{tabular}{*{3}{r}}
+\toprule
+Value & Count & Frequency \\
+\midrule
+ 2   &  30      &  3.0 \\
+ 3   &  61      &  6.1 \\
+ 4   &  82      &  8.2 \\
+ 5   & 108      & 10.8 \\
+ 6   & 127      & 12.7 \\
+ 7   & 169      & 16.9 \\
+ 8   & 137      & 13.7 \\
+ 9   & 122      & 12.2 \\
+10   &  88      &  8.8 \\
+11   &  47      &  4.7 \\
+12   &  29      &  2.9 \\
+\bottomrule
+\end{tabular}
+\end{center}
+\caption{Results of summed values from 1,000 2d6 rolls.}
+\end{table}
+
+c. Roll 6d10 1,000 times, frequency of each outcome? Treat a score of 6 or better as a success and scores less than 6 as nothing, the outcome is total number of successes (include the frequency of no successes).
+\begin{figure}%[h!]
+\centering
+\includegraphics[width=3.25in]{6d10>6.pdf}
+\caption{Results of succeses from 1,000 6d10 rolls, where scores of 6 or greater are considered successes.}
+% \label{fig:on}
+\end{figure}
+
+\begin{table}%[h!]
+\begin{center}
+\begin{tabular}{*{3}{r}}
+\toprule
+Value & Count & Frequency \\
+\midrule
+0   &  10      &  1.0 \\
+1   &  99      &  9.9 \\
+2   & 239      & 23.9 \\
+3   & 296      & 29.6 \\
+4   & 244      & 24.4 \\
+5   &  94      &  9.4 \\
+6   &  18      &  1.8 \\
+\bottomrule
+\end{tabular}
+\end{center}
+\caption{Results of succeses from 1,000 6d10 rolls, where scores of 6 or greater are considered successes.}
+\end{table}
+
+d. Same as (c) above except now scores of 1 count as a botch. Each botch is subtracted from each success. If there are more botches than success (i.e., -1 successes) then the overall outcome is a botch. Now depict the frequency of botching, and total number of successes (as before, include the frequency of no successes).
+\begin{figure}%[h!]
+\centering
+\includegraphics[width=3.25in]{6d10>6-botching.pdf}
+\caption{Results of succeses from 1,000 6d10 rolls, where scores of 6 or greater are considered successes, and scores of 1 are considered botches.}
+% \label{fig:on}
+\end{figure}
+
+\begin{table}%[h!]
+\begin{center}
+\begin{tabular}{*{3}{r}}
+\toprule
+Value & Count & Frequency \\
+\midrule
+ -1   & 348      & 34.8 \\
+  0   & 293      & 29.3 \\
+  1   & 230      & 23.0 \\
+  2   &  93      &  9.3 \\
+  3   &  30      &  3.0 \\
+  4   &   5      &  0.5 \\
+  5   &   1      &  0.1 \\
+\bottomrule
+\end{tabular}
+\end{center}
+\caption{Results of succeses from 1,000 6d10 rolls, where scores of 6 or greater are considered successes, and scores of 1 are considered botches.}
+\end{table}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Summary}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\bibliographystyle{IEEEtran}
+%\bibliography{IEEEabr,MyBle}
+\begin{thebibliography}{1}
+
+\bibitem{history}
+Carlisle, Rodney P., ed. Encyclopedia of play in today's society. Vol. 1. Sage, 2009.
+
+\bibitem{dice_notation}
+``Standard Dice Notation''. dice-play. 2006-04-06. Archived from the original on 2007-04-26. https://web.archive.org/web/20070426013749/http://homepage.ntlworld.com/dice-play/Notation.htm
+
+\end{thebibliography}
+
+\clearpage
+\onecolumn
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\appendix{}               % note there is no {} to put a title. Each appendix has its own title
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% For a single appendix, use the \appendix{} keyword and do not use the \section command.
+
+\section{Source Code}        % first appendix
+\lstinputlisting{"../Option 1 Computation/dice.py"}
+% %%%%%%%%%%%%%%%%%%%%%%%%%%
+% This is the first appendix.
+
+% \subsection{Comments}
+% If you have only one appendix, use the ``appendix'' keyword.
+
+% \subsection{More Comments}
+% Use section and subsection keywords as usual.
 
 \end{document}
+

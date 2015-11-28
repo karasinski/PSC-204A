@@ -2,6 +2,8 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
+sns.set_style('white')
+plt.style.use('fivethirtyeight')
 
 
 def dice(A, X, n=1):
@@ -50,11 +52,26 @@ def throw(AdX, n=1, success_min=None, botching=False):
     else:
         raise ValueError('Sorry, these values are not supported.')
 
+    return scores
+
+
+def statistics(scores, plot=False, save=False):
     # Generate the statistics.
     s = pd.Series(scores).value_counts().reset_index()
     s.columns = ['Value', 'Count']
     s['Frequency'] = s['Count']/s['Count'].sum() * 100
     s = s.sort('Value')
+
+    print(s)
+    if plot:
+        sns.countplot(scores, order=np.unique(scores))
+        plt.xlabel('Value')
+        plt.ylabel('Count')
+        plt.tight_layout()
+        if save:
+            plt.savefig(save + '.pdf')
+        plt.close('all')
+        #plt.show()
     return s
 
 
@@ -71,22 +88,17 @@ def main():
     # %timeit throw('4d10', success_min=5, botching=True)
     # 10000 loops, best of 3: 32.3 µs per loop
 
-    a = throw('1d6', n=1000)
-    b = throw('2d6', n=1000)
-    c = throw('6d10', n=1000, success_min=6)
-    d = throw('6d6', n=1000, success_min=6, botching=True)
-
     print('a. Roll 1d6 1,000 times, frequency of each outcome?\n')
-    print(a)
+    statistics(throw('1d6', n=1000), plot=True, save='1d6')
 
     print('b. Roll 2d6 1,000 times, frequency of each outcome? Use the summed scores of each die as your outcome.\n')
-    print(b)
+    statistics(throw('2d6', n=1000), plot=True, save='2d6')
 
     print('c. Roll 6d10 1,000 times, frequency of each outcome? Treat a score of 6 or better as a success and scores less than 6 as nothing, the outcome is total number of successes (include the frequency of no successes).\n')
-    print(c)
+    statistics(throw('6d10', n=1000, success_min=6), plot=True, save='6d10>6')
 
     print('d. Same as (c) above except now scores of 1 count as a botch. Each botch is subtracted from each success. If there are more botches than success (i.e., -1 successes) then the overall outcome is a botch. Now depict the frequency of botching, and total number of successes (as before, include the frequency of no successes).\n')
-    print(d)
+    statistics(throw('6d6', n=1000, success_min=6, botching=True), plot=True, save='6d10>6-botching')
 
 if __name__ == '__main__':
     main()
