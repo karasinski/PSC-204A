@@ -1,9 +1,13 @@
+import itertools
+from collections import Counter
+from scipy.stats import chisquare
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
 sns.set_style('white')
 plt.style.use('fivethirtyeight')
+np.random.seed(np.array([ord(s) for s in 'John Karasinski']).sum())
 
 
 def dice(A, X, n=1):
@@ -83,6 +87,30 @@ def statistics(scores, plot=False, filename=False):
     return s
 
 
+def expected(section):
+    if section == 'a':
+        possibilities = np.array(list(itertools.product(range(1, 7))))
+    elif section == 'b':
+        possibilities = np.array(list(itertools.product(range(1, 7), repeat=2)))
+    elif section == 'c':
+        possibilities = np.array(list(itertools.product([0, 1], repeat=6)))
+    elif section == 'd':
+        possibilities = np.array(list(itertools.product([-1, 0, 0, 0, 0, 1, 1, 1, 1, 1], repeat=6)))
+    else:
+        raise ValueError
+
+    counts = Counter(possibilities.sum(axis=1))
+    d = pd.DataFrame(counts, index=['Counts']).T.reset_index()
+    if section == 'd':
+        botches = d[d['index'] < 0].sum()
+        botches['index'] = -1
+        d = d[d['index'] >= 0].append(botches, ignore_index=True)
+
+    d = d.sort('index')
+    d['Expected'] = d.Counts/d.Counts.sum() * 1000
+    return d
+
+
 def main():
     # %timeit throw('1d20')
     # 100000 loops, best of 3: 10.4 µs per loop
@@ -97,16 +125,24 @@ def main():
     # 10000 loops, best of 3: 32.3 µs per loop
 
     print('a. Roll 1d6 1,000 times, frequency of each outcome?\n')
-    print(throw('1d6', n=1000, plot=True, stats=True))
+    a = throw('1d6', n=1000, plot=True, stats=True)
+    print(a)
+    print(chisquare(a.Count, expected('a').Expected))
 
     print('b. Roll 2d6 1,000 times, frequency of each outcome? Use the summed scores of each die as your outcome.\n')
-    print(throw('2d6', n=1000, plot=True, stats=True))
+    b = throw('2d6', n=1000, plot=True, stats=True)
+    print(b)
+    print(chisquare(b.Count, expected('b').Expected))
 
     print('c. Roll 6d10 1,000 times, frequency of each outcome? Treat a score of 6 or better as a success and scores less than 6 as nothing, the outcome is total number of successes (include the frequency of no successes).\n')
-    print(throw('6d10', n=1000, success_min=6, plot=True, stats=True))
+    c = throw('6d10', n=1000, success_min=6, plot=True, stats=True)
+    print(c)
+    print(chisquare(c.Count, expected('c').Expected))
 
     print('d. Same as (c) above except now scores of 1 count as a botch. Each botch is subtracted from each success. If there are more botches than success (i.e., -1 successes) then the overall outcome is a botch. Now depict the frequency of botching, and total number of successes (as before, include the frequency of no successes).\n')
-    print(throw('6d6', n=1000, success_min=6, botching=True, plot=True, stats=True))
+    d = throw('6d10', n=1000, success_min=6, botching=True, plot=True, stats=True)
+    print(d)
+    print(chisquare(d.Count, expected('d').Expected))
 
 if __name__ == '__main__':
     main()
