@@ -99,7 +99,7 @@ This simulation will make use of Python 3.5.0 and NumPy 1.10.1. The core idea be
 
 The basic functionality behind the simulation is the \texttt{dice()} function. This function accepts three arguments, \texttt{A}, \texttt{X}, and an optional \texttt{n}, where \texttt{A} and \texttt{X} take on the same meaning as in standard dice notation, and \texttt{n} is the number of times to simulate the throw. Calling \texttt{dice(3, 6, n=2)}, for example, would return \texttt{array([[2, 2, 6], [5, 3, 4]])}. This array has 2 rows of 3 simulated 6-sided dice. The first row (representing the first throw) contains the values 2, 2, and 6, and the second row contains the values 5, 3, and 4.
 
-The \texttt{dice()} function is essentially a helper function, which calls NumPy's random integer function. NumPy uses the Mersenne twister sequence to generate pseudorandom numbers. As these are psuedorandom numbers and not true random numbers, knowing the seed of the algorithm allows you to reproduce the results, and predict future events with 100\% accuracy.
+The \texttt{dice()} function is essentially a helper function, which calls NumPy's random integer function. NumPy uses the Mersenne twister sequence to generate pseudorandom numbers. As these are psuedorandom numbers and not true random numbers, knowing the seed of the algorithm allows you to reproduce the results, and predict future events with 100\% accuracy. For the purposes of this project, however, pseudorandom numbers will function sufficiently.
 
 The primary function for this simulation is the \texttt{throw()} function, which parses user input and gives raw output, plots, and/or statistics about throws. There are three different ways to use this program. The first way to use this is to simply call \texttt{throw('1d6', n=1000)}. This will return the results of 1,000 1d6 dice rolls. The second way to run this is to call something along the lines of \texttt{throw('1d6', n=1000, plot=True)}. This will return a plot of the the outcomes of 1,000 1d6 dice rolls (a flat distribution from 1 to 6). The third way to use this program is to call \texttt{throw('1d6', n=1000, stats=True)}, which will return the value counts of each outcome of the 1,000 1d6 rolls.
 
@@ -108,19 +108,15 @@ A separate function, \texttt{expected()}, was used to enumerate all possible out
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Results}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-The script for this project, \texttt{dice.py}, accomplishes all of the requirements set out in the project outline. The first four requirements,
-
+The script for this project, \texttt{dice.py}, accomplishes all of the scenarios set out in the project outline. The first four scenarios,
 \begin{enumerate}
 \itemsep-.25em
-\item Roll 1d20 and I just want to know the score.
-\item Roll 2d6 and I want to know my summed scores.
-\item Roll 4d10 where I need to roll 5s or greater such that each roll of 5 or greater counts as a success.
-\item The same scenario as above, but now each 1 rolled detracts from the number of successes.
+\item ``Roll 1d20 and I just want to know the score.''
+\item ``Roll 2d6 and I want to know my summed scores.''
+\item ``Roll 4d10 where I need to roll 5s or greater such that each roll of 5 or greater counts as a success.''
+\item ``The same scenario as above, but now each 1 rolled detracts from the number of successes.''
 \end{enumerate}
-
-can be accomplished by running the following code.
-
+\noindent can be accomplished by running the following code:
 \begin{lstlisting}
 throw('1d6')
 # 2
@@ -132,7 +128,7 @@ throw('4d10', success_min=5, botching=True)
 # 1
 \end{lstlisting}
 
-The second set of four requirements was to plot and table several statistics from various dice roll scenarios. $\chi^2$ tests were used to compare the expected value counts to the observed value counts. The results of each scenario are shown below.
+The second set of four scenarios was to plot and table several statistics from various dice roll scenarios. $\chi^2$ tests were used to compare the expected value counts to the observed value counts. These exact probabilities were used along with $\chi^2$ tests to statistically confirm that the values from my simulation are the same at the 5\% level of significance. $H_0$ is that the distribution of our results from simulated dice rolls is equivalent to the distribution of the results from the exact probabilities. $H_1$ is simply that $H_0$ is false. The results of each scenario are shown below.
 
 \subsection{Roll 1d6 1,000 times, frequency of each outcome?}
 This is a very basic scenario. As we are just rolling a single die, we should expect a flat distribution of all the possible outcomes (1-6). The exact probability of each outcome is $1/6 \approx 16.67\%$. The observed dice rolls showed no statistical difference from the exact probability distribution $[\chi^2 (1,N=1000)=6.60, p=0.25]$.
@@ -141,14 +137,14 @@ The command to run this scenario is:
 \begin{lstlisting}
 throw('1d6', n=1000, plot=True, stats=True)
 \end{lstlisting}
-\begin{figure}[h!]
+\begin{figure}[H]
 \centering
 \includegraphics[width=3.25in]{1d6.pdf}
 \caption{Results from 1,000 1d6 rolls.}
 % \label{fig:on}
 \end{figure}
 
-\begin{table}[h!]
+\begin{table}[H]
 \begin{center}
 \begin{tabular}{*{3}{r}}
 \toprule
@@ -175,14 +171,14 @@ This is indeed what we see, with some minor variation due to the low \texttt{n}.
 throw('2d6', n=1000, plot=True, stats=True)
 \end{lstlisting}
 
-\begin{figure}[h!]
+\begin{figure}[H]
 \centering
 \includegraphics[width=3.25in]{2d6.pdf}
 \caption{Results of summed values from 1,000 2d6 rolls.}
 % \label{fig:on}
 \end{figure}
 
-\begin{table}[h!]
+\begin{table}[H]
 \begin{center}
 \begin{tabular}{*{3}{r}}
 \toprule
@@ -214,14 +210,14 @@ The following line calculates the statistics for this scenario:
 throw('6d10', n=1000, success_min=6, plot=True, stats=True)
 \end{lstlisting}
 
-\begin{figure}[h!]
+\begin{figure}[H]
 \centering
 \includegraphics[width=3.25in]{6d10_min6.pdf}
 \caption{Results of succeses from 1,000 6d10 rolls, where scores of 6 or greater are considered successes.}
 % \label{fig:on}
 \end{figure}
 
-\begin{table}[h!]
+\begin{table}[H]
 \begin{center}
 \begin{tabular}{*{3}{r}}
 \toprule
@@ -247,14 +243,14 @@ This final scenario is very similar to the previous one. For our 10 sided die, t
 \begin{lstlisting}
 throw('6d6', n=1000, success_min=6, botching=True, plot=True, stats=True)
 \end{lstlisting}
-\begin{figure}[h!]
+\begin{figure}[H]
 \centering
 \includegraphics[width=3.25in]{6d10_min6_botching.pdf}
 \caption{Results of successes from 1,000 6d10 rolls, where scores of 6 or greater are considered successes, and scores of 1 are considered botches.}
 % \label{fig:on}
 \end{figure}
 
-\begin{table}[h!]
+\begin{table}[H]
 \begin{center}
 \begin{tabular}{*{3}{r}}
 \toprule
