@@ -71,7 +71,7 @@
 \author{John Karasinski}
 \date{}
 
-\setlength{\droptitle}{-5em}   % This is your set screw
+\setlength{\droptitle}{-6em}   % This is your set screw
 \maketitle
 
 \thispagestyle{plain}
@@ -88,31 +88,31 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Introduction}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-God's use of dice may be disputed, but archaeological evidence shows that humans have been using dice for many thousands of years~\cite{history}. Dice are often used to insert randomness into games of chance, which can lead to wonderfully unpredictable situations. Due to the randomness associated with them, dice are also excellent for bringing everyone to the same level. A king and a peasant have the same odds when rolling a die, and the die does not care who is more wealthy, talented, or desperate. While the result of any individual roll of the die may be random and unpredictable, a basic application of statistics can lead us to make more informed decisions about the likelihood of events.
+God's use of dice may be disputed, but archaeological evidence shows that humans have been using dice for many thousands of years~\cite{history}. Dice are often used to insert randomness into games of chance, which can lead to wonderfully unpredictable situations. Due to the randomness associated with them, dice are also excellent for bringing everyone to the same level. A king and a peasant have the same odds when rolling dice, and the dice do not care who is more wealthy, talented, or desperate. While the result of any individual roll of the dice may be random and unpredictable, a basic application of statistics can lead us to make more informed decisions about the likelihood of events.
 
 The project outline states: ``Create a function that will allow me to specify the number of dice I want to use per roll, the number of faces on each die (assume all dice used in a roll have the same number of faces), whether I will sum the scores of each die or will have a minimum value needed to count as a success per die, and whether I will include botches or not as an outcome for rolls.'' Several additional statistics were requested to describe the nature of the outcome of 1,000 repetitions of various dice rolls.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Simulation Method}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-The primary assumption going forward is that we are considering perfect dice. Perfect dice have an equal probability of landing on each face. According to standard die notation, die rolls are given in the form AdX. A and X are variables, separated by the letter d, which stands for die or dice~\cite{dice_notation}. A represents the number of dice, and X represents the number of faces on each die. For example, 1d20 represents one twenty-sided die, and 2d10 represents two ten-sided die. A six-sided die (1d6), for example, would then have a $1/6$ probability of resulting in a 1, 2, 3, 4, 5 or 6. Cheap dice purchased for gaming will not have this property, and will instead slightly favor different outcomes.
+According to standard die notation, die rolls are given in the form AdX. A and X are variables, separated by the letter d, which stands for die or dice~\cite{dice_notation}. A represents the number of dice, and X represents the number of faces on each die. 1d20, for example, represents one twenty-sided die, and 2d10 represents two ten-sided die.
 
-As we do not want to spend time throwing dice, we will instead use software to simulate the results of their throws. For the purposes of the simulations here, you can pretend that we have purchased \textit{very, very expensive} dice which behave perfectly. The joy of the software used for this project though, is that it is all 100\% open source and free.
+The primary assumption going forward is that we are considering perfect dice. Perfect dice have an equal probability of landing on each face. A six-sided die (1d6), for example, would then have a $1/6$ probability of resulting in a 1, 2, 3, 4, 5 or 6. Cheap dice purchased for gaming will generally not have this property, and small imperfections will instead slightly favor different outcomes. As we do not want to spend time throwing dice, we will instead use software to simulate the results of their throws. For the purposes of the simulations here, you can pretend that we have purchased \textit{very, very expensive} dice which behave perfectly. The joy of the software used for this project though, is that it is all 100\% open source and free.
 
 This simulation will make use of Python 3.5.0 and NumPy 1.10.1. The core idea behind the simulation is to generate pseudorandom numbers to simulate the throwing of dice. The rules given in the project outline (summing, botching) can then be applied to deduce the result of the simulated dice throw.
 
-The basic functionality behind the simulation is the \texttt{dice()} function. This function accepts three arguments, \texttt{A}, \texttt{X}, and an optional \texttt{n}, where \texttt{A} and \texttt{X} take on the same meaning as in standard dice notation, and \texttt{n} is the number of times to simulate the throw. Calling \texttt{dice(3, 6, n=2)}, for example, would return \texttt{array([[2, 2, 6], [5, 3, 4]])}. This array has 2 rows of 3 simulated 6-sided dice. The first row (representing the first throw) contains the values 2, 2, and 6, and the second row contains the values 5, 3, and 4.
+The basic functionality behind the simulation is the \texttt{dice()} function. This function accepts three arguments, \texttt{A}, \texttt{X}, and an optional \texttt{n}, where \texttt{A} and \texttt{X} take on the same meaning as in standard dice notation, and \texttt{n} is the number of times to simulate the throw. Calling \texttt{dice(3, 6, n=2)}, for example, could return \texttt{array([[2, 2, 6], [5, 3, 4]])}. This example array has 2 rows of 3 simulated 6-sided dice rolls. The first row (representing the first throw) contains the values 2, 2, and 6, and the second row contains the values 5, 3, and 4.
 
-The \texttt{dice()} function is essentially a helper function, which calls NumPy's random integer function. NumPy uses the Mersenne twister sequence to generate pseudorandom numbers. As these are psuedorandom numbers and not true random numbers, knowing the seed of the algorithm allows you to reproduce the results, and predict future events with 100\% accuracy. For the purposes of this project, however, pseudorandom numbers will function sufficiently.
+The \texttt{dice()} function is essentially a helper function, which calls NumPy's random integer function. NumPy uses the Mersenne twister sequence to generate pseudorandom numbers~\cite{mersenne}. As these are psuedorandom numbers and not true random numbers, knowing the seed of the algorithm allows you to reproduce the results, and predict future events with 100\% accuracy. For the purposes of this project, however, we will confirm that pseudorandom numbers function sufficiently.
 
-The primary function for this simulation is the \texttt{throw()} function, which parses user input and gives raw output, plots, and/or statistics about throws. There are three different ways to use this program. The first way to use this is to simply call \texttt{throw('1d6', n=1000)}. This will return the results of 1,000 1d6 dice rolls. The second way to run this is to call something along the lines of \texttt{throw('1d6', n=1000, plot=True)}. This will return a plot of the the outcomes of 1,000 1d6 dice rolls (a flat distribution from 1 to 6). The third way to use this program is to call \texttt{throw('1d6', n=1000, stats=True)}, which will return the value counts of each outcome of the 1,000 1d6 rolls.
+The primary function for this simulation is the \texttt{throw()} function, which parses user input and gives raw output, plots, and/or statistics about throws. There are three different ways to use this program. The first way to use this is to simply call \texttt{throw('1d6', n=1000)}. This will return the results of 1,000 1d6 dice rolls. The second way to run this is to call \texttt{throw('1d6', n=1000, plot=True)}, which will return a plot of the the outcomes of 1,000 1d6 dice rolls (a flat distribution from 1 to 6). The third way to use this program is to call \texttt{throw('1d6', n=1000, stats=True)}, which will return the value counts of each outcome of the 1,000 1d6 rolls.
 
-A separate function, \texttt{expected()}, was used to enumerate all possible outcomes for each of the 4 primary scenarios we were asked to investigate. Once enumerated, the exact probability of each outcome was calculated. These exact probabilities were used along with $\chi^2$ tests to statistically confirm that the values from my simulation are the same.
+A separate function, \texttt{expected()}, was used to enumerate all possible outcomes for each of the 4 primary scenarios we were asked to investigate. Once enumerated, the exact probability of each outcome was calculated. $\chi^2$ tests were used to confirm the output of this simulation is statistically the same as the exact probabilities.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Results}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-The script for this project, \texttt{dice.py}, accomplishes all of the scenarios set out in the project outline. The first four scenarios,
+The script for this project, \texttt{dice.py}, accomplishes all of the scenarios set out in the project outline (see Appendix). The first four scenarios are to perform basic calculates on single rolls of the dice. These were:
 \begin{enumerate}
 \itemsep-.25em
 \item ``Roll 1d20 and I just want to know the score.''
@@ -122,19 +122,19 @@ The script for this project, \texttt{dice.py}, accomplishes all of the scenarios
 \end{enumerate}
 \noindent These can be accomplished by running the following code:
 \begin{lstlisting}
-throw('1d6')
-# 2
 throw('1d20')
 # 15
+throw('2d6')
+# 9
 throw('4d10', success_min=5)
 # 4
 throw('4d10', success_min=5, botching=True)
 # 1
 \end{lstlisting}
-The second set of four scenarios was to plot and table several statistics from various dice roll scenarios. $\chi^2$ tests were used to compare the expected value counts to the observed value counts. These exact probabilities were used along with $\chi^2$ tests to statistically confirm that the values from this simulation are the same at the 5\% level of significance. $H_0$ is that the distribution of our results from simulated dice rolls is equivalent to the distribution of the results from the exact probabilities. $H_1$ is simply that $H_0$ is false. Four individual tests were run to confirm that the simulation's outcomes are the same as those expected from the calculated exact outcomes. These four results are combined using Fisher's method to determine if $H_0$ is true. The results of each scenario are shown below.
+The second set of four scenarios was to plot and table several statistics from various dice roll scenarios. $\chi^2$ tests were used to compare the expected value counts to the observed value counts. These exact probabilities were used along with $\chi^2$ tests to statistically confirm that the values from this simulation are the same at the 5\% level of significance. $H_0$ is that the frequencies of our results from simulated dice rolls is equivalent to the frequencies of the results from the exact probabilities. $H_1$ is simply that $H_0$ is false---the resulting frequencies are not equivalent. Four individual tests were run to confirm that the simulation's outcomes are the same as those expected from the calculated exact outcomes. These four results are combined using Fisher's method to test if $H_0$ is true. The results of these tests are shown below.
 
 \subsection{Roll 1d6 1,000 times, frequency of each outcome?}
-This is a very basic scenario. As we are just rolling a single die, we should expect a flat distribution of all the possible outcomes (1-6). The exact probability of each outcome is $1/6 \approx 16.67\%$. The observed dice rolls showed no statistical difference from the exact probability distribution $[\chi^2=6.60, p=0.25]$.
+This is a very basic scenario. As we are just rolling a single die, we should expect a flat distribution of all the possible outcomes (1-6). The exact probability of each outcome is $1/6 \approx 16.67\%$. The observed dice rolls showed no statistical difference from the exact probability frequencies $[\chi^2=6.60, p=0.25]$.
 
 The command to run this scenario is:
 \begin{lstlisting}
@@ -144,9 +144,6 @@ throw('1d6', n=1000, plot=True, stats=True)
 \begin{figure}[H]
 \begin{floatrow}
 \includegraphics[width=4in]{1d6.pdf}
-{%
-  % \caption{A figure}%
-}
 \capbtabbox{%
   \begin{tabular}{*{3}{r}}
 \toprule
@@ -160,40 +157,13 @@ Value & Observed & Expected \\
      6 &   165 & 166.67 \\
 \bottomrule
   \end{tabular}
-}{%
-  % \caption{A table}%
-}
+}{}
 \end{floatrow}
-\caption{Results of 1,000 1d6 rolls.  Observed results are compared to expected results from exact probabilities.}
+\caption{Results of 1,000 1d6 rolls. Observed results are compared to expected results from exact probabilities, and show no differences.}
 \end{figure}
 
-% \begin{figure}[H]
-% \centering
-% \includegraphics[width=3.25in]{1d6.pdf}
-% \caption{Results from 1,000 1d6 rolls.}
-% % \label{fig:on}
-% \end{figure}
-
-% \begin{table}[H]
-% \begin{center}
-% \begin{tabular}{*{3}{r}}
-% \toprule
-% Value & Observed & Expected \\
-% \midrule
-%      1 &   162 & 166.67 \\
-%      2 &   146 & 166.67 \\
-%      3 &   166 & 166.67 \\
-%      4 &   169 & 166.67 \\
-%      5 &   192 & 166.67 \\
-%      6 &   165 & 166.67 \\
-% \bottomrule
-% \end{tabular}
-% \end{center}
-% \caption{Results of 1,000 1d6 rolls.  Observed results are compared to expected results from exact probabilities.}
-% \end{table}
-
 \subsection{Roll 2d6 1,000 times, frequency of each outcome? Use the summed scores of each die as your outcome.}
-This is a slightly more interesting scenario. As we are rolling a two die, we should expect a triangle distribution centered around the most likely combination, 7, and ranging all the possible values (2-12). We can calculate each possible outcome and the probability of each. The observed dice rolls showed no statistical difference from the exact probability distribution, with some minor variation due to the low \texttt{n} $[\chi^2=14.31, p=0.16]$.
+This is a slightly more interesting scenario. As we are rolling a two die and calculating the sum, we should expect a triangle distribution centered around the most likely combination, 7, and ranging all the possible values, 2-12. We can calculate each possible outcome and the probability of each. The observed dice rolls showed no statistical difference from the exact probability frequencies, with some minor variation due to the low \texttt{n} $[\chi^2=14.31, p=0.16]$.
 
 The command to run this scenario is:
 
@@ -204,9 +174,6 @@ throw('2d6', n=1000, plot=True, stats=True)
 \begin{figure}[H]
 \begin{floatrow}
 \includegraphics[width=4in]{2d6.pdf}
-{%
-  % \caption{A figure}%
-}
 \capbtabbox{%
   \begin{tabular}{*{3}{r}}
 \toprule
@@ -225,48 +192,17 @@ Value & Observed & Expected \\
     12 &    28 &  27.7  \\
 \bottomrule
   \end{tabular}
-}{%
-  % \caption{A table}%
-}
+}{}
 \end{floatrow}
-\caption{Results of summed values from 1,000 2d6 rolls. Observed results are compared to expected results from exact probabilities.}
+\caption{Results of summed values from 1,000 2d6 rolls. Observed results are compared to expected results from exact probabilities, and show no differences.}
 \end{figure}
-
-% \begin{figure}[H]
-% \centering
-% \includegraphics[width=3.25in]{2d6.pdf}
-% \caption{Results of summed values from 1,000 2d6 rolls.}
-% % \label{fig:on}
-% \end{figure}
-
-% \begin{table}[H]
-% \begin{center}
-% \begin{tabular}{*{3}{r}}
-% \toprule
-% Value & Observed & Expected \\
-% \midrule
-%      2 &    28 &  27.7  \\
-%      3 &    57 &  55.5  \\
-%      4 &    94 &  83.3  \\
-%      5 &   123 & 111.1  \\
-%      6 &   139 & 138.8  \\
-%      7 &   153 & 166.6  \\
-%      8 &   107 & 138.8  \\
-%      9 &   129 & 111.1  \\
-%     10 &    88 &  83.3  \\
-%     11 &    54 &  55.5  \\
-%     12 &    28 &  27.7  \\
-% \bottomrule
-% \end{tabular}
-% \end{center}
-% \caption{Results of summed values from 1,000 2d6 rolls. Observed results are compared to expected results from exact probabilities.}
-% \end{table}
 
 \subsection{Roll 6d10 1,000 times, frequency of each outcome? Treat a score of 6 or better as a success and scores less than 6 as nothing, the outcome is total number of successes (include the frequency of no successes).}
 
-Now we no longer care about the exact outcome of each die, we only care whether or not it is greater than or equal to 6. For a 10 sided die, exactly half of the possible outcomes are counted as successes. We can calculate each possible outcome to generate the exact probabilities. The observed dice rolls showed no statistical difference from the exact probability distribution $[\chi^2=3.26, p=0.78]$.
+Now we no longer care about the exact outcome of each die, we only care whether or not it is greater than or equal to 6. For a 10 sided die, exactly half of the possible outcomes are counted as successes. We can calculate each possible outcome to generate the exact probabilities. The observed dice rolls showed no statistical difference from the exact probability frequencies $[\chi^2=3.26, p=0.78]$.
 
 The following line calculates the statistics for this scenario:
+\\
 \begin{lstlisting}
 throw('6d10', n=1000, success_min=6, plot=True, stats=True)
 \end{lstlisting}
@@ -274,9 +210,6 @@ throw('6d10', n=1000, success_min=6, plot=True, stats=True)
 \begin{figure}[H]
 \begin{floatrow}
 \includegraphics[width=4in]{6d10_min6.pdf}
-{%
-  % \caption{A figure}%
-}
 \capbtabbox{%
   \begin{tabular}{*{3}{r}}
 \toprule
@@ -291,42 +224,14 @@ Value & Observed & Expected \\
      6 &    13 &  15.6 \\
 \bottomrule
   \end{tabular}
-}{%
-  % \caption{A table}%
-}
+}{}
 \end{floatrow}
-\caption{Results of successes from 1,000 6d10 rolls, where scores of 6 or greater are considered successes. Observed results are compared to expected results from exact probabilities.}
+\caption{Results of successes from 1,000 6d10 rolls, where scores of 6 or greater are considered successes. Observed results are compared to expected results from exact probabilities, and show no differences.}
 \end{figure}
-
-% \begin{figure}[H]
-% \centering
-% \includegraphics[width=3.25in]{6d10_min6.pdf}
-% \caption{Results of succeses from 1,000 6d10 rolls, where scores of 6 or greater are considered successes.}
-% % \label{fig:on}
-% \end{figure}
-
-% \begin{table}[H]
-% \begin{center}
-% \begin{tabular}{*{3}{r}}
-% \toprule
-% Value & Observed & Expected \\
-% \midrule
-%      0 &    12 &  15.6 \\
-%      1 &   100 &  93.7 \\
-%      2 &   227 & 234.3 \\
-%      3 &   303 & 312.5 \\
-%      4 &   243 & 234.3 \\
-%      5 &   102 &  93.7 \\
-%      6 &    13 &  15.6 \\
-% \bottomrule
-% \end{tabular}
-% \end{center}
-% \caption{Results of successes from 1,000 6d10 rolls, where scores of 6 or greater are considered successes. Observed results are compared to expected results from exact probabilities.}
-% \end{table}
 
 \subsection{Same as (c) above except now scores of 1 count as a botch. Each botch is subtracted from each success. If there are more botches than success (i.e., -1 successes) then the overall outcome is a botch. Now depict the frequency of botching, and total number of successes (as before, include the frequency of no successes).}
 
-This final scenario is very similar to the previous one. For our 10 sided die, there is now a $1/10$ probability of a botch, a $2/5$ probability of a failure, and a $1/2$ probability of a success. We can calculate each possible outcome to generate the exact probabilities. The observed dice rolls showed no statistical difference from the exact probability distribution $[\chi^2=3.64, p=0.82]$.
+This final scenario is very similar to the previous one. For our 10 sided die, there is now a $1/10$ probability of a botch, a $2/5$ probability of a failure, and a $1/2$ probability of a success. We can calculate each possible outcome to generate the exact probabilities. The observed dice rolls showed no statistical difference from the exact probability frequencies $[\chi^2=3.64, p=0.82]$.
 \\
 \begin{lstlisting}
 throw('6d10', n=1000, success_min=6, botching=True, plot=True, stats=True)
@@ -335,9 +240,6 @@ throw('6d10', n=1000, success_min=6, botching=True, plot=True, stats=True)
 \begin{figure}[H]
 \begin{floatrow}
 \includegraphics[width=4in]{6d10_min6_botching.pdf}
-{%
-  % \caption{A figure}%
-}
 \capbtabbox{%
   \begin{tabular}{*{3}{r}}
 \toprule
@@ -353,57 +255,28 @@ Value & Observed & Expected \\
      6 &    18 &  15.6 \\
 \bottomrule
   \end{tabular}
-}{%
-  % \caption{A table}%
-}
+}{}
 \end{floatrow}
-\caption{Results of succeses from 1,000 6d10 rolls, where scores of 6 or greater are considered successes, and scores of 1 are considered botches. Observed results are compared to expected results from exact probabilities.}
+\caption{Results of succeses from 1,000 6d10 rolls, where scores of 6 or greater are considered successes, and scores of 1 are considered botches. Observed results are compared to expected results from exact probabilities, and show no differences.}
 \end{figure}
-
-% \begin{figure}[H]
-% \centering
-% \includegraphics[width=3.25in]{6d10_min6_botching.pdf}
-% \caption{Results of successes from 1,000 6d10 rolls, where scores of 6 or greater are considered successes, and scores of 1 are considered botches.}
-% % \label{fig:on}
-% \end{figure}
-
-% \begin{table}[H]
-% \begin{center}
-% \begin{tabular}{*{3}{r}}
-% \toprule
-% Value & Observed & Expected \\
-% \midrule
-%     -1 &    41 &  42.5 \\
-%      0 &    77 &  80.9 \\
-%      1 &   155 & 156.7 \\
-%      2 &   246 & 225.3 \\
-%      3 &   223 & 235.0 \\
-%      4 &   171 & 168.7 \\
-%      5 &    69 &  75.0 \\
-%      6 &    18 &  15.6 \\
-% \bottomrule
-% \end{tabular}
-% \end{center}
-% \caption{Results of succeses from 1,000 6d10 rolls, where scores of 6 or greater are considered successes, and scores of 1 are considered botches. Observed results are compared to expected results from exact probabilities.}
-% \end{table}
 
 \subsection{Fisher's method}
 
-Using Fisher's method, the results of our four independent $\chi^2$ tests can be combined to determine if $H_0$ holds. In Python, this can be quite easily computed by:
+Using Fisher's method, the results of our four independent $\chi^2$ tests can be combined to determine if $H_0$ holds. In essence, we are simple combining the independently calculated p-values to test if our overall hypothesis holds. In Python, this can be quite easily computed by:
 \\
 \begin{lstlisting}
 from scipy.stats import combine_pvalues
 combine_pvalues([.25,.16,.78,.82])
 # (7.3315762457810782, 0.50131680258503031)
 \end{lstlisting}
-We conclude that $H_0$ holds---the simulation outputs are statistically equivalent to what would be found from random choices from their exact probability distributions [$\chi^2=7.33, p=0.50$].
+We conclude that $H_0$ still holds---the simulation outputs are statistically equivalent to what would be found from truly random choices from their exact probability frequencies [$\chi^2=7.33, p=0.50$].
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Summary}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 A Python script was created to allow a user to specify the properties of various dice rolls. These properties include the number of dice per roll, the number of faces on each die (assuming all dice used in a roll have the same number of faces), whether the scores of each die will be summed or will have a minimum value needed to count as a success per die, and whether to include botches or not as an outcome for rolls. Several statistics were calculated to describe the nature of the outcome of 1,000 repetitions of various dice rolls compared to the expected outcome calculated from exact probabilities.
 
-All four $\chi^2$ tests showed that $H_0$, that the psuedorandom outcomes from the simulation scenarios was equivalent to what would be expected from truly random outcomes from the exact probability distributions, holds. Fisher's method was used to combine the p-values from these tests, and also suggests that $H_0$ holds at the .05 level [$\chi^2=7.33, p=0.50$].
+All four $\chi^2$ tests showed that $H_0$, that the psuedorandom outcomes from the simulation scenarios was equivalent to what would be expected from truly random outcomes from the exact probability frequencies, holds. Fisher's method was used to combine the p-values from these tests, and also suggests that $H_0$ holds at the .05 level [$\chi^2=7.33, p=0.50$].
 
 \bibliographystyle{IEEEtran}
 %\bibliography{IEEEabr,MyBle}
@@ -414,6 +287,9 @@ Carlisle, Rodney P., ed. Encyclopedia of play in today's society. Vol. 1. Sage, 
 
 \bibitem{dice_notation}
 ``Standard Dice Notation''. dice-play. 2006-04-06. Archived from the original on 2007-04-26. https://web.archive.org/web/20070426013749/http://homepage.ntlworld.com/dice-play/Notation.htm
+
+\bibitem{mersenne}
+Matsumoto, Makoto, and Takuji Nishimura. ``Mersenne twister: a 623-dimensionally equidistributed uniform pseudo-random number generator.'' ACM Transactions on Modeling and Computer Simulation (TOMACS) 8.1 (1998): 3-30.
 
 \end{thebibliography}
 
