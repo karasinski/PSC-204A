@@ -12,16 +12,14 @@ np.random.seed(np.array([ord(s) for s in 'John Karasinski']).sum())
 
 def dice(A, X, n=1):
     ''' Generate n instances of an AdX dice roll.'''
-
     return np.random.randint(low=1, high=X+1, size=(n, A))
 
 
 def throw(AdX, n=1, success_min=None, botching=False, stats=False, plot=False):
     '''
     Throw dice with optional repetitions, minimum value for success, and
-    botching.
+    botching. The results can also be plotted by setting the plot argument.
     '''
-
     # Pull the values for your roll.
     A, X = np.array(AdX.split('d'), dtype=int)
 
@@ -68,7 +66,6 @@ def throw(AdX, n=1, success_min=None, botching=False, stats=False, plot=False):
 
 
 def statistics(scores, plot=False, filename=False):
-    # Generate the statistics.
     s = pd.Series(scores).value_counts().reset_index()
     s.columns = ['Value', 'Count']
     s['Frequency'] = s['Count']/s['Count'].sum() * 100
@@ -113,33 +110,29 @@ def expected(section):
 
 def main():
     # %timeit throw('1d20')
-    # 100000 loops, best of 3: 10.4 µs per loop
+    # 100000 loops, best of 3: 9.98 µs per loop
 
     # %timeit throw('2d6')
     # 100000 loops, best of 3: 15.4 µs per loop
 
     # %timeit throw('4d10', success_min=5)
-    # 10000 loops, best of 3: 20.4 µs per loop
+    # 10000 loops, best of 3: 20.2 µs per loop
 
     # %timeit throw('4d10', success_min=5, botching=True)
-    # 10000 loops, best of 3: 32.3 µs per loop
+    # 10000 loops, best of 3: 31.7 µs per loop
 
-    print('a. Roll 1d6 1,000 times, frequency of each outcome?\n')
     a = throw('1d6', n=1000, plot=True, stats=True)
     print(a)
     print(chisquare(a.Count, expected('a').Expected))
 
-    print('b. Roll 2d6 1,000 times, frequency of each outcome? Use the summed scores of each die as your outcome.\n')
     b = throw('2d6', n=1000, plot=True, stats=True)
     print(b)
     print(chisquare(b.Count, expected('b').Expected))
 
-    print('c. Roll 6d10 1,000 times, frequency of each outcome? Treat a score of 6 or better as a success and scores less than 6 as nothing, the outcome is total number of successes (include the frequency of no successes).\n')
     c = throw('6d10', n=1000, success_min=6, plot=True, stats=True)
     print(c)
     print(chisquare(c.Count, expected('c').Expected))
 
-    print('d. Same as (c) above except now scores of 1 count as a botch. Each botch is subtracted from each success. If there are more botches than success (i.e., -1 successes) then the overall outcome is a botch. Now depict the frequency of botching, and total number of successes (as before, include the frequency of no successes).\n')
     d = throw('6d10', n=1000, success_min=6, botching=True, plot=True, stats=True)
     print(d)
     print(chisquare(d.Count, expected('d').Expected))
