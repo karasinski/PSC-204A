@@ -83,8 +83,9 @@
 \\
 (h) What can you say about differences in the relationship between weather and mood across individuals?\\
 \\
-(h) You submit the result of all these analyses for publication but the editor rejects the manuscript on the basis of: (i) a lack of power to examine your research questions, and (ii) the fact that there are only 4 individuals in your data and, thus – they claim – you cannot generalize to the population. Nevertheless, you are convinced – or just have a hunch – that there might be something valuable here and write back arguing that the data and analyses are worth disseminating. What would you say to support your argument?\\
+(h) You submit the result of all these analyses for publication but the editor rejects the manuscript on the basis of: (i) a lack of power to examine your research questions, and (ii) the fact that there are only 4 individuals in your data and, thus --- they claim --- you cannot generalize to the population. Nevertheless, you are convinced --- or just have a hunch --- that there might be something valuable here and write back arguing that the data and analyses are worth disseminating. What would you say to support your argument?
 
+\clearpage
 \problem{}
 (10 points) The following matrices RV and CV are a correlation and a covariance matrix, respectively, of variables $X_1$, $X_2$, $X_3$, $X_4$, and $X_5$. Using the information provided in the matrices, fill in the gray boxes with the appropriate values. Make a note of any anomalies you notice (if any).
 
@@ -115,18 +116,69 @@ Correlation & $X_3$ & ?      & 0.25    & ?     & -     & -   \\
 % \caption{Results of Simple Effects Analysis}
 \end{table}
 
+\clearpage
 \problem{}
-(20 points) Researchers were interested in the role of extracurricular activities (sports: 0 = other extracurricular activities and 1 = participation in sports) and biological sex (female: 0 = male, 1 = female) on standard normal adolescent perceptions of social acceptance (PSA).
-
-The data can be found in the “socialacceptance.csv” file. Determine whether factors of extracurricular activity type and biological sex are associated with adolescent PSA.\\
+(20 points) Researchers were interested in the role of extracurricular activities (sports: 0 = other extracurricular activities and 1 = participation in sports) and biological sex (female: 0 = male, 1 = female) on standard normal adolescent perceptions of social acceptance (PSA). The data can be found in the “socialacceptance.csv” file. Determine whether factors of extracurricular activity type and biological sex are associated with adolescent PSA.\\
 \\
 a) State the type of design of the study.\\
-\\
-b) Thoroughly analyze these data for main effects and interactions. Write a report (no longer than a page) in which you report your findings as you would in a journal article (i.e., text, table, and figure).
 
+This is a two-factor study on standard normal adolescent perceptions of social acceptance (PSA). The first factor is involvement with extracurricular activities (sports or `other'), the second factor is biological sex (female or male).
+\\
+
+b) Thoroughly analyze these data for main effects and interactions. Write a report (no longer than a page) in which you report your findings as you would in a journal article (i.e., text, table, and figure).\\
+
+200 students ($N_{male}=102, N_{female}=98$) were investigated to determine whether factors of extracurricular activity type and biological sex are associated with adolescent PSA. Adolescent PSA was subjected to a two-way analysis of variance having two levels of biological sex (female, male) and two levels of extracurricular activity (sports, `other'). All effects were statistically significant at the $\alpha=.05$ significance level.
+
+The main effect of biological sex yielded an F ratio of $F(1, 196) = 4.27, p < .04,$ indicating that the mean adolescent PSA was significantly greater for females $(M = 0.15, SD = 1.09)$ than for males $(M = -0.14, SD = 0.88)$. The main effect of extracurricular activty type yielded an F ratio of $F(1, 196) = 30.33, p < .01,$ indicating that the mean adolescent PSA was significantly higher for sports $(M = 0.36, SD = 0.97)$ than for other extracurriculars $(M = -0.36, SD = 0.90)$. However, the interaction effect was also significant, $F(1, 196) = 6.15, p = .01$.
+
+An analysis of simple effects showed that the effect of biological sex was significant for sports, $F(1, 99) = 10.1, p < 0.01$, but not for other extracurriculars, $F(1, 97) = 0.1, p = 0.75$. Therefore, there is no evidence that biological sex effects PSA for students participating in other extracurriculars. For females, sports extracurriculars showed a larger adolescent PSA $(M=0.65, SD=0.99)$ than for males $(M=0.06, SD=0.86)$. The descriptive statistics for these analyses are presented in Tables~\ref{psa1} and~\ref{psa2}. \\
+
+\begin{table}[h!]
+\begin{center}
+\begin{tabular}{lrrrr}
+\toprule
+Source        &   $SS$ & $df$ &  $F$ &       $PR(>F)$ \\
+\midrule
+Female        &   3.58 &   1 &  4.27 &      3.99-02 \\
+Sports        &  25.41 &   1 & 30.33 &      1.13-07 \\
+Interaction   &   5.15 &   1 &  6.14 &      1.39-02 \\
+Residual      & 164.24 & 196 &       &           \\
+\bottomrule
+\end{tabular}
+\end{center}
+\caption{Factorial ANOVA Results for Adolescent PSA Study}
+\label{psa1}
+\end{table}
+
+\begin{table}[htdp]
+\begin{center}
+\begin{tabular}{l r r r r r}
+\toprule
+Source & $SS$ & $df$ & $F$ & $PR(>F)$ \\
+\midrule
+\it{Extracurricular} & & & & \\
+\hspace{1em} Sports   & 8.7 &  1  & 10.1 & $<0.01$ \\
+\hspace{1em} Other    & 0.1 &  1  &  0.1 & $0.75$\\
+\bottomrule
+\end{tabular}
+\end{center}
+\caption{Simple Effects Analysis for Adolescent PSA Study}
+\label{psa2}
+\end{table}
+
+\begin{figure}[h!]
+\begin{center}
+\includegraphics[width=0.5\textwidth]{p3.pdf}
+\label{fig:on}
+\end{center}
+\caption{Effects of biological sex ($female=1, male=0$) and extracurricular activity ($sports=1, other=0$). There is no effect of gender on other extracurriculars, but there is a significant effect of gender on sports extracurriculars. Error bars represent 95\% CI.}
+\end{figure}
+
+\clearpage
 \problem{}
 (10 points) Explain why r must be between -1 and +1. Please, do not use more than 1 or 2 paragraphs. You can append calculations, if you need them.
 
+\clearpage
 \problem{}
 (20 points) Say you run a simple regression with predictor variable $X_1$ and outcome variable $Y$. You fit the following model:
                 $$Y = B_0 + B_1 X_1$$
@@ -143,6 +195,7 @@ d) What is the interpretation of each of the coefficients in this model?\\
 \\
 e) When will $B_1$ be equal to the correlation between $Y$ and $X_1$? When will $B_2$ be equal to the correlation between $Y$ and $X_2$? Why?
 
+\clearpage
 \problem{}
 (10 points) Suppose you are hired to serve as a statistical consultant. In each of the following cases, what advice (if any) would you give to your client concerning the procedures and/or conclusions he or she has drawn, or about the kind of statistical techniques most suitable? Be sure to briefly explain the reasoning underlying your advice.\\
 \\
@@ -150,7 +203,7 @@ e) When will $B_1$ be equal to the correlation between $Y$ and $X_1$? When will 
 \\
 (b) A researcher is interested in predicting the mental health of college students based on their reported level of stress. What kind of sample should she collect and what statistical technique should she use to achieve this goal?\\
 \\
-(c) A researcher collected data from undergraduate and graduate students at universities across the country in a study of the relation between age (Range of 18 – 46 years with a Mean = 23.5) and openness. There was a significant, negative relation between age and openness (r(2,998) = -0.13, p < .05). The researcher cited this finding as evidence for why elderly individuals (age 60 years and upward) have difficulty learning about novel technology and ideological shifts; they’re openness has declined substantially over their lives. Is this a reasonable conclusion? Why or why not?\\
+(c) A researcher collected data from undergraduate and graduate students at universities across the country in a study of the relation between age (Range of 18 --- 46 years with a Mean = 23.5) and openness. There was a significant, negative relation between age and openness $(r(2,998) = -0.13, p < .05)$. The researcher cited this finding as evidence for why elderly individuals (age 60 years and upward) have difficulty learning about novel technology and ideological shifts; they’re openness has declined substantially over their lives. Is this a reasonable conclusion? Why or why not?\\
 \\
 (d) A researcher studied a group of 100 students by having them complete a survey once a quarter, every quarter, for two years via an online survey form. The survey consisted of several items meant to measure anxiety, self-competence, and academic performance. What methods of analysis would be applicable to this type of data? How do you justify your recommendations?\\
 \\
