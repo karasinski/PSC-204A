@@ -71,7 +71,7 @@
 }
 
 \author{John Karasinski}
-\title{Homework \# 7}
+\title{Final}
 
 \begin{document}
 %\maketitle
@@ -81,17 +81,102 @@
 \\
 (a) Plot the data in a way/s that you find meaningful to examine the relationship between mood and weather. Interpret the graph/s.\\
 \\
+Two plots are generated here. The first is a scatter plot showing the regression line between all subjects' mood and the temperature for all days ($n=4$). We find $r=-.24$, suggesting that only~6\% of the variance in mood can be explained by temperature. This plot is useful to show us the overall structure of the data.
+
+A second plot was made to investigate the correlations between individual subject's mood and the weather. Each subject shows a different correlation, $r_{T1} = .3, r_{T2} = 0, r_{T3} = -.3, r_{T4} = -.7$. Correlations between all pairs of subjects are negligible.
+\begin{figure}[h!]
+\begin{center}
+\includegraphics[height=0.5\textheight]{p1-mean.pdf}
+\label{fig:on}
+\end{center}
+\caption{Scatter plot of each subject's mood vs temperature of for each day. Regression line shows a negative correlation between mood and temperature $(r=-0.24)$. }
+\end{figure}
+\begin{figure}[h!]
+\begin{center}
+\includegraphics[height=0.55\textheight]{p1-persubj.pdf}
+\label{fig:on}
+\end{center}
+\caption{Investigation of individual participant's relationships between mood and temperature. Correlations vary between subjects: $r_{T1} = .3, r_{T2} = 0, r_{T3} = -.3, r_{T4} = -.7$, and correlations between all pairs of subjects are negligible.}
+\end{figure}
+\\
 (b) Compute means and standard deviations for the data.\\
-\\
-(c) Estimate the covariance between weather and mood as well as the sum of cross-products. What does each of these indices indicate about the relation between weather and mood?\\
-\\
-(d) What is the correlation between weather and mood across all participants? What does the correlation indicate about the relationship between weather and mood?\\
-\\
-(e) Estimate the regression equation of the line that best represents the relationship between weather and mood for all individuals as a single group.\\
-\\
-(f) Estimate the regression equation of the line that best represents the relationship between weather and mood for each individual.\\
-\\
-(g) Test whether the relation between temperature and mood is significantly different between persons using Fisher’s z transformations and z-test.\\
+\begin{lstlisting}[language=Python]
+stats = pd.DataFrame.from_dict({'mean':df.mean(), 'std':df.std()})
+print(stats)
+\end{lstlisting}
+\begin{table}[h!]
+\begin{center}
+\begin{tabular}{rrr}
+\toprule
+          &  mean  &      std \\
+\midrule
+temp      & 80.0  & 3.0 \\
+part1     &  3.0  & 0.8 \\
+part2     &  4.3  & 1.2 \\
+part3     &  5.1  & 1.8 \\
+part4     &  5.9  & 2.3 \\
+\bottomrule
+\end{tabular}
+\end{center}
+% \caption{Results of Simple Effects Analysis}
+\end{table}
+(c) Estimate the covariance between weather and mood as well as the sum of cross-products. What does each of these indices indicate about the relation between weather and mood?
+\begin{lstlisting}[language=Python]
+print(df.cov())
+
+               temp         part1         part2         part3         part4
+temp   9.000000e+00  7.200000e-01  2.569603e-15 -1.620000e+00 -4.830000e+00
+part1  7.200000e-01  6.400000e-01  1.255035e-15 -8.753063e-16 -4.182645e-15
+part2  2.569603e-15  1.255035e-15  1.440000e+00  2.516506e-15  3.946923e-15
+part3 -1.620000e+00 -8.753063e-16  2.516506e-15  3.240000e+00 -1.042644e-15
+part4 -4.830000e+00 -4.182645e-15  3.946923e-15 -1.042644e-15  5.290000e+00
+
+print(df.cov().sum())
+
+temp     3.27
+part1    1.36
+part2    1.44
+part3    1.62
+part4    0.46
+\end{lstlisting}
+(d) What is the correlation between weather and mood across all participants? What does the correlation indicate about the relationship between weather and mood?
+\begin{lstlisting}[language=Python]
+print(df.corr())
+
+               temp         part1         part2         part3         part4
+temp   1.000000e+00  3.000000e-01  6.954537e-16 -3.000000e-01 -7.000000e-01
+part1  3.000000e-01  1.000000e+00  1.290567e-15 -6.011473e-16 -2.260934e-15
+part2  6.954537e-16  1.290567e-15  1.000000e+00  1.165049e-15  1.440538e-15
+part3 -3.000000e-01 -6.011473e-16  1.165049e-15  1.000000e+00 -2.837159e-16
+part4 -7.000000e-01 -2.260934e-15  1.440538e-15 -2.837159e-16  1.000000e+00
+\end{lstlisting}
+(e) Estimate the regression equation of the line that best represents the relationship between weather and mood for all individuals as a single group.
+\begin{lstlisting}[language=Python]
+import statsmodels.api as sm
+def fit_line(x, y):
+    """Return slope, intercept of best fit line."""
+    X = sm.add_constant(x)
+    model = sm.OLS(y, X)
+    fit = model.fit()
+    return fit.params[1], fit.params[0]
+
+m, b = fit_line(d.temp, d.mood)
+print("Slope: {:.2f} Intercept: {:.2f}".format(m, b))
+
+Slope: -0.16 Intercept: 17.31
+\end{lstlisting}
+(f) Estimate the regression equation of the line that best represents the relationship between weather and mood for each individual.
+\begin{lstlisting}[language=Python]
+for i in range(1, 5):
+   print("Subject: {:d}, Slope: {:+.2f} Intercept: {:+.2f}"
+         .format(i, *fit_line(df.temp, df['part' + str(i)])))
+
+Subject: 1, Slope: +0.08 Intercept: -3.40
+Subject: 2, Slope: +0.00 Intercept: +4.30
+Subject: 3, Slope: -0.18 Intercept: +19.50
+Subject: 4, Slope: -0.54 Intercept: +48.83
+\end{lstlisting}
+(g) Test whether the relation between temperature and mood is significantly different between persons using Fisher's z transformations and z-test.\\
 \\
 (h) What can you say about differences in the relationship between weather and mood across individuals?\\
 \\
@@ -232,7 +317,7 @@ e) When will $B_1$ be equal to the correlation between $Y$ and $X_1$? When will 
 \\
 (b) A researcher is interested in predicting the mental health of college students based on their reported level of stress. What kind of sample should she collect and what statistical technique should she use to achieve this goal?\\
 \\
-(c) A researcher collected data from undergraduate and graduate students at universities across the country in a study of the relation between age (Range of 18 --- 46 years with a Mean = 23.5) and openness. There was a significant, negative relation between age and openness $(r(2,998) = -0.13, p < .05)$. The researcher cited this finding as evidence for why elderly individuals (age 60 years and upward) have difficulty learning about novel technology and ideological shifts; they’re openness has declined substantially over their lives. Is this a reasonable conclusion? Why or why not?\\
+(c) A researcher collected data from undergraduate and graduate students at universities across the country in a study of the relation between age (Range of 18 --- 46 years with a Mean = 23.5) and openness. There was a significant, negative relation between age and openness $(r(2,998) = -0.13, p < .05)$. The researcher cited this finding as evidence for why elderly individuals (age 60 years and upward) have difficulty learning about novel technology and ideological shifts; they're openness has declined substantially over their lives. Is this a reasonable conclusion? Why or why not?\\
 \\
 (d) A researcher studied a group of 100 students by having them complete a survey once a quarter, every quarter, for two years via an online survey form. The survey consisted of several items meant to measure anxiety, self-competence, and academic performance. What methods of analysis would be applicable to this type of data? How do you justify your recommendations?\\
 \\
