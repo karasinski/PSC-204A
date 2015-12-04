@@ -18,7 +18,7 @@
 \DeclareFixedFont{\ttm}{T1}{txtt}{m}{n}{12}  % for normal
 
 % Custom colors
-\usepackage{color}
+\usepackage{color, colortbl}
 \usepackage{listings}
 \usepackage{framed}
 \usepackage{caption}
@@ -192,26 +192,59 @@ Subject: 4, Slope: -0.54 Intercept: +48.83
 \toprule
   & & $X_1$ & $X_2$ & $X_3$ & $X_4$ & $X_5$ \\
 \midrule
-            & $X_1$ & ?      & -       & -     & -     & -   \\
+            & $X_1$ & \cellcolor{gray} 4     & -       & -     & -     & -   \\
             & $X_2$ & -0.5   & 0.25    & -     & -     & -   \\
-Covariance  & $X_3$ & 1.8    & ?       & ?     & -     & -   \\
+Covariance  & $X_3$ & 1.8    & \cellcolor{gray}1.125       & \cellcolor{gray} 9    & -     & -   \\
             & $X_4$ & -1.08  & -0.135  & -2.43 & 7.29  & -   \\
-            & $X_5$ & 17.28  & ?       &  6.48 & 4.374 & ?   \\
-\bottomrule
-\\
-\toprule
-  & & $X_1$ & $X_2$ & $X_3$ & $X_4$ & $X_5$ \\
+            & $X_5$ & 17.28  & \cellcolor{gray} 1.35      &  6.48 & 4.374 & \cellcolor{gray} 29.16   \\
+% \bottomrule
+% \\
+% \toprule
+  % & & $X_1$ & $X_2$ & $X_3$ & $X_4$ & $X_5$ \\
 \midrule
-            & $X_1$ & ?      & -       & -     & -     & -   \\
-            & $X_2$ & -0.5   & ?       & -     & -     & -   \\
-Correlation & $X_3$ & ?      & 0.25    & ?     & -     & -   \\
-            & $X_4$ & ?      & ?       & -0.3  & ?     & -   \\
-            & $X_5$ & ?      & 0.5     & ?     & 0.3   & ?   \\
+            & $X_1$ & 1.0      & -       & -     & -     & -   \\
+            & $X_2$ & -0.5   & 1.0       & -     & -     & -   \\
+Correlation & $X_3$ & \cellcolor{gray} 0.3     & 0.25    & 1.0     & -     & -   \\
+            & $X_4$ & \cellcolor{gray} -0.2      & \cellcolor{gray}-0.1       & -0.3  & 1.0     & -   \\
+            & $X_5$ & \cellcolor{red} 1.6     & 0.5     & \cellcolor{gray}0.4     & 0.3   & 1.0   \\
 \bottomrule
 \end{tabular}
 \end{center}
-% \caption{Results of Simple Effects Analysis}
 \end{table}
+There is one anomaly, the correlation $r_{15} = 1.6 > 1$ is impossible. This stems from $c_{15}$ being artificially too large.
+\begin{equation*}
+\begin{aligned}[c]
+s_{2}^2 &=0.25 \implies s_2 = 0.5 \\
+s_{4}^2 &=7.29 \implies s_4 = 2.7 \\
+\\
+r_{11} &= \frac{c_{11}}{s_1 s_1} \implies c_{11} = r_{11} s_{1} s_{1}\\
+r_{13} &= \frac{c_{13}}{s_1 s_3} \\
+r_{14} &= \frac{c_{14}}{s_1 s_4} \\
+r_{15} &= \frac{c_{15}}{s_1 s_5} \\
+r_{23} &= \frac{c_{23}}{s_2 s_3} \implies c_{23} = r_{23} s_{2} s_{3}\\
+r_{24} &= \frac{c_{24}}{s_2 s_4} = \frac{-0.135}{(0.5)(2.7)} = -0.1\\
+r_{25} &= \frac{c_{25}}{s_2 s_5} \implies c_{25} = r_{25} s_{2} s_{5}\\
+r_{33} &= \frac{c_{33}}{s_3 s_3} \implies c_{33} = r_{33} s_{3} s_{3}\\
+r_{35} &= \frac{c_{35}}{s_3 s_5} \\
+r_{55} &= \frac{c_{55}}{s_5 s_5} \implies c_{55} = r_{55} s_{5} s_{5}
+\end{aligned}
+\qquad\implies\qquad
+\begin{aligned}[c]
+r_{12} &= \frac{c_{12}}{s_1 s_2} \implies s_1 = \frac{c_{12}}{r_{12} s_2} = \frac{-0.5}{(-0.5)(0.5)} = 2\\
+r_{34} &= \frac{c_{34}}{s_3 s_4} \implies s_3 = \frac{c_{34}}{r_{34} s_4} = \frac{-2.43}{(-0.3)(2.7)} = 3\\
+r_{45} &= \frac{c_{45}}{s_4 s_5} \implies s_5 = \frac{c_{45}}{r_{45} s_4} = \frac{4.374}{(0.3)(2.7)} = 5.4\\
+\\
+c_{11} &= s_{1}^2 = 4\\
+r_{13} &= \frac{1.8}{(2) (3)} = 0.3 \\
+r_{14} &= \frac{-1.08}{(2) (2.7)} = -0.2 \\
+r_{15} &= \frac{17.28}{(2) (5.4)} = 1.6\\
+c_{23} &= (0.25) (0.5) (9) = 1.125\\
+c_{25} &= (0.5) (0.5) (5.4) = 1.35\\
+c_{33} &= s_{3}^2 = 9\\
+r_{35} &= \frac{6.48}{(3) (5.4)} =0.4\\
+c_{55} &= s_{5}^2 = 29.16
+\end{aligned}
+\end{equation*}
 
 \clearpage
 \problem{}
