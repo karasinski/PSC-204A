@@ -58,6 +58,18 @@
   tabsize=4,                       % sets default tabsize to 2 spaces
 }
 
+\usepackage{amsmath,amssymb,mathtools,bm,etoolbox}
+
+\providecommand\given{}
+\DeclarePairedDelimiterXPP\Aver[1]{\mathbb{E}}{[}{]}{}{
+\renewcommand\given{  \nonscript\:
+  \delimsize\vert
+  \nonscript\:
+  \mathopen{}
+  \allowbreak}
+#1
+}
+
 \author{John Karasinski}
 \title{Homework \# 7}
 
@@ -176,7 +188,24 @@ Source & $SS$ & $df$ & $F$ & $PR(>F)$ \\
 
 \clearpage
 \problem{}
-(10 points) Explain why r must be between -1 and +1. Please, do not use more than 1 or 2 paragraphs. You can append calculations, if you need them.
+(10 points) Explain why $r$ must be between -1 and +1. Please, do not use more than 1 or 2 paragraphs. You can append calculations, if you need them.\\
+
+$r$ is defined as
+$$r = \frac{\mbox{cov}_{XY}}{s_X s_Y}.$$
+As a corrolary of the Cauchy-Schwarz inequality,
+\begin{align*}
+|\mbox{cov}_{XY}|^2 & =  |\Aver{(X-\mu)(Y-\nu)}|^2           \\
+                    & =  |\langle X-\mu,Y-\nu \rangle|^2               \\
+                    & \leq  |\langle X-\mu,X-\mu \rangle\langle X-\mu,X-\mu \rangle|^2  \\
+                    & =  \Aver{(X-\mu)^2}\Aver{(Y-\nu)^2}        \\
+                    & =  s_X^2 s_Y^2,
+\end{align*}
+where $\mu=E(X), \nu=E(Y)$. From above, we then have $\mbox{cov}_{XY} = \pm s_X s_Y$. Plugging this into our equation for $r$ yields the solution,
+\begin{align*}
+r &= \frac{\mbox{cov}_{XY}}{s_X s_Y} \\
+  &= \frac{\pm s_X s_Y}{s_X s_Y} \\
+  &= \pm 1
+\end{align*}
 
 \clearpage
 \problem{}
@@ -209,6 +238,7 @@ e) When will $B_1$ be equal to the correlation between $Y$ and $X_1$? When will 
 \\
 (e) A researcher received a small grant to conduct a study and is debating on how to spend the money. She is thinking that she can give a test to 300 individuals on one occasion, give a test to one individual on 300 occasions, give a test to 30 individuals on 10 occasions, give a test to 10 individuals on 30 occasions, or any combination of the above. Which of these data collection methods should she use?
 
+\clearpage
 \problem{Extra Credit}
 
 (10 points) Explain what it means to say that a correlation is a covariance expressed in z-scores? Derive numerically the formula for a correlation based on the formula from a covariance (and describe the steps in your own words).
