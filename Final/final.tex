@@ -368,16 +368,16 @@ which was to be proven.
                 $$Y = B_0 + B_1 X_1$$
 a) What is the interpretation of $B_0$? What is the interpretation of $B_1$?\\
 \\
-$B_0$ is the intercept---the mean response when $X_1 = 0$. $B_1$ is the slope---the change in mean response in $Y$ when $X_1$ increases by 1 unit. It describes the linear relationship between $X$ and $Y$, which can be positive or negative, and increases with magnitude as the linear relationship becomes stronger.\\
+$B_0$ is the intercept---the mean response of Y when $X_1 = 0$. $B_1$ is the slope---the change in mean response in $Y$ when $X_1$ increases by 1 unit. It describes the linear relationship between $X$ and $Y$, which can be positive or negative, and increases with magnitude as the linear relationship becomes stronger.\\
 \\
 b) When will $B_1$ be equal to the correlation between $Y$ and $X_1$? Why?\\
 \\
 $B_1$ is equal to the correlation between $Y$ and $X_1$ when the scales of $X$ and $Y$ are the same (for instance, when $X_1$ and $Y$ are standardized).
 The slope of our model, $B_1$, is related to the correlation by
 \begin{align*}
-B_1 &= \mbox{cor}(Y, X_1) \frac{\mbox{SD}(Y)}{\mbox{SD}(X_1)}
+B_1 &= \mbox{cor}(Y, X_1) \frac{\sigma_Y}{\sigma_{X_1}}
 \end{align*}
-Therefore the two are equivalent only when SD$(Y) = $ SD $(X_1)$, so the variables must be on the same scale (for instance, again, when $X_1$ and $Y$ are standardized).\\
+Therefore the two are equivalent only when $\sigma_{Y} = \sigma_{X_1}$, so the variables must be on the same scale (for instance, again, when $X_1$ and $Y$ are standardized).\\
 \\
 After running the analysis you remember a covariate that you believe is related to $Y$, but is not substantively of interest.
 c) What are the benefits of including the covariate in the model? Include two benefits and explain them in detail.
@@ -389,19 +389,19 @@ Finally, you include the covariate within the analysis and fit the following mod
                 $$Y = B_0 + B_1 X_1 + B_2 X_2$$
 d) What is the interpretation of each of the coefficients in this model?\\
 \\
-$B_0$ is the intercept---the mean response when $X_1 = X_2 = 0$. $B_1$ is a slope---the change in mean response in $Y$ when $X_1$ increases by 1 unit and $X_2$ is held constant. $B_2$ is also a slope---the change in mean response in $Y$ when $X_2$ increases by 1 unit and $X_1$ is held constant. \\
+$B_0$ is the intercept---the mean response of Y when $X_1 = X_2 = 0$. $B_1$ is a slope---the change in mean response in $Y$ when $X_1$ increases by 1 unit and $X_2$ is held constant. $B_2$ is also a slope---the change in mean response in $Y$ when $X_2$ increases by 1 unit and $X_1$ is held constant. \\
 \\
 e) When will $B_1$ be equal to the correlation between $Y$ and $X_1$? When will $B_2$ be equal to the correlation between $Y$ and $X_2$? Why?\\
 \\
 $B_1$ is equal to the correlation between $Y$ and $X_1$ when the scales of $X$ and $Y$ are the same. The slope of our model, $B_1$, is related to the correlation by
 \begin{align*}
-B_1 &= \mbox{cor}(Y, X_1) \frac{\mbox{SD}(Y)}{\mbox{SD}(X_1)}
+B_1 &= \mbox{cor}(Y, X_1) \frac{\sigma_Y}{\sigma_{X_1}}
 \end{align*}
-Therefore the two are equivalent only when SD$(Y) = $ SD $(X_1)$, so the variables must be on the same scale (for instance, again, when $X_1$ and $Y$ are standardized). $B_2$ is equal to the correlation between $Y$ and $X_2$ when the scales of $X$ and $Y$ are the same. The slope of our model, $B_2$, is related to the correlation by
+Therefore the two are equivalent only when $\sigma_{Y} = \sigma_{X_1}$, so the variables must be on the same scale (for instance, again, when $X_1$ and $Y$ are standardized). $B_2$ is equal to the correlation between $Y$ and $X_2$ when the scales of $X$ and $Y$ are the same. The slope of our model, $B_2$, is related to the correlation by
 \begin{align*}
-B_2 &= \mbox{cor}(Y, X_2) \frac{\mbox{SD}(Y)}{\mbox{SD}(X_2)}
+B_2 &= \mbox{cor}(Y, X_2) \frac{\sigma_Y}{\sigma_{X_2}}
 \end{align*}
-Therefore the two are equivalent only when SD$(Y) = $ SD $(X_2)$, so the variables must be on the same scale (for instance, again, when $X_2$ and $Y$ are standardized).\\
+Therefore the two are equivalent only when $\sigma_{Y} = \sigma_{X_2}$, so the variables must be on the same scale (for instance, again, when $X_2$ and $Y$ are standardized).\\
 \\
 
 \clearpage
@@ -422,7 +422,7 @@ This is not a reasonable conclusion. The researcher is taking findings from one 
 \\
 (d) A researcher studied a group of 100 students by having them complete a survey once a quarter, every quarter, for two years via an online survey form. The survey consisted of several items meant to measure anxiety, self-competence, and academic performance. What methods of analysis would be applicable to this type of data? How do you justify your recommendations?\\
 \\
-This type of study could be analyzed with repeated measures ANOVA.\\
+This type of study could be analyzed with repeated measures ANOVA, but it is probably better to use mixed effects models. Since we're doing research with students over a long period of time, it is likely that many of them will fail to complete the entire experiment. A repeated measures ANOVA could be used here, but the researcher would have to drop all the subjects that did not complete the entire experiment, which could lead to unintentional biases in the results (perhaps the students that dropped out had poor academic performance). A mixed effects model can use subjects that drop out, or simply miss a session. Mixed effects models also don't require an assumption of sphericity, which can often be violated in longitudinal studies.\\
 \\
 (e) A researcher received a small grant to conduct a study and is debating on how to spend the money. She is thinking that she can give a test to 300 individuals on one occasion, give a test to one individual on 300 occasions, give a test to 30 individuals on 10 occasions, give a test to 10 individuals on 30 occasions, or any combination of the above. Which of these data collection methods should she use?\\
 \\
@@ -431,15 +431,27 @@ The solution, of course, depends on what the researcher is researching (and how 
 \clearpage
 \problem{Extra Credit}
 
-(10 points) Explain what it means to say that a correlation is a covariance expressed in z-scores? Derive numerically the formula for a correlation based on the formula from a covariance (and describe the steps in your own words).
+(10 points) Explain what it means to say that a correlation is a covariance expressed in z-scores? Derive numerically the formula for a correlation based on the formula from a covariance (and describe the steps in your own words).\\
+\\
+You must know the variance of a variable to determine the meaning of a covariance value. To remove this requirement, the covariance can be scaled by the standard deviations of the covarying variables to convert the covariance value to a correlation value. It's easier to draw conclusions from correlation scores as they are bound by $\pm 1$ (see previous problem).
 
 \begin{align*}
-\mbox{cor}(X, Y) &= \frac{\mbox{cov}(X, Y)}{\sigma_X \sigma_Y} \\
-                 &= \frac{\Aver{\left(X - \Aver{X} \right) \left(Y - \Aver{Y} \right) }}{\sigma_X \sigma_Y} \\
-                 &= \Aver{\frac{X - \Aver{X}}{\sigma_X} \frac{Y - \Aver{Y}}{\sigma_Y}} \\
-                 % &= \Aver{\frac{X}{\sigma_X} \frac{Y}{\sigma_Y}}
-                 &= \Aver{Z_X Z_Y}
+\mbox{cor}(X, Y) &= \mbox{cov}\left( Z_X, Z_Y \right) && \text{Given the correlation of X, Y is equal to the} \\
+& && \text{covariance of $Z_X$ and $Z_Y$.} \\
+\mbox{cor}(X, Y) &= \mbox{cov} \left(\frac{X - \Aver{X}}{\sigma_X}, \frac{Y - \Aver{Y}}{\sigma_Y} \right) && \text{Expand $Z_X$ and $Z_Y$ by the definition of z-scores.}\\
+\mbox{cor}(X, Y) &= \frac{\Aver{\left(X - \Aver{X} \right) \left(Y - \Aver{Y} \right) }}{\sigma_X \sigma_Y} && \text{Definition of covariance.} \\
+\mbox{cor}(X, Y) &= \Aver{\frac{X - \Aver{X}}{\sigma_X } \frac{Y - \Aver{Y} }{\sigma_Y}} && \text{Regrouping.} \\
+\mbox{cor}(X, Y) &= \frac{\mbox{cov}(X, Y)}{\sigma_X \sigma_Y} && \text{Which is the definition of the correlation.} \\
 \end{align*}
+
+
+% \begin{align*}
+% \mbox{cor}(X, Y) &= \frac{\mbox{cov}(X, Y)}{\sigma_X \sigma_Y} && \text{Definition of correlation.}\\
+%                  &= \frac{\Aver{\left(X - \Aver{X} \right) \left(Y - \Aver{Y} \right) }}{\sigma_X \sigma_Y} && \text{Definition of covariance.}\\
+%                  &= \Aver{\frac{X - \Aver{X}}{\sigma_X} \frac{Y - \Aver{Y}}{\sigma_Y}}  && \text{Algebraic rearranging.}\\
+%                  % &= \Aver{\frac{X}{\sigma_X} \frac{Y}{\sigma_Y}}
+%                  &= \Aver{Z_X Z_Y}  && \text{Definition of z-score.}
+% \end{align*}
 
 
 
