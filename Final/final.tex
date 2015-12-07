@@ -90,7 +90,7 @@ Two plots are generated here. The first is a scatter plot with the regression li
 \end{center}
 \caption{Scatter plot of each subject's mood vs temperature of for each day. Regression line shows a negative correlation between mood and temperature $(r=-0.24)$. }
 \end{figure}
-A second plot was made to investigate the correlations between individual subject's mood and the weather. Correlations between mood and temperature vary between subjects: $r_{T1} = .3, r_{T2} = 0, r_{T3} = -.3, r_{T4} = -.7$, and correlations between all pairs of subjects' moods are $\approx 0$. This plot tells us a lot more than the first. We now know that some subjects have a positive correlation between mood and weather, some have no correlation, and some have a negative (or very negative) correlation. Thanks to this plot, I see that there are very different responses among subjects, and that we will probably need to sample a larger number of subjects before we can draw meaningful conclusions about relations between mood and weather.\\
+A second plot was made to investigate the correlations between individual subject's mood and the weather. Correlations between mood and temperature vary between subjects: $r_{T1} = .3, r_{T2} = 0, r_{T3} = -.3, r_{T4} = -.7$, and correlations between all pairs of subjects' moods are $\approx 0$. This plot tells us a lot more than the first. We now know that some subjects have a positive correlation between mood and weather, some have no correlation, and some have a negative (or very negative) correlation. Thanks to this plot, I see that there are very different responses among subjects, and that we will probably need to sample a larger number of subjects before we can draw meaningful conclusions about the population's relations between mood and weather.\\
 \\
 The code to make these plots:
 \begin{figure}[t!]
@@ -125,15 +125,21 @@ print(stats)
 
 \noindent (c) Estimate the covariance between weather and mood as well as the sum of cross-products. What does each of these indices indicate about the relation between weather and mood?
 \begin{lstlisting}[language=Python]
-print(df.cov())
-#                temp         part1         part2         part3         part4
-# temp   9.000000e+00  7.200000e-01  2.569603e-15 -1.620000e+00 -4.830000e+00
-# part1  7.200000e-01  6.400000e-01  1.255035e-15 -8.753063e-16 -4.182645e-15
-# part2  2.569603e-15  1.255035e-15  1.440000e+00  2.516506e-15  3.946923e-15
-# part3 -1.620000e+00 -8.753063e-16  2.516506e-15  3.240000e+00 -1.042644e-15
-# part4 -4.830000e+00 -4.182645e-15  3.946923e-15 -1.042644e-15  5.290000e+00
+print(df.cov()['temp'])
+# temp   9.000000e+00
+# part1  7.200000e-01
+# part2  2.569603e-15
+# part3 -1.620000e+00
+# part4 -4.830000e+00
+print((df.cov() * (len(df) - 1))['temp'])
+# temp   6.210000e+02
+# part1  4.968000e+01
+# part2  1.773026e-13
+# part3 -1.117800e+02
+# part4 -3.332700e+02
 \end{lstlisting}
-The diagonal terms indicate the variance within each variable. (These variances are not very close to equal, suggesting that we may not be able to assume homogeneity of variance.) The off-diagonal elements show the covariances among the variables. We see that all of the indices relating two subjects are approximately zero. This suggests that the subjects' moods do not covary with each other. With the exception of the second subject, we see that subjects tend to have some non-zero covariance with temperature. This may indicate a significant correlation between some subject's mood and the temperature. The matrix of covariance is symmetric, as the covariance formula doesn't depend on the order of variables.\\
+% The diagonal terms indicate the unbiased variance within each variable. (These variances are not very close to equal, suggesting that we may not be able to assume homogeneity of variance.) The off-diagonal elements show the unbiased covariances among the variables. We see that all of the indices relating two subjects are approximately zero. This suggests that the subjects' moods do not covary with each other. With the exception of the second subject, we see that subjects tend to have some non-zero covariance with temperature. This may indicate a significant correlation between some subject's mood and the temperature. The matrix of covariance is symmetric, as the covariance formula doesn't depend on the order of variables. To calculate the sum of cross-products, we simply multiply by $N-1$.\\
+The first term indicates the unbiased variance within the temp variable. With the exception of the second subject, we see that subjects tend to have some non-zero covariance with temperature. This may indicate a significant correlation between some subject's mood and the temperature. To calculate the sum of cross-products, we simply multiply the covariance by $N-1$.\\
 \\
 (d) What is the correlation between weather and mood across all participants? What does the correlation indicate about the relationship between weather and mood?
 \begin{lstlisting}[language=Python]
@@ -215,11 +221,11 @@ print(res.mask(np.triu(np.ones(res.shape)).astype(np.bool)))
 \end{lstlisting}
 (h) What can you say about differences in the relationship between weather and mood across individuals?\\
 \\
-Fisher's z-tests were used to determine if correlations between subject's moods and the weather were significantly different from each other. All subject's correlations were significantly different from each other at the $p=0.01$ level.\\
+Fisher's z-tests were used to determine if correlations between subject's moods and the weather were significantly different from each other. All subject's correlations were significantly different from each other at the $p=0.01$ level. This indicates that each pair of subjects' relation between temperature and mood was significantly different.\\
 \\
 (h) You submit the result of all these analyses for publication but the editor rejects the manuscript on the basis of: (i) a lack of power to examine your research questions, and (ii) the fact that there are only 4 individuals in your data and, thus --- they claim --- you cannot generalize to the population. Nevertheless, you are convinced --- or just have a hunch --- that there might be something valuable here and write back arguing that the data and analyses are worth disseminating. What would you say to support your argument?\\
 \\
-I would likely argue that, while these results may or may not be representative of the population, the results presented here are nonetheless interesting and statistically significant. I would concede that the correlation among all subjects, $r=0.24$, is likely not representative of the population. Despite this, I would argue that there was significant power to significantly detect effects. While the sample size is not large, the magnitude of the effect size was enormous. As such, we still have enough power to detect significant effects at a relevant statistical significance criterion. Further, we have shown that individuals can have significant correlations between mood and weather, and that these can be significantly different from person to person.
+I would likely argue that, while these results may or may not be representative of the population, the results presented here are nonetheless interesting and statistically significant. I would concede that the correlation among all subjects, $r=-0.24$, is likely not representative of the population. Despite this, I would argue that there was significant power to significantly detect effects. While the sample size is not large, the magnitude of the effect size was enormous. As such, we still have enough power to detect significant effects at a relevant statistical significance criterion. Further, we have shown that individuals can have significant correlations between mood and weather, and that these can be significantly different from person to person.
 
 \clearpage
 \problem{}
@@ -346,19 +352,19 @@ Source & $SS$ & $df$ & $F$ & $PR(>F)$ \\
 
 \noindent $r$ is defined as
 $$r = \frac{\mbox{cov}_{XY}}{s_X s_Y}.$$
-As a corrolary of the Cauchy-Schwarz inequality,
+The Cauchy-Schwarz inequality (which I will not prove) states that, for any random variables $A$ and $B$, $\Aver{AB}^2 \leq \Aver{A^2} \Aver{B^2}$. Using $A=X-\mu$ and $B=Y-\nu$, where $\mu=E(X), \nu=E(Y)$, we then have
 \begin{align*}
-\mbox{cov}_{XY}^2 & = \Aver{(X-\mu)(Y-\nu)}^2           \\
-                    & \leq \Aver{(X-\mu)^2}\Aver{(Y-\nu)^2}        \\
-                    & \leq s_X^2 s_Y^2 \\
-|\mbox{cov}_{XY}|   & \leq \sqrt{s_X^2 s_Y^2},
+\mbox{cov}_{XY}^2 & = \Aver{(X-\mu)(Y-\nu)}^2 && \text{Definition of covariance.}           \\
+                    & \leq \Aver{(X-\mu)^2}\Aver{(Y-\nu)^2}  && \text{Cauch-Schwarz inequality (above).}       \\
+                    & \leq s_X^2 s_Y^2  && \text{Definition of variance.}\\
+|\mbox{cov}_{XY}|   & \leq \sqrt{s_X^2 s_Y^2}  && \text{Taking positive square roots.}
 \end{align*}
-where $\mu=E(X), \nu=E(Y)$. From above, we then have $-s_X s_Y \leq \mbox{cov}_{XY} \leq s_X s_Y$. Dividing by $s_X s_Y$ yields,
-\begin{alignat*}{3}
--\frac{s_X s_Y}{s_X s_Y} & \leq \frac{\mbox{cov}_{XY}}{s_X s_Y} && \leq \frac{s_X s_Y}{s_X s_Y} \\
--1 & \leq \frac{\mbox{cov}_{XY}}{s_X s_Y} && \leq 1 \\
--1 & \leq r \leq 1,
-\end{alignat*}
+This is the same as $-s_X s_Y \leq \mbox{cov}_{XY} \leq s_X s_Y$. The rest is simple algebra
+\begin{align*}
+-\frac{s_X s_Y}{s_X s_Y} & \leq \frac{\mbox{cov}_{XY}}{s_X s_Y} \leq \frac{s_X s_Y}{s_X s_Y} && \text{Dividing by $s_X s_Y$.}\\
+-1 & \leq \frac{\mbox{cov}_{XY}}{s_X s_Y} \leq 1  && \text{Reducing.}\\
+-1 & \leq r \leq 1  && \text{Definition of $r$.}
+\end{align*}
 which was to be proven.
 
 \clearpage
@@ -382,8 +388,8 @@ Therefore the two are equivalent only when $\sigma_{Y} = \sigma_{X_1}$, so the v
 After running the analysis you remember a covariate that you believe is related to $Y$, but is not substantively of interest.
 c) What are the benefits of including the covariate in the model? Include two benefits and explain them in detail.
 \begin{enumerate}
-\item Decrease type I error
-\item Account for additional factors (and check for interactions)
+\item Increase in power --- adding a covariate can reduce the within-group error variance, increasing the resulting $F$ statistic. When the effects of the covariate on the dependent variable are controlled for, we remove it from the within-group error (denominator of $F$ statistic), making it easier to find a significant effect.
+\item Adjust for preexisting differences --- controlling for known extraneous variables, we can gain greater insight into the effect of predictor variables. ANCOVA can adjust for preexisting differences in groups (covariates), making it easier to detect changes in dependent variable.
 \end{enumerate}
 Finally, you include the covariate within the analysis and fit the following model:
                 $$Y = B_0 + B_1 X_1 + B_2 X_2$$
@@ -393,15 +399,21 @@ $B_0$ is the intercept---the mean response of Y when $X_1 = X_2 = 0$. $B_1$ is a
 \\
 e) When will $B_1$ be equal to the correlation between $Y$ and $X_1$? When will $B_2$ be equal to the correlation between $Y$ and $X_2$? Why?\\
 \\
-$B_1$ is equal to the correlation between $Y$ and $X_1$ when the scales of $X$ and $Y$ are the same. The slope of our model, $B_1$, is related to the correlation by
+$B_1$, is related to the correlation by
 \begin{align*}
-B_1 &= \mbox{cor}(Y, X_1) \frac{\sigma_Y}{\sigma_{X_1}}
+B_1 &= \frac{\mbox{cov}_{Y1} \sigma_2^2 - \mbox{cov}_{Y2} \mbox{cov}_{12}}{\sigma_{2}^2 \sigma_1^2 - \mbox{cov}_{12}^2}  && \text{Definition of regression coefficient.}\\
+    &= \frac{\mbox{cov}_{Y1}}{\sigma_{1}^2} && \text{Setting cov$_{12}$ = 0.} \\
+\\
+r_{Y1}  &= \frac{\mbox{cov}_{Y1}}{\sigma_Y \sigma_1} && \text{Definition of the correlation.}
 \end{align*}
-Therefore the two are equivalent only when $\sigma_{Y} = \sigma_{X_1}$, so the variables must be on the same scale (for instance, again, when $X_1$ and $Y$ are standardized). $B_2$ is equal to the correlation between $Y$ and $X_2$ when the scales of $X$ and $Y$ are the same. The slope of our model, $B_2$, is related to the correlation by
+Therefore the two are equivalent only when $\sigma_{Y} = \sigma_{1}$, so the variables must be on the same scale (for instance, again, when $X_1$ and $Y$ are standardized). $B_2$, is related to the correlation by
 \begin{align*}
-B_2 &= \mbox{cor}(Y, X_2) \frac{\sigma_Y}{\sigma_{X_2}}
+B_2 &= \frac{\mbox{cov}_{Y2} \sigma_1^2 - \mbox{cov}_{Y1} \mbox{cov}_{12}}{\sigma_{2}^2 \sigma_1^2 - \mbox{cov}_{12}^2} && \text{Definition of regression coefficient.} \\
+    &= \frac{\mbox{cov}_{Y2}}{\sigma_{2}^2} && \text{Setting cov$_{12}$ = 0.} \\
+\\
+r_{Y2}  &= \frac{\mbox{cov}_{Y2}}{\sigma_Y \sigma_2} && \text{Definition of the correlation.}
 \end{align*}
-Therefore the two are equivalent only when $\sigma_{Y} = \sigma_{X_2}$, so the variables must be on the same scale (for instance, again, when $X_2$ and $Y$ are standardized).\\
+Therefore the two are equivalent only when $\sigma_{Y} = \sigma_{2}$, so the variables must be on the same scale (for instance, again, when $X_2$ and $Y$ are standardized).\\
 \\
 
 \clearpage
