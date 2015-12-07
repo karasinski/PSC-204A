@@ -236,10 +236,6 @@ I would likely argue that, while these results may or may not be representative 
 Covariance  & $X_3$ & 1.8    & \cellcolor{gray}1.125       & \cellcolor{gray} 9    & -     & -   \\
             & $X_4$ & -1.08  & -0.135  & -2.43 & 7.29  & -   \\
             & $X_5$ & 17.28  & \cellcolor{gray} 1.35      &  6.48 & 4.374 & \cellcolor{gray} 29.16   \\
-% \bottomrule
-% \\
-% \toprule
-  % & & $X_1$ & $X_2$ & $X_3$ & $X_4$ & $X_5$ \\
 \midrule
             & $X_1$ & 1.0      & -       & -     & -     & -   \\
             & $X_2$ & -0.5   & 1.0       & -     & -     & -   \\
@@ -345,24 +341,25 @@ Source & $SS$ & $df$ & $F$ & $PR(>F)$ \\
 
 \clearpage
 \problem{}
+% http://w3.sista.arizona.edu/~cdawson/ista311/notes/07_relationships_between_RVs.pdf
 (10 points) Explain why $r$ must be between -1 and +1. Please, do not use more than 1 or 2 paragraphs. You can append calculations, if you need them.\\
 
-$r$ is defined as
+\noindent $r$ is defined as
 $$r = \frac{\mbox{cov}_{XY}}{s_X s_Y}.$$
 As a corrolary of the Cauchy-Schwarz inequality,
 \begin{align*}
-|\mbox{cov}_{XY}|^2 & =  |\Aver{(X-\mu)(Y-\nu)}|^2           \\
-                    & =  |\langle X-\mu,Y-\nu \rangle|^2               \\
-                    & \leq  |\langle X-\mu,X-\mu \rangle\langle X-\mu,X-\mu \rangle|^2  \\
-                    & =  \Aver{(X-\mu)^2}\Aver{(Y-\nu)^2}        \\
-                    & =  s_X^2 s_Y^2,
+\mbox{cov}_{XY}^2 & = \Aver{(X-\mu)(Y-\nu)}^2           \\
+                    & \leq \Aver{(X-\mu)^2}\Aver{(Y-\nu)^2}        \\
+                    & \leq s_X^2 s_Y^2 \\
+|\mbox{cov}_{XY}|   & \leq \sqrt{s_X^2 s_Y^2},
 \end{align*}
-where $\mu=E(X), \nu=E(Y)$. From above, we then have $\mbox{cov}_{XY} = \pm s_X s_Y$. Plugging this into our equation for $r$ yields the solution,
-\begin{align*}
-r &= \frac{\mbox{cov}_{XY}}{s_X s_Y} \\
-  &= \frac{\pm s_X s_Y}{s_X s_Y} \\
-  &= \pm 1
-\end{align*}
+where $\mu=E(X), \nu=E(Y)$. From above, we then have $-s_X s_Y \leq \mbox{cov}_{XY} \leq s_X s_Y$. Dividing by $s_X s_Y$ yields,
+\begin{alignat*}{3}
+-\frac{s_X s_Y}{s_X s_Y} & \leq \frac{\mbox{cov}_{XY}}{s_X s_Y} && \leq \frac{s_X s_Y}{s_X s_Y} \\
+-1 & \leq \frac{\mbox{cov}_{XY}}{s_X s_Y} && \leq 1 \\
+-1 & \leq r \leq 1,
+\end{alignat*}
+which was to be proven.
 
 \clearpage
 \problem{}%
