@@ -81,75 +81,69 @@
 \\
 (a) Plot the data in a way/s that you find meaningful to examine the relationship between mood and weather. Interpret the graph/s.\\
 \\
-Two plots are generated here. The first is a scatter plot showing the regression line between all subjects' mood and the temperature for all days ($n=4$). We find $r=-.24$, suggesting that only~6\% of the variance in mood can be explained by temperature. This plot is useful to show us the overall structure of the data.
+Two plots are generated here. The first is a scatter plot with the regression line between all subjects' mood and the temperature for all days ($n=4$). This plot is useful to show us the overall structure of the data---at this point I don't care that we measured data from multiple individuals, I just want to see if there is an immediate, obvious relationship between mood and temperature. We find $r=-.24$, suggesting that only~6\% of the variance in mood can be explained by temperature.
 
-A second plot was made to investigate the correlations between individual subject's mood and the weather. Each subject shows a different correlation, $r_{T1} = .3, r_{T2} = 0, r_{T3} = -.3, r_{T4} = -.7$. Correlations between all pairs of subjects are negligible.
-\begin{figure}[h!]
+\begin{figure}[b!]
 \begin{center}
 \includegraphics[height=0.5\textheight]{p1-mean.pdf}
 \label{fig:on}
 \end{center}
 \caption{Scatter plot of each subject's mood vs temperature of for each day. Regression line shows a negative correlation between mood and temperature $(r=-0.24)$. }
 \end{figure}
-\begin{figure}[h!]
+A second plot was made to investigate the correlations between individual subject's mood and the weather. Correlations between mood and temperature vary between subjects: $r_{T1} = .3, r_{T2} = 0, r_{T3} = -.3, r_{T4} = -.7$, and correlations between all pairs of subjects' moods are $\approx 0$. This plot tells us a lot more than the first. We now know that some subjects have a positive correlation between mood and weather, some have no correlation, and some have a negative (or very negative) correlation. Thanks to this plot, I see that there are very different responses among subjects, and that we will probably need to sample a larger number of subjects before we can draw meaningful conclusions about relations between mood and weather.\\
+\\
+The code to make these plots:
+\begin{figure}[t!]
 \begin{center}
-\includegraphics[height=0.55\textheight]{p1-persubj.pdf}
+\includegraphics[height=0.5\textheight]{p1-persubj.pdf}
 \label{fig:on}
 \end{center}
-\caption{Investigation of individual participant's relationships between mood and temperature. Correlations vary between subjects: $r_{T1} = .3, r_{T2} = 0, r_{T3} = -.3, r_{T4} = -.7$, and correlations between all pairs of subjects are negligible.}
+\caption{Investigation of individual participant's relationships between mood and temperature.}
 \end{figure}
-\\
-(b) Compute means and standard deviations for the data.\\
+\begin{lstlisting}[language=Python]
+df = pd.read_csv('tempmood.csv')
+df['day'] = df.index.tolist()
+d = pd.melt(df, id_vars='temp', value_vars=['part1', 'part2', 'part3', 'part4'],
+            value_name='mood', var_name='id')
+sns.jointplot('temp', 'mood', data=d, xlim=(74, 88), ylim=(0, 12), space=0,
+              kind='reg')
+sns.lmplot(x='temp', y='mood', hue='id', col='id', col_wrap=2, data=d, size=3)
+\end{lstlisting}
+
+\clearpage
+\noindent (b) Compute means and standard deviations for the data.
 \begin{lstlisting}[language=Python]
 stats = pd.DataFrame.from_dict({'mean':df.mean(), 'std':df.std()})
 print(stats)
+#             mean        std
+# temp       80.00   3.000000
+# part1       3.00   0.800000
+# part2       4.30   1.200000
+# part3       5.10   1.800000
+# part4       5.90   2.300000
 \end{lstlisting}
-\begin{table}[h!]
-\begin{center}
-\begin{tabular}{rrr}
-\toprule
-          &  mean  &      std \\
-\midrule
-temp      & 80.0  & 3.0 \\
-part1     &  3.0  & 0.8 \\
-part2     &  4.3  & 1.2 \\
-part3     &  5.1  & 1.8 \\
-part4     &  5.9  & 2.3 \\
-\bottomrule
-\end{tabular}
-\end{center}
-% \caption{Results of Simple Effects Analysis}
-\end{table}
-(c) Estimate the covariance between weather and mood as well as the sum of cross-products. What does each of these indices indicate about the relation between weather and mood?
+
+\noindent (c) Estimate the covariance between weather and mood as well as the sum of cross-products. What does each of these indices indicate about the relation between weather and mood?
 \begin{lstlisting}[language=Python]
 print(df.cov())
-
-               temp         part1         part2         part3         part4
-temp   9.000000e+00  7.200000e-01  2.569603e-15 -1.620000e+00 -4.830000e+00
-part1  7.200000e-01  6.400000e-01  1.255035e-15 -8.753063e-16 -4.182645e-15
-part2  2.569603e-15  1.255035e-15  1.440000e+00  2.516506e-15  3.946923e-15
-part3 -1.620000e+00 -8.753063e-16  2.516506e-15  3.240000e+00 -1.042644e-15
-part4 -4.830000e+00 -4.182645e-15  3.946923e-15 -1.042644e-15  5.290000e+00
-
-print(df.cov().sum())
-
-temp     3.27
-part1    1.36
-part2    1.44
-part3    1.62
-part4    0.46
+#                temp         part1         part2         part3         part4
+# temp   9.000000e+00  7.200000e-01  2.569603e-15 -1.620000e+00 -4.830000e+00
+# part1  7.200000e-01  6.400000e-01  1.255035e-15 -8.753063e-16 -4.182645e-15
+# part2  2.569603e-15  1.255035e-15  1.440000e+00  2.516506e-15  3.946923e-15
+# part3 -1.620000e+00 -8.753063e-16  2.516506e-15  3.240000e+00 -1.042644e-15
+# part4 -4.830000e+00 -4.182645e-15  3.946923e-15 -1.042644e-15  5.290000e+00
 \end{lstlisting}
+The diagonal terms indicate the variance within each variable. (These variances are not very close to equal, suggesting that we may not be able to assume homogeneity of variance.) The off-diagonal elements show the covariances among the variables. We see that all of the indices relating two subjects are approximately zero. This suggests that the subjects' moods do not covary with each other. With the exception of the second subject, we see that subjects tend to have some non-zero covariance with temperature. This may indicate a significant correlation between some subject's mood and the temperature. The matrix of covariance is symmetric, as the covariance formula doesn't depend on the order of variables.\\
+\\
 (d) What is the correlation between weather and mood across all participants? What does the correlation indicate about the relationship between weather and mood?
 \begin{lstlisting}[language=Python]
-print(df.corr())
-
-               temp         part1         part2         part3         part4
-temp   1.000000e+00  3.000000e-01  6.954537e-16 -3.000000e-01 -7.000000e-01
-part1  3.000000e-01  1.000000e+00  1.290567e-15 -6.011473e-16 -2.260934e-15
-part2  6.954537e-16  1.290567e-15  1.000000e+00  1.165049e-15  1.440538e-15
-part3 -3.000000e-01 -6.011473e-16  1.165049e-15  1.000000e+00 -2.837159e-16
-part4 -7.000000e-01 -2.260934e-15  1.440538e-15 -2.837159e-16  1.000000e+00
+print(d.corr())
+#           temp      mood
+# temp  1.000000 -0.244438
+# mood -0.244438  1.000000
 \end{lstlisting}
+There is a correlation of -0.24 between temperature and weather, indicating that a larger temperature corresponds to a lower mood. This also indicates that about ~6\% of the variance in mood is explained by weather. While there is no way for us to definitively say that a higher temperature \textit{causes} a lower mood, it seems unlikely that a lower mood causes a higher temperature. Despite this, higher temperatures may directly or indirectly cause lower mood, and the correlation does not imply causation.\\
+\\
 (e) Estimate the regression equation of the line that best represents the relationship between weather and mood for all individuals as a single group.
 \begin{lstlisting}[language=Python]
 import statsmodels.api as sm
@@ -163,24 +157,69 @@ def fit_line(x, y):
 m, b = fit_line(d.temp, d.mood)
 print("Slope: {:.2f} Intercept: {:.2f}".format(m, b))
 
-Slope: -0.16 Intercept: 17.31
+# Slope: -0.16 Intercept: 17.31
 \end{lstlisting}
+The resulting regression line is then:
+$$
+Y_{\mbox{mood}} = 17.31 - 0.16 X_{\mbox{temp}}
+$$
 (f) Estimate the regression equation of the line that best represents the relationship between weather and mood for each individual.
 \begin{lstlisting}[language=Python]
 for i in range(1, 5):
    print("Subject: {:d}, Slope: {:+.2f} Intercept: {:+.2f}"
          .format(i, *fit_line(df.temp, df['part' + str(i)])))
 
-Subject: 1, Slope: +0.08 Intercept: -3.40
-Subject: 2, Slope: +0.00 Intercept: +4.30
-Subject: 3, Slope: -0.18 Intercept: +19.50
-Subject: 4, Slope: -0.54 Intercept: +48.83
+# Subject: 1, Slope: +0.08 Intercept: -3.40
+# Subject: 2, Slope: +0.00 Intercept: +4.30
+# Subject: 3, Slope: -0.18 Intercept: +19.50
+# Subject: 4, Slope: -0.54 Intercept: +48.83
 \end{lstlisting}
-(g) Test whether the relation between temperature and mood is significantly different between persons using Fisher's z transformations and z-test.\\
-\\
+For subjects 1-4, the resulting regression lines are:
+\begin{align*}
+Y_{1} = -3.40  +0.08 X_{\mbox{temp}}\\
+Y_{2} = 4.30  +0.00 X_{\mbox{temp}}\\
+Y_{3} = 19.50 -0.18 X_{\mbox{temp}}\\
+Y_{4} = 48.83 -0.54 X_{\mbox{temp}}
+\end{align*}
+(g) Test whether the relation between temperature and mood is significantly different between persons using Fisher's z transformations and z-test.
+\begin{lstlisting}[language=Python]
+from scipy.stats import norm
+t = df['temp']
+m1 = df['part1']
+m2 = df['part2']
+m3 = df['part3']
+m4 = df['part4']
+
+res = []
+for m_1 in [m1, m2, m3, m4]:
+    mcor1  = pd.concat((t, m_1), axis=1).corr().temp[1]
+    mcor1z = 0.5 * np.log((1+mcor1)/(1-mcor1))
+    for m_2 in [m1, m2, m3, m4]:
+        mcor2 = pd.concat((t, m_2), axis=1).corr().temp[1]
+        mcor2z = 0.5 * np.log((1+mcor2)/(1-mcor2))
+        zres = (mcor2z - mcor1z)/np.sqrt(2/(len(m_2)-3))
+        p = 2*norm.sf(zres)
+        res.append(p)
+res = pd.DataFrame(np.array(res).reshape(4, 4))
+labels = ['Subject' + str(i) for i in range(1, 5)]
+res.columns, res.index = labels, labels
+
+# Show just the lower triangular
+print(res.mask(np.triu(np.ones(res.shape)).astype(np.bool)))
+
+#               Subject1      Subject2  Subject3  Subject4
+# Subject1           NaN           NaN       NaN       NaN
+# Subject2  7.321723e-02           NaN       NaN       NaN
+# Subject3  3.397377e-04  7.321723e-02       NaN       NaN
+# Subject4  9.669450e-12  5.170788e-07  0.001245       NaN
+\end{lstlisting}
 (h) What can you say about differences in the relationship between weather and mood across individuals?\\
 \\
-(h) You submit the result of all these analyses for publication but the editor rejects the manuscript on the basis of: (i) a lack of power to examine your research questions, and (ii) the fact that there are only 4 individuals in your data and, thus --- they claim --- you cannot generalize to the population. Nevertheless, you are convinced --- or just have a hunch --- that there might be something valuable here and write back arguing that the data and analyses are worth disseminating. What would you say to support your argument?
+Fisher's z-tests were used to determine if correlations between subject's moods and the weather were significantly different from each other. All subject's correlations were significantly different from each other at the $p=0.01$ level.\\
+\\
+(h) You submit the result of all these analyses for publication but the editor rejects the manuscript on the basis of: (i) a lack of power to examine your research questions, and (ii) the fact that there are only 4 individuals in your data and, thus --- they claim --- you cannot generalize to the population. Nevertheless, you are convinced --- or just have a hunch --- that there might be something valuable here and write back arguing that the data and analyses are worth disseminating. What would you say to support your argument?\\
+\\
+I would likely argue that, while these results may or may not be representative of the population, the results presented here are nonetheless interesting and statistically significant. I would concede that the correlation among all subjects, $r=0.24$, is likely not representative of the population. Despite this, I would argue that there was significant power to significantly detect effects. While the sample size is not large, the magnitude of the effect size was enormous. As such, we still have enough power to detect significant effects at a relevant statistical significance criterion. Further, we have shown that individuals can have significant correlations between mood and weather, and that these can be significantly different from person to person.
 
 \clearpage
 \problem{}
@@ -216,7 +255,7 @@ There is one anomaly, the correlation $r_{15} = 1.6 > 1$ is impossible. This ste
 \begin{aligned}[c]
 s_{2}^2 &=0.25 \implies s_2 = 0.5 \\
 s_{4}^2 &=7.29 \implies s_4 = 2.7 \\
-\\
+& \Downarrow \\
 r_{11} &= \frac{c_{11}}{s_1 s_1} \implies c_{11} = r_{11} s_{1} s_{1}\\
 r_{13} &= \frac{c_{13}}{s_1 s_3} \\
 r_{14} &= \frac{c_{14}}{s_1 s_4} \\
@@ -233,7 +272,7 @@ r_{55} &= \frac{c_{55}}{s_5 s_5} \implies c_{55} = r_{55} s_{5} s_{5}
 r_{12} &= \frac{c_{12}}{s_1 s_2} \implies s_1 = \frac{c_{12}}{r_{12} s_2} = \frac{-0.5}{(-0.5)(0.5)} = 2\\
 r_{34} &= \frac{c_{34}}{s_3 s_4} \implies s_3 = \frac{c_{34}}{r_{34} s_4} = \frac{-2.43}{(-0.3)(2.7)} = 3\\
 r_{45} &= \frac{c_{45}}{s_4 s_5} \implies s_5 = \frac{c_{45}}{r_{45} s_4} = \frac{4.374}{(0.3)(2.7)} = 5.4\\
-\\
+& \Downarrow \\
 c_{11} &= s_{1}^2 = 4\\
 r_{13} &= \frac{1.8}{(2) (3)} = 0.3 \\
 r_{14} &= \frac{-1.08}{(2) (2.7)} = -0.2 \\
@@ -326,21 +365,47 @@ r &= \frac{\mbox{cov}_{XY}}{s_X s_Y} \\
 \end{align*}
 
 \clearpage
-\problem{}
+\problem{}%
+% https://stats.stackexchange.com/questions/32464/how-does-the-correlation-coefficient-differ-from-regression-slope
 (20 points) Say you run a simple regression with predictor variable $X_1$ and outcome variable $Y$. You fit the following model:
                 $$Y = B_0 + B_1 X_1$$
 a) What is the interpretation of $B_0$? What is the interpretation of $B_1$?\\
 \\
+$B_0$ is the intercept---the mean response when $X_1 = 0$. $B_1$ is the slope---the change in mean response in $Y$ when $X_1$ increases by 1 unit. It describes the linear relationship between $X$ and $Y$, which can be positive or negative, and increases with magnitude as the linear relationship becomes stronger.\\
+\\
 b) When will $B_1$ be equal to the correlation between $Y$ and $X_1$? Why?\\
 \\
-After running the analysis you remember a covariate that you believe is related to $Y$, but is not substantively of interest.
-c) What are the benefits of including the covariate in the model? Include two benefits and explain them in detail.\\
+$B_1$ is equal to the correlation between $Y$ and $X_1$ when the scales of $X$ and $Y$ are the same (for instance, when $X_1$ and $Y$ are standardized).
+The slope of our model, $B_1$, is related to the correlation by
+\begin{align*}
+B_1 &= \mbox{cor}(Y, X_1) \frac{\mbox{SD}(Y)}{\mbox{SD}(X_1)}
+\end{align*}
+Therefore the two are equivalent only when SD$(Y) = $ SD $(X_1)$, so the variables must be on the same scale (for instance, again, when $X_1$ and $Y$ are standardized).\\
 \\
+After running the analysis you remember a covariate that you believe is related to $Y$, but is not substantively of interest.
+c) What are the benefits of including the covariate in the model? Include two benefits and explain them in detail.
+\begin{enumerate}
+\item Decrease type I error
+\item Account for additional factors (and check for interactions)
+\end{enumerate}
 Finally, you include the covariate within the analysis and fit the following model:
                 $$Y = B_0 + B_1 X_1 + B_2 X_2$$
 d) What is the interpretation of each of the coefficients in this model?\\
 \\
-e) When will $B_1$ be equal to the correlation between $Y$ and $X_1$? When will $B_2$ be equal to the correlation between $Y$ and $X_2$? Why?
+$B_0$ is the intercept---the mean response when $X_1 = X_2 = 0$. $B_1$ is a slope---the change in mean response in $Y$ when $X_1$ increases by 1 unit and $X_2$ is held constant. $B_2$ is also a slope---the change in mean response in $Y$ when $X_2$ increases by 1 unit and $X_1$ is held constant. \\
+\\
+e) When will $B_1$ be equal to the correlation between $Y$ and $X_1$? When will $B_2$ be equal to the correlation between $Y$ and $X_2$? Why?\\
+\\
+$B_1$ is equal to the correlation between $Y$ and $X_1$ when the scales of $X$ and $Y$ are the same. The slope of our model, $B_1$, is related to the correlation by
+\begin{align*}
+B_1 &= \mbox{cor}(Y, X_1) \frac{\mbox{SD}(Y)}{\mbox{SD}(X_1)}
+\end{align*}
+Therefore the two are equivalent only when SD$(Y) = $ SD $(X_1)$, so the variables must be on the same scale (for instance, again, when $X_1$ and $Y$ are standardized). $B_2$ is equal to the correlation between $Y$ and $X_2$ when the scales of $X$ and $Y$ are the same. The slope of our model, $B_2$, is related to the correlation by
+\begin{align*}
+B_2 &= \mbox{cor}(Y, X_2) \frac{\mbox{SD}(Y)}{\mbox{SD}(X_2)}
+\end{align*}
+Therefore the two are equivalent only when SD$(Y) = $ SD $(X_2)$, so the variables must be on the same scale (for instance, again, when $X_2$ and $Y$ are standardized).\\
+\\
 
 \clearpage
 \problem{}
@@ -348,68 +413,37 @@ e) When will $B_1$ be equal to the correlation between $Y$ and $X_1$? When will 
 \\
 (a) A researcher studies the effects of education (HS or less, Some College, 4 Year College Degree, Graduate/Professional Degree) on income by randomly calling 5,000 participants in the United States. At a presentation of his results several colleagues suggest that effects of education on income may not be robust when considering other predictors such as work experience, time with their current employer, age, personal investments. What sort of analysis did the researcher conduct, and how can the researcher address these criticisms of his research?\\
 \\
+As the researcher was studying a single factor's effect on a single outcome variable, they most likely performed a single factor ANOVA. This single factor ANOVA investigated the effect of a categorical variable, education level, on a continuous outcome variable, income. His colleagues are asking why he did not perform a factorial ANOVA to test the effects of additional potential predictors. The researcher should agree with these criticisms, as his results will not be robust to other predictors. Hopefully this researcher has looked in the literature and found that these predictors do not have much influence (in which case he could potentially get away with not looking). It's also possible that the researcher could claim that, due to budget, time, or other constraints, it was impossible to take additional data. If it was possible to ask his participants additional questions, the researcher should have taken advantage of a factorial design to reduce their unexplained variance, and draw additional conclusions (main effects, interactions, etc).\\
+\\
 (b) A researcher is interested in predicting the mental health of college students based on their reported level of stress. What kind of sample should she collect and what statistical technique should she use to achieve this goal?\\
 \\
-(c) A researcher collected data from undergraduate and graduate students at universities across the country in a study of the relation between age (Range of 18 --- 46 years with a Mean = 23.5) and openness. There was a significant, negative relation between age and openness $(r(2,998) = -0.13, p < .05)$. The researcher cited this finding as evidence for why elderly individuals (age 60 years and upward) have difficulty learning about novel technology and ideological shifts; they're openness has declined substantially over their lives. Is this a reasonable conclusion? Why or why not?\\
+The researcher should randomly sample from all college students. Since this is probably impossible, the researcher may be better off advertising their study to a select few local colleges. The researcher would then need to record data on each subject's mental health, reported stress level, and college. Additional questions could (and should) be asked, such as the subject's age and gender, since it's simple to gather this data simultaneously, and may have important interaction effects on the results. Taking this approach, the researcher should use an ANCOVA design to determine the effects of stress and other measured covariates on mental health.\\
+\\
+(c) A researcher collected data from undergraduate and graduate students at universities across the country in a study of the relation between age (Range of 18-46 years with a Mean = 23.5) and openness. There was a significant, negative relation between age and openness $(r(2,998) = -0.13, p < .05)$. The researcher cited this finding as evidence for why elderly individuals (age 60 years and upward) have difficulty learning about novel technology and ideological shifts; they're openness has declined substantially over their lives. Is this a reasonable conclusion? Why or why not?\\
+\\
+This is not a reasonable conclusion. The researcher is taking findings from one population (students between ages 18-46) and extending them onto another population (the elderly, ages $\geq60$). The elderly were not sampled in the study, so it is unwise to extend results to their age group. A significant, negative relation between age and openness may exist among university students, but this linear relationship may not continue outside their age group. Furthermore, no correlation between learning novel technology (or ideological shifts) and openness was found in the university students. Simply put, the researcher is reaching too far with their conclusions---there is no evidence that the relation between age and openness continues past the measured age group, and there is no measured correlation between learning novel technology and openness.\\
 \\
 (d) A researcher studied a group of 100 students by having them complete a survey once a quarter, every quarter, for two years via an online survey form. The survey consisted of several items meant to measure anxiety, self-competence, and academic performance. What methods of analysis would be applicable to this type of data? How do you justify your recommendations?\\
 \\
-(e) A researcher received a small grant to conduct a study and is debating on how to spend the money. She is thinking that she can give a test to 300 individuals on one occasion, give a test to one individual on 300 occasions, give a test to 30 individuals on 10 occasions, give a test to 10 individuals on 30 occasions, or any combination of the above. Which of these data collection methods should she use?
+This type of study could be analyzed with repeated measures ANOVA.\\
+\\
+(e) A researcher received a small grant to conduct a study and is debating on how to spend the money. She is thinking that she can give a test to 300 individuals on one occasion, give a test to one individual on 300 occasions, give a test to 30 individuals on 10 occasions, give a test to 10 individuals on 30 occasions, or any combination of the above. Which of these data collection methods should she use?\\
+\\
+The solution, of course, depends on what the researcher is researching (and how small the grant is). Each of these methods is perfectly valid, but the results that can be drawn from the different data collections methods will vary. Most of these methods (with the exception of the first), involve taking multiple measurements from individual(s). These methods will allow the researcher to conduct repeated measures tests on their data. If the researcher is not interested in changes with respect to time, they should probably choose the first method. If the researcher has enough money to think that ``any combination of the above'' methods is a valid choice, then they should choose \textit{all} of the methods. That being said, no good answer can be given to this question without knowing more about what is being researched.
 
 \clearpage
 \problem{Extra Credit}
 
 (10 points) Explain what it means to say that a correlation is a covariance expressed in z-scores? Derive numerically the formula for a correlation based on the formula from a covariance (and describe the steps in your own words).
 
+\begin{align*}
+\mbox{cor}(X, Y) &= \frac{\mbox{cov}(X, Y)}{\sigma_X \sigma_Y} \\
+                 &= \frac{\Aver{\left(X - \Aver{X} \right) \left(Y - \Aver{Y} \right) }}{\sigma_X \sigma_Y} \\
+                 &= \Aver{\frac{X - \Aver{X}}{\sigma_X} \frac{Y - \Aver{Y}}{\sigma_Y}} \\
+                 % &= \Aver{\frac{X}{\sigma_X} \frac{Y}{\sigma_Y}}
+                 &= \Aver{Z_X Z_Y}
+\end{align*}
 
-
-% \begin{table}[h!]
-% \begin{center}
-% \begin{tabular}{l r r r r r}
-% \toprule
-% Source & $SS$ & $df$ & $F$ & $PR(>F)$ \\
-% \midrule
-% \it{School Type} & & & & \\
-% \hspace{1em} Private     & 29.66 &  2  & 11.97 & $<.001$ \\
-% \hspace{1em} Public      & 13.69 &  2  &  5.18 & $ .001$ \\
-% \it{Time} & & & & \\
-% \hspace{1em} 1      &  0.81 &  1  &  1.1 & $ .295$\\
-% \hspace{1em} 2      &  4.00 &  1  &  2.9 & $ .091$\\
-% \hspace{1em} 3      & 84.64 &  1  & 44.1 & $<.001$\\
-% \bottomrule
-% \end{tabular}
-% \end{center}
-% \caption{Results of Simple Effects Analysis}
-% \end{table}
-
-% \begin{lstlisting}[language=Python]
-% # Python!
-% import pandas as pd
-% import seaborn as sns
-% sns.set_style('ticks')
-
-% df = pd.read_csv('glong.csv', index_col=0)
-% p = sns.lmplot(x='time', y='observation',
-%                hue='public',
-%                data=df, order=2, ci=95,
-%                x_jitter=.3, y_jitter=.3,
-%                markers=["o", "x"],
-%                legend=False)
-% p.axes[0][0].set_xticks([0.5, 1.5, 2.5])
-% p.axes[0][0].set_xticklabels(['Sophomore', 'Junior', 'Senior'])
-% plt.xlabel('Observation')
-% plt.ylabel('End-of-Year Student Confidence Rating')
-% plt.savefig('prob5-quad.pdf')
-% plt.close('all')
-% \end{lstlisting}
-
-% \begin{figure}[h!]
-% \begin{center}
-% \includegraphics[width=1\textwidth]{prob5-quad.pdf}
-% \label{fig:on}
-% \end{center}
-% \caption{Quadratic trajectories for end-of-year confidence ratings for students in public schools (green) and private schools (blue). Shaded regions represent 95\% confidence regions. (Some jitter introduced for visibility.)}
-% \end{figure}
 
 
 \end{document}
