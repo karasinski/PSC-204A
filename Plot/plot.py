@@ -68,7 +68,6 @@ def plot(df2, df3):
     ax.fill_between(x2, np.zeros_like(y2), y_masked2, facecolor='red', interpolate=True, alpha=0.5)
     ax.fill_between(x1, np.zeros_like(y1), y_masked1, facecolor='white', interpolate=True)
     ax.fill_between(x2, np.zeros_like(y2), y_masked2, facecolor='red', interpolate=True, alpha=0.25)
-    #ax.fill_between(x1, np.zeros_like(y1), y_masked1, facecolor='k', interpolate=True, alpha=0.5)
 
     plt.vlines(x=30, ymin=0, ymax=0.0398, color='k', linewidth=2, alpha=1)#, ls='dashed')
 
@@ -78,8 +77,8 @@ def plot(df2, df3):
     plt.ylabel('Frequency', fontsize=15)
     plt.xlabel('BMI (kg/m$^2$)', fontsize=15)
     plt.tight_layout()
-    #plt.show()
-    plt.savefig('plot.pdf')
+    plt.show()
+    #plt.savefig('plot.pdf')
 
 
 if __name__ == "__main__":
