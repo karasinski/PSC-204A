@@ -304,13 +304,6 @@ The main effect of biological sex yielded an F ratio of $F(1, 196) = 4.27, p < .
 
 An analysis of simple effects showed that the effect of biological sex was significant for sports, $F(1, 99) = 10.1, p < 0.01$, but not for other extracurriculars, $F(1, 97) = 0.1, p = 0.75$. Therefore, there is no evidence that biological sex effects PSA for students participating in other extracurriculars. For females, sports extracurriculars showed a larger adolescent PSA $(M=0.65, SD=0.99)$ than for males $(M=0.06, SD=0.86)$. The descriptive statistics for these analyses are presented in Tables~\ref{psa1} and~\ref{psa2}. \\
 
-\begin{lstlisting}
-# Output is not shown here, but reported directly in the above paragraphs
-df = pd.read_csv('socialacceptance.csv')
-print(anova_lm(ols('psa ~ C(female)*C(sports)', df).fit(), typ=2))
-print(df.groupby(('female', 'sports')).agg(['mean', 'std']).psa)
-\end{lstlisting}
-
 \begin{table}[h!]
 \begin{center}
 \begin{tabular}{lrrrr}
@@ -328,11 +321,6 @@ Residual      & 164.24 & 196 &       &           \\
 \label{psa1}
 \end{table}
 
-\begin{lstlisting}
-print(anova_lm(ols('psa ~ C(female)', df.query('sports == 0')).fit(), typ=2))
-print(anova_lm(ols('psa ~ C(female)', df.query('sports == 1')).fit(), typ=2))
-\end{lstlisting}
-
 \begin{table}[htdp]
 \begin{center}
 \begin{tabular}{l r r r r r}
@@ -349,10 +337,6 @@ Source & $SS$ & $df$ & $F$ & $PR(>F)$ \\
 \label{psa2}
 \end{table}
 
-\begin{lstlisting}
-sns.factorplot(x='female', y='psa', hue='sports', data=df, order=[0, 1])
-\end{lstlisting}
-
 \begin{figure}[h!]
 \begin{center}
 \includegraphics[width=0.5\textwidth]{p3.pdf}
@@ -362,13 +346,55 @@ sns.factorplot(x='female', y='psa', hue='sports', data=df, order=[0, 1])
 \end{figure}
 
 \clearpage
+\begin{lstlisting}
+df = pd.read_csv('socialacceptance.csv')
+df.groupby('female').psa.count()
+# female
+# 0    102
+# 1     98
+df.groupby('female').psa.agg(['mean', 'std'])
+#            mean       std
+# female
+# 0      -0.14184  0.884003
+# 1       0.14763  1.093016
+df.groupby('sports').psa.agg(['mean', 'std'])
+#             mean       std
+# sports
+# 0      -0.364336  0.899716
+# 1       0.357121  0.967717
+print(df.groupby(('female', 'sports')).agg(['mean', 'std']).psa)
+#                    mean       std
+# female sports
+# 0      0      -0.337309  0.870661
+#        1       0.061447  0.859686
+# 1      0      -0.394239  0.939349
+#        1       0.646999  0.987694
+print(anova_lm(ols('psa ~ C(female)*C(sports)', df).fit(), typ=2))
+#                          sum_sq   df          F        PR(>F)
+# C(female)              3.584291    1   4.277382  3.993567e-02
+# C(sports)             25.418757    1  30.333957  1.132695e-07
+# C(female):C(sports)    5.152374    1   6.148684  1.399460e-02
+# Residual             164.240896  196        NaN           NaN
+print(anova_lm(ols('psa ~ C(female)', df.query('sports == 0')).fit(), typ=2))
+#               sum_sq  df         F    PR(>F)
+# C(female)   0.080011   1  0.097932  0.754998
+# Residual   79.249928  97       NaN       NaN
+print(anova_lm(ols('psa ~ C(female)', df.query('sports == 1')).fit(), typ=2))
+#               sum_sq  df          F    PR(>F)
+# C(female)   8.656654   1  10.083527  0.001995
+# Residual   84.990968  99        NaN       NaN
+sns.factorplot(x='female', y='psa', hue='sports', data=df, order=[0, 1])
+\end{lstlisting}
+
+
+\clearpage
 \problem{}
 % http://w3.sista.arizona.edu/~cdawson/ista311/notes/07_relationships_between_RVs.pdf
 (10 points) Explain why $r$ must be between -1 and +1. Please, do not use more than 1 or 2 paragraphs. You can append calculations, if you need them.\\
 
 \noindent $r$ is defined as
 $$r = \frac{\mbox{cov}_{XY}}{s_X s_Y}.$$
-The Cauchy-Schwarz inequality (which I will not prove) states that, for any random variables $A$ and $B$, $\Aver{AB}^2 \leq \Aver{A^2} \Aver{B^2}$. Using $A=X-\mu$ and $B=Y-\nu$, where $\mu=E(X), \nu=E(Y)$, we then have
+The Cauchy-Schwarz inequality (which I will not prove) states that, for any random variables $A$ and $B$, $\Aver{AB}^2 \leq \Aver{A^2} \Aver{B^2}$. Using $A=X-\mu$ and $B=Y-\nu$, where $\mu=\Aver{X}, \nu=\Aver{Y}$, we then have
 \begin{align*}
 \mbox{cov}_{XY}^2 & = \Aver{(X-\mu)(Y-\nu)}^2 && \text{Definition of covariance.}           \\
                     & \leq \Aver{(X-\mu)^2}\Aver{(Y-\nu)^2}  && \text{Cauch-Schwarz inequality (above).}       \\
@@ -422,14 +448,14 @@ B_1 &= \frac{\mbox{cov}_{Y1} \sigma_2^2 - \mbox{cov}_{Y2} \mbox{cov}_{12}}{\sigm
 \\
 r_{Y1}  &= \frac{\mbox{cov}_{Y1}}{\sigma_Y \sigma_1} && \text{Definition of the correlation.}
 \end{align*}
-Therefore the two are equivalent only when $\sigma_{Y} = \sigma_{1}$, so the variables must be on the same scale (for instance, again, when $X_1$ and $Y$ are standardized). $B_2$, is related to the correlation by
+Therefore the two are equivalent only when $X_1$ and $X_2$ do not covary, and $\sigma_{Y} = \sigma_{1}$, so the variables must be on the same scale (for instance, again, when $X_1$ and $Y$ are standardized). $B_2$, is related to the correlation by
 \begin{align*}
 B_2 &= \frac{\mbox{cov}_{Y2} \sigma_1^2 - \mbox{cov}_{Y1} \mbox{cov}_{12}}{\sigma_{2}^2 \sigma_1^2 - \mbox{cov}_{12}^2} && \text{Definition of regression coefficient.} \\
     &= \frac{\mbox{cov}_{Y2}}{\sigma_{2}^2} && \text{Setting cov$_{12}$ = 0.} \\
 \\
 r_{Y2}  &= \frac{\mbox{cov}_{Y2}}{\sigma_Y \sigma_2} && \text{Definition of the correlation.}
 \end{align*}
-Therefore the two are equivalent only when $\sigma_{Y} = \sigma_{2}$, so the variables must be on the same scale (for instance, again, when $X_2$ and $Y$ are standardized).\\
+Therefore the two are equivalent only when $X_1$ and $X_2$ do not covary, and $\sigma_{Y} = \sigma_{2}$, so the variables must be on the same scale (for instance, again, when $X_2$ and $Y$ are standardized).\\
 
 % \clearpage
 \problem{}
@@ -470,16 +496,4 @@ You must know the variance of a variable to determine the meaning of a covarianc
 \mbox{cor}(X, Y) &= \Aver{\frac{X - \Aver{X}}{\sigma_X } \frac{Y - \Aver{Y} }{\sigma_Y}} && \text{Regrouping.} \\
 \mbox{cor}(X, Y) &= \frac{\mbox{cov}(X, Y)}{\sigma_X \sigma_Y} && \text{Which is the definition of the correlation.} \\
 \end{align*}
-
-
-% \begin{align*}
-% \mbox{cor}(X, Y) &= \frac{\mbox{cov}(X, Y)}{\sigma_X \sigma_Y} && \text{Definition of correlation.}\\
-%                  &= \frac{\Aver{\left(X - \Aver{X} \right) \left(Y - \Aver{Y} \right) }}{\sigma_X \sigma_Y} && \text{Definition of covariance.}\\
-%                  &= \Aver{\frac{X - \Aver{X}}{\sigma_X} \frac{Y - \Aver{Y}}{\sigma_Y}}  && \text{Algebraic rearranging.}\\
-%                  % &= \Aver{\frac{X}{\sigma_X} \frac{Y}{\sigma_Y}}
-%                  &= \Aver{Z_X Z_Y}  && \text{Definition of z-score.}
-% \end{align*}
-
-
-
 \end{document}
